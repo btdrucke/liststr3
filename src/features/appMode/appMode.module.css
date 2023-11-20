@@ -1,0 +1,10 @@
+.appModePicker {
+    margin-bottom: 20px;
+}
+
+.enabled {
+    background-color: #cc0000;
+}
+.disabled {
+    background-color: #ccc;
+}
