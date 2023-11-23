@@ -1,0 +1,43 @@
+.marketsList {
+
+}
+
+.market {
+    border: none;
+}
+
+.add {
+
+}
+
+.marketBackground0 {
+    background-color: #3399ff88;
+}
+.marketBackground1 {
+    background-color: #ff993388;
+}
+.marketBackground2 {
+    background-color: #ff446688;
+}
+.marketBackground3 {
+    background-color: #228b2288;
+}
+.marketBackground4 {
+    background-color: #9932cc88;
+}
+.marketBackground5 {
+    background-color: #FFD70088;
+}
+.marketBackground6 {
+    background-color: #d54e1d88;
+}
+.marketBackground7 {
+    background-color: #3f7a7a88;
+}
+
+.enabled {
+    background-color: #cc0000;
+}
+.disabled {
+    background-color: #ccc;
+}

@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import { AppMode, changeMode } from "./appMode"
+import { AppMode, updateMode } from "./appModeSlice"
 import style from "./appMode.module.css"
 
 const modeDisplayData = [
@@ -22,7 +22,7 @@ export const AppModePicker = () => {
                     <button
                         key={mode}
                         className={(appMode === mode) ? style.enabled : style.disabled}
-                        onClick={() => dispatch(changeMode(mode))}>{title}
+                        onClick={() => dispatch(updateMode(mode))}>{title}
                     </button>
                 )
             })}

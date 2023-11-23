@@ -1,9 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit'
-import appModeReducer from '../features/appMode/appMode'
+import appModeReducer from '../features/appMode/appModeSlice'
+import marketsReducer from '../features/markets/marketsSlice'
 
 const store = configureStore({
     reducer: {
-        appMode: appModeReducer
+        appMode: appModeReducer,
+        markets: marketsReducer,
     },
 })
 

@@ -16,12 +16,12 @@ const appModeSlice = createSlice({
         value: AppMode.ManageShoppingList
     },
     reducers: {
-        changeMode: (state, action) => {
+        updateMode: (state, action) => {
             state.value = action.payload
         }
     }
 })
 
-export const { changeMode } = appModeSlice.actions
+export const { updateMode } = appModeSlice.actions
 
 export default appModeSlice.reducer

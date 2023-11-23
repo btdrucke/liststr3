@@ -3,24 +3,18 @@ import {nanoid} from '@reduxjs/toolkit'
 type Id = string
 
 export class IdOwner {
-    id: Id
-
-    constructor(id: Id = nanoid()) {
-        this.id = id
-    }
+    constructor(public readonly id: Id = nanoid()) {}
 }
 
-export function equalsId(id: Id): (other: string | IdOwner) => boolean {
-    return (e) => {
-        return (e instanceof IdOwner) ? e.id === id : e === id
-    }
+export function equalsId(id: Id): (owner: IdOwner) => boolean {
+    return (o) => o.id === id
 }
 
-export function getById<Type extends IdOwner>(elems: Array<Type>, id: Id): Type | undefined {
+export function findById<Type extends IdOwner>(elems: Array<Type>, id: Id): Type | undefined {
     return elems.find(equalsId(id))
 }
 
-export function getIndexById<Type extends IdOwner>(elems: Array<Type>, id: Id): number {
+export function findIndexById<Type extends IdOwner>(elems: Array<Type>, id: Id): number {
     return elems.findIndex(equalsId(id))
 }
 
