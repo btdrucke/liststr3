@@ -1,11 +1,13 @@
-import React, {useState} from "react"
-import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import {createMarket} from "./marketsSlice"
+import React from "react"
+import {useAppDispatch} from "../app/hooks"
+import {ActionCreatorWithPayload} from "@reduxjs/toolkit"
+import style from "./common.module.css"
 
-type AddInputProps = {
-    placeholder: string
+interface AddInputProps {
+    placeholder: string;
+    createFromName: ActionCreatorWithPayload<string>
 }
-const AddInput = ({placeholder}: AddInputProps) => {
+const AddInput = ({placeholder, createFromName}: AddInputProps) => {
     const dispatch = useAppDispatch()
 
     const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -14,14 +16,14 @@ const AddInput = ({placeholder}: AddInputProps) => {
             const input = event.target as HTMLInputElement
             const newName = input.value.trim()
             if (newName) {
-                dispatch(createMarket(newName))
+                dispatch(createFromName(newName))
             }
             input.value = ""
         }
     }
     return (
         <input
-            className="item-add"
+            className={style.addInput}
             placeholder={placeholder}
             onKeyUp={handleKeyUp}
         />
