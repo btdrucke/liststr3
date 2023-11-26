@@ -21,11 +21,8 @@ export const Ingredients = () => {
                             origItem={item}
                             renameItem={renameIngredient}/>
                         <FontAwesomeIcon
-                            key={item.id + "trash"}
                             icon={faTrashCan}
-                            onClick={() => {
-                                dispatch(deleteIngredient(item.id))
-                            }}/>
+                            onClick={() => dispatch(deleteIngredient(item.id))}/>
                     </div>
                 )
             })}

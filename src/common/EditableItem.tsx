@@ -1,10 +1,10 @@
-import React, {FocusEventHandler} from "react"
+import React from "react"
 import {ActionCreatorWithPayload} from "@reduxjs/toolkit"
 import {useAppDispatch} from "../app/hooks"
 import {BaseItem} from "./BaseItem"
 import style from "./common.module.css"
 import {classes} from "./classUtils"
-import {renameMarket} from "../features/markets/marketsSlice"
+import {renameMarket} from "../features/markets/slice"
 
 interface EditableItemProps<T extends BaseItem> {
     origItem: T;

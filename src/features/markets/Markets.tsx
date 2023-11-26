@@ -23,11 +23,8 @@ export const Markets = () => {
                             renameItem={renameMarket}
                             extraClasses={[item.color]}/>
                         <FontAwesomeIcon
-                            key={item.id + "trash"}
                             icon={faTrashCan}
-                            onClick={() => {
-                                dispatch(deleteMarket(item.id))
-                            }}/>
+                            onClick={() => dispatch(deleteMarket(item.id))}/>
                     </div>
                 )
             })}

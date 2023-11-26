@@ -3,18 +3,20 @@ import {BaseItem, findById, findIndexById} from "../../common/BaseItem"
 
 export interface IngredientModel extends BaseItem {
     readonly isFavorite: boolean;
-    readonly lastUsed: Date;
+    // readonly lastUsed: Date;
     readonly usualStores: string[]
 }
 
 function createIngredientModel(
     name: string,
     isFavorite: boolean = false,
-    lastUsed: Date = new Date(),
+    // lastUsed: Date = new Date(),
     usualStores: string[] = [],
     id: string = nanoid()
 ): IngredientModel {
-    return {id: id, name: name, isFavorite: isFavorite, lastUsed: lastUsed, usualStores: usualStores}
+    return {id: id, name: name, isFavorite: isFavorite,
+        // lastUsed: lastUsed,
+        usualStores: usualStores}
 }
 
 const slice = createSlice({
