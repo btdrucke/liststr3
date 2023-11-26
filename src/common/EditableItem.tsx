@@ -1,20 +1,20 @@
 import React from "react"
 import {ActionCreatorWithPayload} from "@reduxjs/toolkit"
 import {useAppDispatch} from "../app/hooks"
+import {classes} from "./classUtils"
 import {BaseItem} from "./BaseItem"
 import style from "./common.module.css"
-import {classes} from "./classUtils"
-import {renameMarket} from "../features/markets/slice"
 
-interface EditableItemProps<T extends BaseItem> {
-    origItem: T;
+export interface EditableItemProps {
+    origItem: BaseItem;
     renameItem: ActionCreatorWithPayload<BaseItem>;
     extraClasses?: string[]
 }
 
 // NB: Trailing comma in type list.
-const EditableItem = <T extends BaseItem, >({origItem, renameItem, extraClasses}: EditableItemProps<T>) => {
+const EditableItem = ({origItem, renameItem, extraClasses}: EditableItemProps) => {
     const dispatch = useAppDispatch()
+    let isEditPending = false
 
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const element = event.target as HTMLInputElement
@@ -23,7 +23,7 @@ const EditableItem = <T extends BaseItem, >({origItem, renameItem, extraClasses}
                 event.preventDefault()
                 const newName = element.value.trim()
                 if (newName && newName !== origItem.name) {
-                    console.log(`Dispatching ${renameItem.type}`)
+                    isEditPending = true
                     dispatch(renameItem({id: origItem.id, name: newName}))
                 }
                 element.blur()
@@ -44,17 +44,21 @@ const EditableItem = <T extends BaseItem, >({origItem, renameItem, extraClasses}
 
     const handleOnBlur = (event: React.FocusEvent<HTMLInputElement>) => {
         const element = event.target as HTMLInputElement
-        element.value = origItem.name
+        if (!isEditPending) {
+            element.value = origItem.name
+            isEditPending = false
+        }
         element.blur()
     }
 
     return (
         <input
-            className={classes(style.editableItem, ...(extraClasses || []))}
+            className={classes(style.editableItem, extraClasses)}
             defaultValue={origItem.name}
             onKeyUp={handleOnKeyUp}
             onClick={handleOnClick}
-            onBlur={handleOnBlur}/>
+            onBlur={handleOnBlur}
+        />
     )
 }
 

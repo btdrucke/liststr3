@@ -1,10 +1,10 @@
 import React from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {createMarket, renameMarket, deleteMarket} from "./slice"
 import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import EditableItem from "../../common/EditableItem"
 import AddInput from "../../common/AddInput"
+import EditableItem from "../../common/EditableItem"
+import {createMarket, deleteMarket, renameMarket} from "./slice"
 import style from "./style.module.css"
 
 export const Markets = () => {

@@ -1,5 +1,5 @@
-export function classes(...classes: string[]): string {
-    return classes.join(" ")
+export function classes(...classes: (string | null | undefined | string[])[]): string {
+    return classes.flat().filter(it => it).join(" ")
 }
 
 export function isEnabledClass(isEnabled: boolean): string {
