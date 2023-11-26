@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import { AppMode, updateMode } from "./appModeSlice"
-import style from "./appMode.module.css"
+import { AppMode, updateMode } from "./slice"
+import style from "./style.module.css"
 
 const modeDisplayData = [
     {mode: AppMode.ManageMeals, title: "Manage Meals"},

@@ -1,7 +1,7 @@
 import '../index.css'
 import {AppModePicker} from "../features/appMode/AppModePicker"
 import {useAppSelector} from "./hooks"
-import {AppMode} from "../features/appMode/appModeSlice"
+import {AppMode} from "../features/appMode/slice"
 import {ShoppingList} from "../features/shoppingList/ShoppingList"
 import {Ingredients} from "../features/ingredients/Ingredients"
 import {Shop} from "../features/shop/Shop"

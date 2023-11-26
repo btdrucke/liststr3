@@ -4,6 +4,7 @@ import {useAppDispatch} from "../app/hooks"
 import {BaseItem} from "./BaseItem"
 import style from "./common.module.css"
 import {classes} from "./classUtils"
+import {renameMarket} from "../features/markets/marketsSlice"
 
 interface EditableItemProps<T extends BaseItem> {
     origItem: T;
@@ -22,6 +23,7 @@ const EditableItem = <T extends BaseItem, >({origItem, renameItem, extraClasses}
                 event.preventDefault()
                 const newName = element.value.trim()
                 if (newName && newName !== origItem.name) {
+                    console.log(`Dispatching ${renameItem.type}`)
                     dispatch(renameItem({id: origItem.id, name: newName}))
                 }
                 element.blur()

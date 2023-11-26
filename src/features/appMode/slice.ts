@@ -10,7 +10,7 @@ export enum AppMode {
     Shop
 }
 
-const appModeSlice = createSlice({
+const slice = createSlice({
     name: 'mode',
     initialState: {
         value: AppMode.ManageShoppingList
@@ -22,6 +22,6 @@ const appModeSlice = createSlice({
     }
 })
 
-export const { updateMode } = appModeSlice.actions
+export const { updateMode } = slice.actions
 
-export default appModeSlice.reducer
+export default slice.reducer

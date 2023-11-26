@@ -1,33 +1,32 @@
 import React from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {createMarket, renameMarket, deleteMarket} from "./marketsSlice"
+import {createMarket, renameMarket, deleteMarket} from "./slice"
 import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import EditableItem from "../../common/EditableItem"
 import AddInput from "../../common/AddInput"
-import style from "./markets.module.css"
+import style from "./style.module.css"
 
 export const Markets = () => {
-    const marketList = useAppSelector((state) => state.markets.value)
+    const items = useAppSelector((state) => state.markets.items)
     const dispatch = useAppDispatch()
     return (
         <div className={style.list}>
             <AddInput placeholder={'+ new store'} createFromName={createMarket}/>
-            {marketList.map((market, index) => {
+            {items.map((item) => {
                 return (
                     <div
-                        key={market.id}
-                        className={market.color}>
+                        key={item.id}
+                        className={item.color}>
                         <EditableItem
-                            origItem={market}
+                            origItem={item}
                             renameItem={renameMarket}
-                            extraClasses={[market.color]}/>
+                            extraClasses={[item.color]}/>
                         <FontAwesomeIcon
-                            key={market.id + "trash"}
+                            key={item.id + "trash"}
                             icon={faTrashCan}
-                            className={style.add}
                             onClick={() => {
-                                dispatch(deleteMarket(market.id))
+                                dispatch(deleteMarket(item.id))
                             }}/>
                     </div>
                 )
