@@ -4,12 +4,12 @@ import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import AddInput from "../../common/AddInput"
 import EditableItem from "../../common/EditableItem"
-import {createMarket, deleteMarket, renameMarket} from "./slice"
+import {createMarket, deleteMarket, renameMarket, selectMarketItems} from "./slice"
 import style from "./style.module.css"
 
 export const Markets = () => {
-    const items = useAppSelector((state) => state.markets.items)
     const dispatch = useAppDispatch()
+    const items = useAppSelector(selectMarketItems)
     return (
         <div className={style.list}>
             <AddInput placeholder={'+ new store'} createFromName={createMarket}/>

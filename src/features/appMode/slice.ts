@@ -1,4 +1,5 @@
-import {createSlice} from "@reduxjs/toolkit"
+import {createSelector, createSlice} from "@reduxjs/toolkit"
+import {RootState} from "../../app/store"
 
 export enum AppMode {
     ManageMeals,
@@ -21,6 +22,11 @@ const slice = createSlice({
         }
     }
 })
+
+export const selectAppMode = createSelector(
+    [(state: RootState) => state.appMode.value],
+    (appMode) => appMode
+)
 
 export const { updateMode } = slice.actions
 

@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import { AppMode, updateMode } from "./slice"
+import {AppMode, selectAppMode, updateMode} from "./slice"
 import style from "./style.module.css"
 
 const modeDisplayData = [
@@ -13,8 +13,8 @@ const modeDisplayData = [
 ]
 
 export const AppModePicker = () => {
-    const appMode = useAppSelector((state) => state.appMode.value)
     const dispatch = useAppDispatch()
+    const appMode = useAppSelector(selectAppMode)
     return (
         <div className={style.appModePicker}>
             {modeDisplayData.map(({mode, title}) => {

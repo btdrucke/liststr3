@@ -1,6 +1,7 @@
-import {createSlice, nanoid} from "@reduxjs/toolkit"
-import {BaseItem, findById, findIndexById} from "../../common/BaseItem"
+import {createSelector, createSlice, nanoid} from "@reduxjs/toolkit"
+import {BaseItem, findIndexById} from "../../common/BaseItem"
 import style from "./style.module.css"
+import {RootState} from "../../app/store"
 
 export interface MarketModel extends BaseItem {
     readonly color: string;
@@ -34,10 +35,7 @@ const slice = createSlice({
             const item: BaseItem = action.payload
             const pos = findIndexById(state.items, item.id)
             if (pos >= 0) {
-                const oldItem = findById(state.items, item.id)
-                if (oldItem !== undefined) {
-                    state.items.splice(pos, 1, {...oldItem, name: item.name})
-                }
+                state.items[pos].name = item.name
             }
         },
         deleteMarket: (state, action) => {
@@ -49,6 +47,19 @@ const slice = createSlice({
         },
     }
 })
+
+export const selectMarketItems = createSelector(
+    [(state: RootState) => state.markets.items],
+    (items) => items
+)
+
+export const selectMarket = createSelector(
+    [
+        (state: RootState) => state.markets.items,
+        (_: RootState, id: string) => id
+    ],
+    (items, id) => items.find(it => it.id === id)
+)
 
 export const {createMarket, renameMarket, deleteMarket} = slice.actions
 

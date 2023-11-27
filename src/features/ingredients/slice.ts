@@ -1,22 +1,25 @@
-import {createSlice, nanoid} from "@reduxjs/toolkit"
+import {createSelector, createSlice, nanoid} from "@reduxjs/toolkit"
 import {BaseItem, findById, findIndexById} from "../../common/BaseItem"
+import {RootState} from "../../app/store"
 
 export interface IngredientModel extends BaseItem {
     readonly isFavorite: boolean;
     // readonly lastUsed: Date;
-    readonly usualStores: string[]
+    readonly usualMarketIds: string[]
 }
 
 function createIngredientModel(
     name: string,
     isFavorite: boolean = false,
     // lastUsed: Date = new Date(),
-    usualStores: string[] = [],
+    usualMarketIds: string[] = [],
     id: string = nanoid()
 ): IngredientModel {
-    return {id: id, name: name, isFavorite: isFavorite,
+    return {
+        id: id, name: name, isFavorite: isFavorite,
         // lastUsed: lastUsed,
-        usualStores: usualStores}
+        usualMarketIds: usualMarketIds
+    }
 }
 
 const slice = createSlice({
@@ -39,10 +42,14 @@ const slice = createSlice({
             const item: BaseItem = action.payload
             const pos = findIndexById(state.items, item.id)
             if (pos >= 0) {
-                const oldItem = findById(state.items, item.id)
-                if (oldItem !== undefined) {
-                    state.items.splice(pos, 1, {...oldItem, name: item.name})
-                }
+                state.items[pos].name = item.name
+            }
+        },
+        toggleIsFavorite:  (state, action) => {
+            const id: string = action.payload
+            const pos = findIndexById(state.items, id)
+            if (pos >= 0) {
+                state.items[pos].isFavorite = !state.items[pos].isFavorite
             }
         },
         deleteIngredient: (state, action) => {
@@ -55,6 +62,24 @@ const slice = createSlice({
     }
 })
 
-export const {createIngredient, renameIngredient, deleteIngredient} = slice.actions
+export const selectIngredientItems = createSelector(
+    [(state: RootState) => state.ingredients.items],
+    (items) => items
+)
+
+export const selectIngredient  = createSelector(
+    [
+        (state: RootState) => state.ingredients.items,
+        (_: RootState, id: string) => id
+    ],
+    (items, id) => items.find(it => it.id === id)
+)
+
+export const {
+    createIngredient,
+    renameIngredient,
+    toggleIsFavorite,
+    deleteIngredient,
+} = slice.actions
 
 export default slice.reducer
