@@ -24,6 +24,7 @@ export const Ingredients = () => {
                         <EditableItem
                             origItem={item}
                             renameItem={renameIngredient}/>
+                        <span>{new Date(item.lastUsedTimestamp).toLocaleDateString()}</span>
                         <FontAwesomeIcon
                             icon={faTrashCan}
                             onClick={() => dispatch(deleteIngredient(item.id))}/>

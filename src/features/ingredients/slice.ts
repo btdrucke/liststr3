@@ -1,23 +1,24 @@
 import {createSelector, createSlice, nanoid} from "@reduxjs/toolkit"
-import {BaseItem, findById, findIndexById} from "../../common/BaseItem"
+import {BaseItem, findIndexById} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
+import _ from "lodash"
 
 export interface IngredientModel extends BaseItem {
     readonly isFavorite: boolean;
-    // readonly lastUsed: Date;
+    readonly lastUsedTimestamp: number;
     readonly usualMarketIds: string[]
 }
 
 function createIngredientModel(
     name: string,
     isFavorite: boolean = false,
-    // lastUsed: Date = new Date(),
+    lastUsedTimestamp: number = Date.now(),
     usualMarketIds: string[] = [],
     id: string = nanoid()
 ): IngredientModel {
     return {
         id: id, name: name, isFavorite: isFavorite,
-        // lastUsed: lastUsed,
+        lastUsedTimestamp: lastUsedTimestamp,
         usualMarketIds: usualMarketIds
     }
 }
@@ -64,7 +65,7 @@ const slice = createSlice({
 
 export const selectIngredientItems = createSelector(
     [(state: RootState) => state.ingredients.items],
-    (items) => items
+    (items) => _.orderBy(items, ['isFavorite', 'lastUsedTimestamp', 'name'], ['desc', 'desc', 'asc'])
 )
 
 export const selectIngredient  = createSelector(
