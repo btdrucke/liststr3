@@ -1,10 +1,11 @@
-import {createSelector, createSlice, nanoid} from "@reduxjs/toolkit"
+import {createSelector, createSlice, Draft, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {BaseItem, findIndexById} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
+import {deleteItemReducer, renameItemReducer, toggleIsFavoriteReducer} from "../../common/Reducers"
+import {IsFavoriteItem} from "../../common/IsFavoriteItem"
 
-export interface IngredientModel extends BaseItem {
-    readonly isFavorite: boolean;
+export interface IngredientModel extends BaseItem, IsFavoriteItem {
     readonly lastUsedTimestamp: number;
     readonly usualMarketIds: string[]
 }
@@ -34,41 +35,27 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createIngredient: (state, action) => {
-            const name: string = action.payload
+        createIngredient: (state: Draft<{ items: BaseItem[] }>, action: PayloadAction<string>) => {
+            const name = action.payload
             const item = createIngredientModel(name)
             state.items.push(item)
         },
-        renameIngredient: (state, action) => {
-            const item: BaseItem = action.payload
-            const pos = findIndexById(state.items, item.id)
-            if (pos >= 0) {
-                state.items[pos].name = item.name
-            }
-        },
-        toggleIsFavorite:  (state, action) => {
-            const id: string = action.payload
-            const pos = findIndexById(state.items, id)
-            if (pos >= 0) {
-                state.items[pos].isFavorite = !state.items[pos].isFavorite
-            }
-        },
-        deleteIngredient: (state, action) => {
-            const id: string = action.payload
-            const pos = findIndexById(state.items, id)
-            if (pos >= 0) {
-                state.items.splice(pos, 1)
-            }
-        },
+        renameIngredient: renameItemReducer,
+        toggleIsFavorite: toggleIsFavoriteReducer,
+        deleteIngredient: deleteItemReducer,
     }
 })
 
 export const selectIngredientItems = createSelector(
     [(state: RootState) => state.ingredients.items],
-    (items) => _.orderBy(items, ['isFavorite', 'lastUsedTimestamp', 'name'], ['desc', 'desc', 'asc'])
+    (items) => _.orderBy(
+        items,
+        ['isFavorite', 'lastUsedTimestamp', 'name'],
+        ['desc', 'desc', 'asc']
+    )
 )
 
-export const selectIngredient  = createSelector(
+export const selectIngredient = createSelector(
     [
         (state: RootState) => state.ingredients.items,
         (_: RootState, id: string) => id

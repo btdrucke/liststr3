@@ -2,12 +2,14 @@ import {configureStore} from '@reduxjs/toolkit'
 import appModeReducer from '../features/appMode/slice'
 import ingredientsReducer from '../features/ingredients/slice'
 import marketsReducer from '../features/markets/slice'
+import mealsReducer from '../features/meals/slice'
 
 const store = configureStore({
     reducer: {
         appMode: appModeReducer,
         ingredients: ingredientsReducer,
         markets: marketsReducer,
+        meals: mealsReducer,
     },
 })
 

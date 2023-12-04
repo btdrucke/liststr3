@@ -1,7 +1,8 @@
-import {createSelector, createSlice, nanoid} from "@reduxjs/toolkit"
+import {createSelector, createSlice, Draft, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {BaseItem, findIndexById} from "../../common/BaseItem"
 import style from "./style.module.css"
 import {RootState} from "../../app/store"
+import {deleteItemReducer, renameItemReducer} from "../../common/Reducers"
 
 export interface MarketModel extends BaseItem {
     readonly color: string;
@@ -11,8 +12,24 @@ function createMarketModel(name: string, color: string, id: string = nanoid()): 
     return {id: id, name: name, color: color}
 }
 
-function colorForNewMarket(index: number): string {
-    return style["marketBackground" + (index % 8)]
+function colorForNewMarket(items: MarketModel[] | number): string {
+    if (typeof items === "number") {
+        return colorForNumber(items)
+    } else {
+        const usedColors = items.map(it => it.color)
+        let i = 0
+        let thisStyle: string
+        do {
+            thisStyle = colorForNumber(i)
+            if (!usedColors.includes(thisStyle)) break
+            ++i
+        } while (i < 8)
+        return thisStyle
+    }
+}
+
+function colorForNumber(i: number): string {
+    return style["marketBackground" + (i % 8)]
 }
 
 const slice = createSlice({
@@ -26,25 +43,13 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createMarket: (state, action) => {
-            const name: string = action.payload
-            const item = createMarketModel(name, colorForNewMarket(state.items.length))
+        createMarket: (state, action: PayloadAction<string>) => {
+            const name = action.payload
+            const item = createMarketModel(name, colorForNewMarket(state.items))
             state.items.push(item)
         },
-        renameMarket: (state, action) => {
-            const item: BaseItem = action.payload
-            const pos = findIndexById(state.items, item.id)
-            if (pos >= 0) {
-                state.items[pos].name = item.name
-            }
-        },
-        deleteMarket: (state, action) => {
-            const id: string = action.payload
-            const pos = findIndexById(state.items, id)
-            if (pos >= 0) {
-                state.items.splice(pos, 1)
-            }
-        },
+        renameMarket: renameItemReducer,
+        deleteMarket: deleteItemReducer,
     }
 })
 
