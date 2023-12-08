@@ -1,3 +1,25 @@
 .list {
 
 }
+
+.editableItem {
+    border: none;
+}
+
+.table {
+    display: table;
+}
+
+.tableBody {
+    display: table-row-group;
+}
+
+.tableRow {
+    display: table-row;
+}
+
+.tableCell {
+    display: table-cell;
+    border: 1px solid #dddddd;
+    padding: 8px;
+}

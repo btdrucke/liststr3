@@ -1,11 +1,16 @@
 // Returns a new date built from the input date, but with no hour/minute/second/ms values.
-import {apply} from "./utils"
+import dayjs, {Dayjs, isDayjs} from "dayjs"
 
-export function withNoTime(date: Date): Date {
-    return apply(date, d => d.setHours(0, 0, 0, 0))
+export function dayOfWeek(date: Dayjs | string): string {
+    const dateObj = isDayjs(date) ? date : dayjs(date)
+    return dateObj.format('ddd')
 }
 
-export function dayOfWeekDisplay(date: Date): string {
-    return date.toLocaleDateString([], {weekday: 'short'})
+export function toDatestamp(date: Dayjs = dayjs()): string {
+    return date.format('YYYY-MM-DD')
+}
+
+export function toLocalDate(datestamp?: string | undefined): Dayjs {
+    return dayjs(datestamp || toDatestamp())
 }
 
