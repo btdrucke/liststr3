@@ -8,6 +8,7 @@ import {useAppDispatch} from "../../app/hooks"
 import {useDrag, useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
+import {toLocalDate} from "../../common/dateUtils"
 
 interface MealProps {
     item: MealModel
@@ -24,29 +25,37 @@ const Meal = ({item}: MealProps) => {
         }),
     }))
 
-    // const [{isOver, draggingItem}, drop] = useDrop(
-    //     () => ({
-    //         accept: DragTypes.MEAL,
-    //         drop: () => {dispatch(rescheduleMeal({id: draggingItem.id, date: date}))},
-    //         collect: monitor => ({
-    //             isOver: monitor.isOver(),
-    //             draggingItem: monitor.getItem<MealModel>()
-    //         })
-    //     }),
-    //     [date]
-    // )
+    const itemDate = toLocalDate(item.datestamp)
+
+    const [{isOver, canDrop}, drop] = useDrop(
+        () => ({
+            accept: DragTypes.MEAL,
+            drop: (item: MealModel) => {
+                dispatch(rescheduleMeal({id: item.id, date: itemDate}))
+            },
+            canDrop: (otherItem) => {
+              return item !== otherItem
+            },
+            collect: monitor => ({
+                isOver: monitor.isOver(),
+                canDrop: monitor.canDrop()
+            })
+        }),
+        [itemDate]
+    )
 
     return (
         <div
-            ref={drag}
-            className={classes(style.tableCell, isDragging && style.dragging)}
+            ref={(node) => drag(drop(node))}
+            className={classes(style.tableCell, isOver && canDrop && style.isOver)}
         >
             <EditableItem
                 origItem={item}
                 renameItem={renameMeal}
-                extraClasses={style.editableItem}/>
+                extraClass={classes(style.editableItem, isDragging && style.isDragging)}/>
             <FontAwesomeIcon
                 icon={faTrashCan}
+                className={classes(isOver && style.isOver, isDragging && style.isDragging)}
                 onClick={() => dispatch(deleteMeal(item.id))}/>
         </div>
     )

@@ -8,11 +8,11 @@ import style from "./common.module.css"
 export interface EditableItemProps {
     origItem: BaseItem;
     renameItem: ActionCreatorWithPayload<BaseItem>;
-    extraClasses?: string[] | string
+    extraClass?: string
 }
 
 // NB: Trailing comma in type list.
-const EditableItem = ({origItem, renameItem, extraClasses}: EditableItemProps) => {
+const EditableItem = ({origItem, renameItem, extraClass}: EditableItemProps) => {
     const dispatch = useAppDispatch()
     let isEditPending = false
 
@@ -53,7 +53,7 @@ const EditableItem = ({origItem, renameItem, extraClasses}: EditableItemProps) =
 
     return (
         <input
-            className={classes(style.editableItem, extraClasses)}
+            className={classes(style.editableItem, extraClass)}
             defaultValue={origItem.name}
             onKeyUp={handleOnKeyUp}
             onClick={handleOnClick}

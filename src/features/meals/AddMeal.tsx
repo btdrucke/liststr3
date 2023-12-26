@@ -65,7 +65,7 @@ const AddMeal = ({date}: AddMealProps) => {
     return (
         <input
             ref={drop}
-            className={classes(style.editableItem, style.tableCell, isOver && style.over)}
+            className={classes(style.editableItem, style.tableCell, isOver && style.isOver)}
             placeholder="+"
             onKeyUp={handleOnKeyUp}
             onClick={handleOnClick}

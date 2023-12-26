@@ -21,7 +21,7 @@ export const Markets = () => {
                         <EditableItem
                             origItem={item}
                             renameItem={renameMarket}
-                            extraClasses={[item.color]}/>
+                            extraClass={item.color}/>
                         <FontAwesomeIcon
                             icon={faTrashCan}
                             onClick={() => dispatch(deleteMarket(item.id))}/>

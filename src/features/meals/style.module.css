@@ -32,11 +32,10 @@
     background-color: transparent;
 }
 
-.dragging {
-    background-color: white;
-    opacity: 50%;
+.isDragging {
+    opacity: .5;
 }
 
-.over {
+.isOver {
     background-color: yellow;
 }
