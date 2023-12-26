@@ -1,4 +1,4 @@
-export function classes(...classes: (string | null | undefined | string[])[]): string {
+export function classes(...classes: (string | null | undefined | false | string[])[]): string {
     return classes.flat().filter(it => it).join(" ")
 }
 

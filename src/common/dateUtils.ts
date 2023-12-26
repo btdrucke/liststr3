@@ -14,3 +14,11 @@ export function toLocalDate(datestamp?: string | undefined): Dayjs {
     return dayjs(datestamp || toDatestamp())
 }
 
+export function isWeekend(date: Dayjs): boolean {
+    const dayNum = date.day()
+    return dayNum === 0 || dayNum === 6 // Sunday or Saturday
+}
+
+export function isToday(date: Dayjs):boolean {
+    return dayjs().isSame(date, 'day')
+}

@@ -2,10 +2,6 @@
 
 }
 
-.editableItem {
-    border: none;
-}
-
 .table {
     display: table;
 }
@@ -20,6 +16,27 @@
 
 .tableCell {
     display: table-cell;
-    border: 1px solid #dddddd;
-    padding: 8px;
+    padding: 4pt;
+}
+
+.today {
+    background-color: #0000ff40;
+}
+
+.weekend {
+    background-color: #0000ff20;
+}
+
+.editableItem {
+    border: none;
+    background-color: transparent;
+}
+
+.dragging {
+    background-color: white;
+    opacity: 50%;
+}
+
+.over {
+    background-color: yellow;
 }

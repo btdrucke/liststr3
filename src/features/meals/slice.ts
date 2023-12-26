@@ -19,9 +19,9 @@ const slice = createSlice({
     name: 'meals',
     initialState: {
         items: [
-            createMealModel("Tacos", dayjs('2023-12-10')),
-            createMealModel("Lentil Soup", dayjs('2023-12-06')),
-            createMealModel("Channa + cauliflower", dayjs('2023-12-03')),
+            createMealModel("Tacos", dayjs('2023-12-24')),
+            createMealModel("Lentil Soup", dayjs('2023-12-26')),
+            createMealModel("Channa + cauliflower", dayjs('2023-12-27')),
         ]
     },
     reducers: {

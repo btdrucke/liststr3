@@ -1,17 +1,15 @@
 import React from "react"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {createMeal, deleteMeal, MealModel, renameMeal, selectMealItems} from "./slice"
-import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
-import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import EditableItem from "../../common/EditableItem"
+import {MealModel, selectMealItems} from "./slice"
+import {useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
-import {dayOfWeek, toDatestamp, toLocalDate} from "../../common/dateUtils"
+import {dayOfWeek, isToday, isWeekend, toDatestamp, toLocalDate} from "../../common/dateUtils"
 import _ from "lodash"
 import {Dayjs} from "dayjs"
-import NewMeal from "./NewMeal"
+import AddMeal from "./AddMeal"
+import {classes} from "../../common/classUtils"
+import Meal from "./Meal"
 
 export const Meals = () => {
-    const dispatch = useAppDispatch()
     const itemList = useAppSelector(selectMealItems)
 
     const today = toLocalDate()
@@ -33,30 +31,16 @@ export const Meals = () => {
     return (
         <div className={style.table}>
             {days.map(({day, item}) => {
+                const rowColorClass = (isToday(day) && style.today) || (isWeekend(day) && style.weekend)
                 return (
                     <div
                         key={toDatestamp(day)}
-                        className={style.tableRow}>
+                        className={classes(style.tableRow, rowColorClass)}>
                         <span
                             className={style.tableCell}>
                             {dayOfWeek(day)}({toDatestamp(day)})
                         </span>
-                        {item === undefined && (
-                            <NewMeal
-                                date={day}
-                                createMeal={createMeal}/>
-                        )}
-                        {item !== undefined && (
-                            <div
-                                className={style.tableCell}>
-                                <EditableItem
-                                    origItem={item}
-                                    renameItem={renameMeal}/>
-                                <FontAwesomeIcon
-                                    icon={faTrashCan}
-                                    onClick={() => dispatch(deleteMeal(item.id))}/>
-                            </div>
-                        )}
+                        {item === undefined ? (<AddMeal date={day}/>) : (<Meal item={item}/>)}
                     </div>
                 )
             })}

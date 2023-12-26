@@ -8,7 +8,7 @@ import style from "./common.module.css"
 export interface EditableItemProps {
     origItem: BaseItem;
     renameItem: ActionCreatorWithPayload<BaseItem>;
-    extraClasses?: string[]
+    extraClasses?: string[] | string
 }
 
 // NB: Trailing comma in type list.

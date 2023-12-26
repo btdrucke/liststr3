@@ -1,18 +1,30 @@
 import React from "react"
-import {ActionCreatorWithPayload} from "@reduxjs/toolkit"
 import {useAppDispatch} from "../../app/hooks"
 import {classes} from "../../common/classUtils"
 import style from "./style.module.css"
 import {Dayjs} from "dayjs"
+import {createMeal, MealModel, rescheduleMeal} from "./slice"
+import {useDrop} from "react-dnd"
+import {DragTypes} from "../../common/DragTypes"
 
-export interface NewMealProps {
+interface AddMealProps {
     date: Dayjs
-    createMeal: ActionCreatorWithPayload<{ name: string, date?: Dayjs }>
 }
 
-// NB: Trailing comma in type list.
-const NewMeal = ({date, createMeal}: NewMealProps) => {
+const AddMeal = ({date}: AddMealProps) => {
     const dispatch = useAppDispatch()
+
+    const [{isOver}, drop] = useDrop(
+        () => ({
+            accept: DragTypes.MEAL,
+            drop: (item: MealModel) => {dispatch(rescheduleMeal({id: item.id, date: date}))},
+            collect: monitor => ({
+                isOver: monitor.isOver()
+            })
+        }),
+        [date]
+    )
+
     let isEditPending = false
 
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -23,7 +35,7 @@ const NewMeal = ({date, createMeal}: NewMealProps) => {
                 const name = element.value.trim()
                 if (name) {
                     isEditPending = true
-                    dispatch(createMeal({name:name, date:date}))
+                    dispatch(createMeal({name: name, date: date}))
                 }
                 element.blur()
                 break
@@ -52,7 +64,8 @@ const NewMeal = ({date, createMeal}: NewMealProps) => {
 
     return (
         <input
-            className={classes(style.editableItem, style.tableCell)}
+            ref={drop}
+            className={classes(style.editableItem, style.tableCell, isOver && style.over)}
             placeholder="+"
             onKeyUp={handleOnKeyUp}
             onClick={handleOnClick}
@@ -61,4 +74,4 @@ const NewMeal = ({date, createMeal}: NewMealProps) => {
     )
 }
 
-export default NewMeal
+export default AddMeal
