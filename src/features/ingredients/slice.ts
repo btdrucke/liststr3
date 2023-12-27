@@ -1,5 +1,5 @@
 import {createSelector, createSlice, Draft, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, findIndexById} from "../../common/BaseItem"
+import {BaseItem, equalsId, findById, findIndexById} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {deleteItemReducer, renameItemReducer, toggleIsFavoriteReducer} from "../../common/Reducers"
@@ -60,7 +60,7 @@ export const selectIngredient = createSelector(
         (state: RootState) => state.ingredients.items,
         (_: RootState, id: string) => id
     ],
-    (items, id) => items.find(it => it.id === id)
+    (items, id) => findById(items, id)
 )
 
 export const {

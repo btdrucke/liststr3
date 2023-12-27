@@ -25,7 +25,8 @@ const AddMeal = ({datestamp}: AddMealProps) => {
                     isEditPending = true
                     dispatch(createMeal({name: name, datestamp: datestamp}))
                 }
-                element.blur()
+                element.value = ""
+                // Don't blur so that the input is still focused for the next item.
                 break
             }
             case "Escape": {

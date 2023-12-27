@@ -1,5 +1,5 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, findIndexById} from "../../common/BaseItem"
+import {BaseItem, equalsId, findById, findIndexById} from "../../common/BaseItem"
 import dayjs from 'dayjs'
 import {RootState} from "../../app/store"
 import {deleteItemReducer, renameItemReducer} from "../../common/Reducers"
@@ -36,23 +36,12 @@ const slice = createSlice({
         },
         rescheduleMeal: (state, action: PayloadAction<{ id: string, datestamp: string }>) => {
             const {id, datestamp} = action.payload
-            const pos = findIndexById(state.items, id)
-            if (pos >= 0) {
+            // Add rescheduled meal to the start to it shows on top.
+            const toReschedule = _.chain(state.items).remove(equalsId(id)).first().value()
+            if (toReschedule) {
                 console.log(`Setting ${id} to ${datestamp}`)
-                state.items[pos].datestamp = datestamp
-            }
-        },
-        swapMeals: (state, action: PayloadAction<{ idA: string, idB: string }>) => {
-            const {idA, idB} = action.payload
-            const posA = findIndexById(state.items, idA)
-            const posB = findIndexById(state.items, idB)
-            if (posA >= 0 && posB >= 0) {
-                if (posA !== posB) {
-                    console.log(`Swapping ${idA} with ${idB}`)
-                    const datestampA = state.items[posA].datestamp
-                    state.items[posA].datestamp = state.items[posB].datestamp
-                    state.items[posB].datestamp = datestampA
-                }
+                toReschedule.datestamp = datestamp
+                state.items = _.concat([toReschedule], state.items)
             }
         },
         renameMeal: renameItemReducer,
@@ -70,9 +59,9 @@ export const selectMeal = createSelector(
         (state: RootState) => state.meals.items,
         (_: RootState, id: string) => id
     ],
-    (items, id) => items.find(it => it.id === id)
+    (items, id) => findById(items, id)
 )
 
-export const {createMeal, rescheduleMeal, swapMeals, renameMeal, deleteMeal} = slice.actions
+export const {createMeal, rescheduleMeal, renameMeal, deleteMeal} = slice.actions
 
 export default slice.reducer

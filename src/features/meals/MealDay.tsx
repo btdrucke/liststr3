@@ -50,13 +50,13 @@ const MealDay = ({date, meals}: MealDayProps) => {
                 ref={drop}
                 className={classes(style.tableCell, isOver && canDrop && style.isOver)}
             >
-                {meals.length === 0 && <AddMeal datestamp={datestamp}/>}
                 {meals.map((meal) =>
                     <Meal
                         key={meal.id}
                         meal={meal}
                     />
                 )}
+                <AddMeal datestamp={datestamp}/>
             </span>
         </div>
     )

@@ -1,5 +1,5 @@
 import {createSelector, createSlice, Draft, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, findIndexById} from "../../common/BaseItem"
+import {BaseItem, findById, findIndexById} from "../../common/BaseItem"
 import style from "./style.module.css"
 import {RootState} from "../../app/store"
 import {deleteItemReducer, renameItemReducer} from "../../common/Reducers"
@@ -63,7 +63,7 @@ export const selectMarket = createSelector(
         (state: RootState) => state.markets.items,
         (_: RootState, id: string) => id
     ],
-    (items, id) => items.find(it => it.id === id)
+    (items, id) => findById(items, id)
 )
 
 export const {createMarket, renameMarket, deleteMarket} = slice.actions
