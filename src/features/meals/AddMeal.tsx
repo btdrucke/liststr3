@@ -2,28 +2,16 @@ import React from "react"
 import {useAppDispatch} from "../../app/hooks"
 import {classes} from "../../common/classUtils"
 import style from "./style.module.css"
-import {Dayjs} from "dayjs"
 import {createMeal, MealModel, rescheduleMeal} from "./slice"
 import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 
 interface AddMealProps {
-    date: Dayjs
+    datestamp: string
 }
 
-const AddMeal = ({date}: AddMealProps) => {
+const AddMeal = ({datestamp}: AddMealProps) => {
     const dispatch = useAppDispatch()
-
-    const [{isOver}, drop] = useDrop(
-        () => ({
-            accept: DragTypes.MEAL,
-            drop: (item: MealModel) => {dispatch(rescheduleMeal({id: item.id, date: date}))},
-            collect: monitor => ({
-                isOver: monitor.isOver()
-            })
-        }),
-        [date]
-    )
 
     let isEditPending = false
 
@@ -35,7 +23,7 @@ const AddMeal = ({date}: AddMealProps) => {
                 const name = element.value.trim()
                 if (name) {
                     isEditPending = true
-                    dispatch(createMeal({name: name, date: date}))
+                    dispatch(createMeal({name: name, datestamp: datestamp}))
                 }
                 element.blur()
                 break
@@ -64,8 +52,7 @@ const AddMeal = ({date}: AddMealProps) => {
 
     return (
         <input
-            ref={drop}
-            className={classes(style.editableItem, style.tableCell, isOver && style.isOver)}
+            className={classes(style.editableItem)}
             placeholder="+"
             onKeyUp={handleOnKeyUp}
             onClick={handleOnClick}

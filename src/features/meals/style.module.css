@@ -17,6 +17,7 @@
 .tableCell {
     display: table-cell;
     padding: 4pt;
+    transition-duration: .25s;
 }
 
 .today {
