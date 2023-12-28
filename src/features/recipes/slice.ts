@@ -1,26 +1,20 @@
 import {createSelector, createSlice, Draft, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, equalsId, findById, findIndexById} from "../../common/BaseItem"
+import {BaseItem, findById} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {deleteItemReducer, renameItemReducer, toggleIsFavoriteReducer} from "../../common/Reducers"
 import {IsFavoriteItem} from "../../common/IsFavoriteItem"
 
-export interface IngredientModel extends BaseItem, IsFavoriteItem {
-    readonly lastUsedTimestamp: number;
-    readonly usualMarketIds: string[]
+export interface RecipeModel extends BaseItem, IsFavoriteItem {
 }
 
 function createModel(
     name: string,
     isFavorite: boolean = false,
-    lastUsedTimestamp: number = Date.now(),
-    usualMarketIds: string[] = [],
     id: string = nanoid()
-): IngredientModel {
+): RecipeModel {
     return {
         id: id, name: name, isFavorite: isFavorite,
-        lastUsedTimestamp: lastUsedTimestamp,
-        usualMarketIds: usualMarketIds
     }
 }
 
@@ -28,26 +22,26 @@ const slice = createSlice({
     name: 'ingredients',
     initialState: {
         items: [
-            createModel("Extra firm tofu"),
-            createModel("English cucumber"),
-            createModel("Silk protein milk"),
-            createModel("Red onions"),
+            createModel("Enchiladas"),
+            createModel("Burgers"),
+            createModel("Stir Fry"),
+            createModel("Middle Eastern"),
         ]
     },
     reducers: {
-        createIngredient: (state: Draft<{ items: BaseItem[] }>, action: PayloadAction<string>) => {
+        createRecipe: (state: Draft<{ items: BaseItem[] }>, action: PayloadAction<string>) => {
             const name = action.payload
             const item = createModel(name)
             state.items.push(item)
         },
-        renameIngredient: renameItemReducer,
+        renameRecipe: renameItemReducer,
         toggleIsFavorite: toggleIsFavoriteReducer,
-        deleteIngredient: deleteItemReducer,
+        deleteRecipe: deleteItemReducer,
     }
 })
 
-export const selectIngredientItems = createSelector(
-    [(state: RootState) => state.ingredients.items],
+export const selectRecipeItems = createSelector(
+    [(state: RootState) => state.recipes.items],
     (items) => _.orderBy(
         items,
         ['isFavorite', 'lastUsedTimestamp', 'name'],
@@ -55,19 +49,19 @@ export const selectIngredientItems = createSelector(
     )
 )
 
-export const selectIngredient = createSelector(
+export const selectRecipe = createSelector(
     [
-        (state: RootState) => state.ingredients.items,
+        (state: RootState) => state.recipes.items,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)
 )
 
 export const {
-    createIngredient,
-    renameIngredient,
+    createRecipe,
+    renameRecipe,
     toggleIsFavorite,
-    deleteIngredient,
+    deleteRecipe,
 } = slice.actions
 
 export default slice.reducer

@@ -3,6 +3,7 @@ import appModeReducer from '../features/appMode/slice'
 import ingredientsReducer from '../features/ingredients/slice'
 import marketsReducer from '../features/markets/slice'
 import mealsReducer from '../features/meals/slice'
+import recipeReducer from '../features/recipes/slice'
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         ingredients: ingredientsReducer,
         markets: marketsReducer,
         meals: mealsReducer,
+        recipes: recipeReducer,
     },
 })
 

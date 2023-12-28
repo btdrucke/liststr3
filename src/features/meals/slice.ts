@@ -11,7 +11,7 @@ export interface MealModel extends BaseItem {
     readonly recipeId?: string
 }
 
-function createMealModel(name: string, datestamp?: string, id?: string): MealModel {
+function createModel(name: string, datestamp?: string, id?: string): MealModel {
     return {
         name: name,
         datestamp: datestamp || toDatestamp(dayjs()),
@@ -23,15 +23,15 @@ const slice = createSlice({
     name: 'meals',
     initialState: {
         items: [
-            createMealModel("Tacos", '2023-12-24'),
-            createMealModel("Lentil Soup", '2023-12-26'),
-            createMealModel("Channa + cauliflower", '2023-12-27'),
+            createModel("Tacos", '2023-12-24'),
+            createModel("Lentil Soup", '2023-12-26'),
+            createModel("Channa + cauliflower", '2023-12-27'),
         ]
     },
     reducers: {
         createMeal: (state, action: PayloadAction<{ name: string, datestamp?: string }>) => {
             const {name, datestamp} = action.payload
-            const item = createMealModel(name, datestamp)
+            const item = createModel(name, datestamp)
             state.items.push(item)
         },
         rescheduleMeal: (state, action: PayloadAction<{ id: string, datestamp: string }>) => {
