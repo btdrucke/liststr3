@@ -1,5 +1,5 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, equalsId, findById, findIndexById} from "../../common/BaseItem"
+import {BaseItem, equalsId, findById} from "../../common/BaseItem"
 import dayjs from 'dayjs'
 import {RootState} from "../../app/store"
 import {deleteItemReducer, renameItemReducer} from "../../common/Reducers"
@@ -11,11 +11,12 @@ export interface MealModel extends BaseItem {
     readonly recipeId?: string
 }
 
-function createModel(name: string, datestamp?: string, id?: string): MealModel {
+function createModel(name: string, datestamp?: string, id?: string, recipeId?: string): MealModel {
     return {
         name: name,
         datestamp: datestamp || toDatestamp(dayjs()),
         id: id || nanoid(),
+        recipeId: recipeId
     }
 }
 
@@ -29,9 +30,9 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createMeal: (state, action: PayloadAction<{ name: string, datestamp?: string }>) => {
-            const {name, datestamp} = action.payload
-            const item = createModel(name, datestamp)
+        createMeal: (state, action: PayloadAction<{ name: string, datestamp?: string, recipeId?: string }>) => {
+            const {name, datestamp, recipeId} = action.payload
+            const item = createModel(name, datestamp, recipeId)
             state.items.push(item)
         },
         rescheduleMeal: (state, action: PayloadAction<{ id: string, datestamp: string }>) => {

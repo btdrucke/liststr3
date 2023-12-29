@@ -1,29 +1,32 @@
-import {nanoid} from '@reduxjs/toolkit'
-
 type Id = string
 
-export interface BaseItem {
-    readonly id: Id
+export interface NameOwner {
     readonly name: string
 }
 
-export function equalsId(id: Id): (owner: BaseItem) => boolean {
+export interface IdOwner {
+    readonly id: string
+}
+
+export interface BaseItem extends IdOwner, NameOwner {}
+
+export function equalsId(id: Id): (owner: IdOwner) => boolean {
     return (o) => o.id === id
 }
 
-export function equalsName(name: string): (owner: BaseItem) => boolean {
+export function equalsName(name: string): (owner: NameOwner) => boolean {
     return (o) => o.name === name
 }
 
-export function findById<Type extends BaseItem>(elems: Array<Type>, id: Id): Type | undefined {
+export function findById<Type extends IdOwner>(elems: Array<Type>, id: Id): Type | undefined {
     return elems.find(equalsId(id))
 }
 
-export function findIndexById<Type extends BaseItem>(elems: Array<Type>, id: Id): number {
+export function findIndexById<Type extends IdOwner>(elems: Array<Type>, id: Id): number {
     return elems.findIndex(equalsId(id))
 }
 
-export function updateOrAdd<Type extends BaseItem>(elems: Array<Type>, elem: Type): Array<Type> {
+export function updateOrAdd<Type extends IdOwner>(elems: Array<Type>, elem: Type): Array<Type> {
     const pos = elems.findIndex(equalsId(elem.id))
     if (pos === -1) {
         console.log("updateOrAdd: Didn't find {" + elem + "}")

@@ -3,12 +3,13 @@ import {MealModel, rescheduleMeal} from "./slice"
 import {isToday, isWeekend, toDatestamp} from "../../common/dateUtils"
 import style from "./style.module.css"
 import {classes} from "../../common/classUtils"
-import AddMeal from "./AddMeal"
 import Meal from "./Meal"
 import React from "react"
 import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {useAppDispatch} from "../../app/hooks"
+import AddMeal2 from "./AddMeal2"
+import AddMeal from "./AddMeal"
 
 interface MealDayProps {
     date: Dayjs;

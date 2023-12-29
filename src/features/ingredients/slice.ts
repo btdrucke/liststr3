@@ -1,5 +1,5 @@
 import {createSelector, createSlice, Draft, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, equalsId, findById, findIndexById} from "../../common/BaseItem"
+import {BaseItem, findById} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {deleteItemReducer, renameItemReducer, toggleIsFavoriteReducer} from "../../common/Reducers"

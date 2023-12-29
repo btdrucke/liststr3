@@ -13,7 +13,7 @@ export const Recipes = () => {
     const itemList = useAppSelector(selectRecipeItems)
     return (
         <div className={style.list}>
-            <AddInput placeholder={'+ new ingredient'} createFromName={createRecipe}/>
+            <AddInput placeholder={'+ new recipe'} createFromName={createRecipe}/>
             {itemList.map((item) => {
                 return (
                     <div
