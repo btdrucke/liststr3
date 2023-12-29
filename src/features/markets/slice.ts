@@ -1,8 +1,8 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, findById} from "../../common/BaseItem"
+import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import style from "./style.module.css"
 import {RootState} from "../../app/store"
-import {deleteItemReducer, renameItemReducer} from "../../common/Reducers"
+import {deleteItemReducer, findById} from "../../common/IdOwner"
 
 export interface MarketModel extends BaseItem {
     readonly color: string;

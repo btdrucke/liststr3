@@ -8,7 +8,6 @@ import React from "react"
 import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {useAppDispatch} from "../../app/hooks"
-import AddMeal2 from "./AddMeal2"
 import AddMeal from "./AddMeal"
 
 interface MealDayProps {

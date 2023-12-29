@@ -1,11 +1,10 @@
 import React from "react"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faTrashCan} from '@fortawesome/free-solid-svg-icons'
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import AddInput from "../../common/AddInput"
 import EditableItem from "../../common/EditableItem"
 import {createMarket, deleteMarket, renameMarket, selectMarketItems} from "./slice"
 import style from "./style.module.css"
+import TrashControl from "../../common/TrashControl"
 
 export const Markets = () => {
     const dispatch = useAppDispatch()
@@ -22,9 +21,7 @@ export const Markets = () => {
                             origItem={item}
                             renameItem={renameMarket}
                             extraClass={item.color}/>
-                        <FontAwesomeIcon
-                            icon={faTrashCan}
-                            onClick={() => dispatch(deleteMarket(item.id))}/>
+                        <TrashControl action={deleteMarket(item.id)}/>
                     </div>
                 )
             })}

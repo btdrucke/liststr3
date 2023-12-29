@@ -1,12 +1,13 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, equalsId, findById} from "../../common/BaseItem"
+import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import dayjs from 'dayjs'
 import {RootState} from "../../app/store"
-import {deleteItemReducer, renameItemReducer} from "../../common/Reducers"
 import _ from "lodash"
 import {toDatestamp} from "../../common/dateUtils"
+import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
+import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
 
-export interface MealModel extends BaseItem {
+export interface MealModel extends BaseItem, IsChecked {
     readonly datestamp: string //YYYY-MM-DD
     readonly recipeId?: string
 }
@@ -16,7 +17,8 @@ function createModel(name: string, datestamp?: string, id?: string, recipeId?: s
         name: name,
         datestamp: datestamp || toDatestamp(dayjs()),
         id: id || nanoid(),
-        recipeId: recipeId
+        isChecked: false,
+        recipeId: recipeId,
     }
 }
 
@@ -46,6 +48,7 @@ const slice = createSlice({
             }
         },
         renameMeal: renameItemReducer,
+        toggleIsChecked: toggleIsCheckedReducer,
         deleteMeal: deleteItemReducer,
     }
 })
@@ -63,6 +66,6 @@ export const selectMeal = createSelector(
     (items, id) => findById(items, id)
 )
 
-export const {createMeal, rescheduleMeal, renameMeal, deleteMeal} = slice.actions
+export const {createMeal, rescheduleMeal, renameMeal, toggleIsChecked, deleteMeal} = slice.actions
 
 export default slice.reducer

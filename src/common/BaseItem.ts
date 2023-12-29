@@ -1,39 +1,16 @@
-type Id = string
-
-export interface NameOwner {
-    readonly name: string
-}
-
-export interface IdOwner {
-    readonly id: string
-}
+import {NameOwner} from "./NameOwner"
+import {findIndexById, IdOwner} from "./IdOwner"
+import {Draft, PayloadAction} from "@reduxjs/toolkit"
 
 export interface BaseItem extends IdOwner, NameOwner {}
 
-export function equalsId(id: Id): (owner: IdOwner) => boolean {
-    return (o) => o.id === id
-}
-
-export function equalsName(name: string): (owner: NameOwner) => boolean {
-    return (o) => o.name === name
-}
-
-export function findById<Type extends IdOwner>(elems: Array<Type>, id: Id): Type | undefined {
-    return elems.find(equalsId(id))
-}
-
-export function findIndexById<Type extends IdOwner>(elems: Array<Type>, id: Id): number {
-    return elems.findIndex(equalsId(id))
-}
-
-export function updateOrAdd<Type extends IdOwner>(elems: Array<Type>, elem: Type): Array<Type> {
-    const pos = elems.findIndex(equalsId(elem.id))
-    if (pos === -1) {
-        console.log("updateOrAdd: Didn't find {" + elem + "}")
-        return [...elems, elem]
-    } else {
-        console.log("updateOrAdd: Found {" + elem + "} at pos " + pos)
-        elems[pos] = elem
-        return [...elems]
+export const renameItemReducer = (
+    state: Draft<{ items: BaseItem[] }>,
+    action: PayloadAction<{ name: string, id: string }>
+) => {
+    const item = action.payload
+    const pos = findIndexById(state.items, item.id)
+    if (pos >= 0) {
+        state.items[pos].name = item.name
     }
 }

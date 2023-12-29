@@ -41,6 +41,13 @@
     background-color: yellow;
 }
 
+.isChecked {
+}
+
+.isChecked .editableItem {
+    text-decoration: line-through;
+}
+
 .suggestionMenu {
     background-color: yellowgreen;
     overflow-y:auto;

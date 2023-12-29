@@ -1,4 +1,4 @@
-import {NameOwner} from "./BaseItem"
+import {NameOwner} from "./NameOwner"
 
 export function suggestions<Type extends NameOwner>(items: Type[], query: string): Type[] {
     const searchString = query.trim().toLowerCase()

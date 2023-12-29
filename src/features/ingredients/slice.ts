@@ -1,11 +1,11 @@
 import {createSelector, createSlice, Draft, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, findById} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
-import {deleteItemReducer, renameItemReducer, toggleIsFavoriteReducer} from "../../common/Reducers"
-import {IsFavoriteItem} from "../../common/IsFavoriteItem"
+import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
+import {BaseItem, renameItemReducer} from "../../common/BaseItem"
+import {deleteItemReducer, findById} from "../../common/IdOwner"
 
-export interface IngredientModel extends BaseItem, IsFavoriteItem {
+export interface IngredientModel extends BaseItem, IsFavorite {
     readonly lastUsedTimestamp: number;
     readonly usualMarketIds: string[]
 }
