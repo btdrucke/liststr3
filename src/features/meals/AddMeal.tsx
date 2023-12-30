@@ -65,7 +65,7 @@ const AddMeal = ({datestamp}: AddMealProps) => {
 
     const handleOnSuggestion = (recipe: BaseItem) => {
         console.log(`Create meal from recipe: ${JSON.stringify(recipe)}`)
-        dispatch(createMeal({name: recipe.name, datestamp: datestamp, recipeId:recipe.id}))
+        dispatch(createMeal({name: recipe.name, datestamp: datestamp, recipeId: recipe.id}))
         element.value = ""
         setQueryStr("")
     }

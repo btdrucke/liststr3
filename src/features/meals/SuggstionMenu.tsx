@@ -4,6 +4,7 @@ import {useSelector} from "react-redux"
 import {selectRecipeItems} from "../recipes/slice"
 import style from "./style.module.css"
 import {BaseItem} from "../../common/BaseItem"
+import {nanoid} from "@reduxjs/toolkit"
 
 interface SuggestionMenuProps {
     queryStr: string,
@@ -25,6 +26,12 @@ const SuggestionMenu = ({queryStr, onSuggestion}: SuggestionMenuProps) => {
                     {item.name}
                 </div>
             ))}
+            <div
+                className={style.suggestedItem}
+                onClick={() => onSuggestion({name: queryStr, id: nanoid()})}
+            >
+                Add and remember for next time
+            </div>
         </div>
     )
 }

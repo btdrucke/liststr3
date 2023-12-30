@@ -35,7 +35,7 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createIngredient: (state: Draft<{ items: BaseItem[] }>, action: PayloadAction<string>) => {
+        createIngredient: (state, action: PayloadAction<string>) => {
             const name = action.payload
             const item = createModel(name)
             state.items.push(item)

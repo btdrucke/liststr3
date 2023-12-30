@@ -1,9 +1,10 @@
-import {createSelector, createSlice, Draft, nanoid, PayloadAction} from "@reduxjs/toolkit"
+import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
-import {deleteItemReducer, findById} from "../../common/IdOwner"
+import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
+import {createMeal} from "../meals/slice"
 
 export interface RecipeModel extends BaseItem, IsFavorite {
 }
@@ -29,7 +30,7 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createRecipe: (state: Draft<{ items: BaseItem[] }>, action: PayloadAction<string>) => {
+        createRecipe: (state, action: PayloadAction<string>) => {
             const name = action.payload
             const item = createModel(name)
             state.items.push(item)
@@ -37,6 +38,17 @@ const slice = createSlice({
         renameRecipe: renameItemReducer,
         toggleIsFavorite: toggleIsFavoriteReducer,
         deleteRecipe: deleteItemReducer,
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(createMeal, (state, action) => {
+                const {name, recipeId} = action.payload
+                if (recipeId && !state.items.some(equalsId(recipeId))) {
+                    const item = createModel(name, false, recipeId)
+                    state.items.push(item)
+                }
+            })
+            .addDefaultCase(() => {})
     }
 })
 
