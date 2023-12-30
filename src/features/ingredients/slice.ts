@@ -4,6 +4,7 @@ import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {deleteItemReducer, findById} from "../../common/IdOwner"
+import {NameOwner} from "../../common/NameOwner"
 
 export interface IngredientModel extends BaseItem, IsFavorite {
     readonly lastUsedTimestamp: number;
@@ -35,21 +36,21 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createIngredient: (state, action: PayloadAction<string>) => {
-            const name = action.payload
+        createItem: (state, action: PayloadAction<NameOwner>) => {
+            const {name} = action.payload
             const item = createModel(name)
             state.items.push(item)
         },
-        renameIngredient: renameItemReducer,
+        renameItem: renameItemReducer,
         toggleIsFavorite: toggleIsFavoriteReducer,
-        deleteIngredient: deleteItemReducer,
+        deleteItem: deleteItemReducer,
     }
 })
 
-const selectIngredientItems = (state: RootState) => state.ingredients.items
+const selectItemsInput = (state: RootState) => state.ingredients.items
 
-export const selectIngredients = createSelector(
-    [selectIngredientItems],
+export const selectItems = createSelector(
+    [selectItemsInput],
     (items) => _.orderBy(
         items,
         ['isFavorite', 'lastUsedTimestamp', 'name'],
@@ -57,19 +58,19 @@ export const selectIngredients = createSelector(
     )
 )
 
-export const selectIngredient = createSelector(
+export const selectItem = createSelector(
     [
-        selectIngredientItems,
+        selectItemsInput,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)
 )
 
 export const {
-    createIngredient,
-    renameIngredient,
+    createItem,
+    renameItem,
     toggleIsFavorite,
-    deleteIngredient,
+    deleteItem,
 } = slice.actions
 
 export default slice.reducer

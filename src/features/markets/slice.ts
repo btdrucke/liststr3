@@ -3,6 +3,7 @@ import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import style from "./style.module.css"
 import {RootState} from "../../app/store"
 import {deleteItemReducer, findById} from "../../common/IdOwner"
+import {NameOwner} from "../../common/NameOwner"
 
 export interface MarketModel extends BaseItem {
     readonly color: string;
@@ -43,31 +44,35 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createMarket: (state, action: PayloadAction<string>) => {
-            const name = action.payload
+        createItem: (state, action: PayloadAction<NameOwner>) => {
+            const {name} = action.payload
             const item = createMarketModel(name, colorForNewMarket(state.items))
             state.items.push(item)
         },
-        renameMarket: renameItemReducer,
-        deleteMarket: deleteItemReducer,
+        renameItem: renameItemReducer,
+        deleteItem: deleteItemReducer,
     }
 })
 
-const selectMarketItems = (state: RootState) => state.markets.items
+const selectItemsInput = (state: RootState) => state.markets.items
 
-export const selectMarkets = createSelector(
-    [selectMarketItems],
+export const selectItems = createSelector(
+    [selectItemsInput],
     (items) => items
 )
 
-export const selectMarket = createSelector(
+export const selectItem = createSelector(
     [
-        selectMarketItems,
+        selectItemsInput,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)
 )
 
-export const {createMarket, renameMarket, deleteMarket} = slice.actions
+export const {
+    createItem,
+    renameItem,
+    deleteItem,
+} = slice.actions
 
 export default slice.reducer

@@ -4,7 +4,8 @@ import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
 import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
-import {createMeal} from "../meals/slice"
+import {NameOwner} from "../../common/NameOwner"
+import {createItem as createMeal} from "../meals/slice"
 
 export interface RecipeModel extends BaseItem, IsFavorite {
 }
@@ -30,14 +31,14 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createRecipe: (state, action: PayloadAction<string>) => {
-            const name = action.payload
+        createItem: (state, action: PayloadAction<NameOwner>) => {
+            const {name} = action.payload
             const item = createModel(name)
             state.items.push(item)
         },
-        renameRecipe: renameItemReducer,
+        renameItem: renameItemReducer,
         toggleIsFavorite: toggleIsFavoriteReducer,
-        deleteRecipe: deleteItemReducer,
+        deleteItem: deleteItemReducer,
     },
     extraReducers: (builder) => {
         builder
@@ -52,10 +53,10 @@ const slice = createSlice({
     }
 })
 
-const selectRecipeItems = (state: RootState) => state.recipes.items
+const selectItemsInput = (state: RootState) => state.recipes.items
 
-export const selectRecipes = createSelector(
-    [selectRecipeItems],
+export const selectItems = createSelector(
+    [selectItemsInput],
     (items) => _.orderBy(
         items,
         ['isFavorite', 'lastUsedTimestamp', 'name'],
@@ -63,19 +64,19 @@ export const selectRecipes = createSelector(
     )
 )
 
-export const selectRecipe = createSelector(
+export const selectItem = createSelector(
     [
-        selectRecipeItems,
+        selectItemsInput,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)
 )
 
 export const {
-    createRecipe,
-    renameRecipe,
+    createItem,
+    renameItem,
     toggleIsFavorite,
-    deleteRecipe,
+    deleteItem,
 } = slice.actions
 
 export default slice.reducer

@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from "react"
-import {MealModel, selectMeals} from "./slice"
+import {MealModel, selectItems} from "./slice"
 import {useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
 import {toDatestamp} from "../../common/dateUtils"
@@ -10,7 +10,7 @@ import MealDay from "./MealDay"
 type MealDayModel = { date: Dayjs, meals: MealModel[] }
 
 export const Meals = () => {
-    const meals = useAppSelector(selectMeals)
+    const meals = useAppSelector(selectItems)
     const [today, setToday] = useState(dayjs())
 
     const otherToday = dayjs()

@@ -4,6 +4,7 @@ import ingredientsReducer from '../features/ingredients/slice'
 import marketsReducer from '../features/markets/slice'
 import mealsReducer from '../features/meals/slice'
 import recipeReducer from '../features/recipes/slice'
+import shoppingListReducer from '../features/shoppingList/slice'
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         markets: marketsReducer,
         meals: mealsReducer,
         recipes: recipeReducer,
+        shoppingList: shoppingListReducer,
     },
 })
 

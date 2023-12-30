@@ -2,15 +2,15 @@ import React from "react"
 import {useAppSelector} from "../../app/hooks"
 import AddInput from "../../common/AddInput"
 import EditableItem from "../../common/EditableItem"
-import {createMarket, deleteMarket, renameMarket, selectMarkets} from "./slice"
 import style from "./style.module.css"
 import TrashControl from "../../common/TrashControl"
+import {createItem, deleteItem, renameItem, selectItems} from "./slice"
 
 export const Markets = () => {
-    const items = useAppSelector(selectMarkets)
+    const items = useAppSelector(selectItems)
     return (
         <div className={style.list}>
-            <AddInput placeholder={'+ new store'} createFromName={createMarket}/>
+            <AddInput placeholder={'+ new store'} createFromName={createItem}/>
             {items.map((item) => {
                 return (
                     <div
@@ -18,9 +18,9 @@ export const Markets = () => {
                         className={item.color}>
                         <EditableItem
                             origItem={item}
-                            renameItem={renameMarket}
+                            renameItem={renameItem}
                             extraClass={item.color}/>
-                        <TrashControl action={deleteMarket(item.id)}/>
+                        <TrashControl action={deleteItem(item.id)}/>
                     </div>
                 )
             })}

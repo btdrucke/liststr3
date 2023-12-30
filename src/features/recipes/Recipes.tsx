@@ -1,17 +1,17 @@
 import React from "react"
-import {createRecipe, deleteRecipe, renameRecipe, selectRecipes, toggleIsFavorite} from "./slice"
 import {useAppSelector} from "../../app/hooks"
 import EditableItem from "../../common/EditableItem"
 import AddInput from "../../common/AddInput"
 import style from "./style.module.css"
 import TrashControl from "../../common/TrashControl"
 import IsFavoriteControl from "../../common/IsFavoriteControl"
+import {createItem, deleteItem, renameItem, selectItems, toggleIsFavorite} from "./slice"
 
 export const Recipes = () => {
-    const itemList = useAppSelector(selectRecipes)
+    const itemList = useAppSelector(selectItems)
     return (
         <div className={style.list}>
-            <AddInput placeholder={'+ new recipe'} createFromName={createRecipe}/>
+            <AddInput placeholder={'+ new recipe'} createFromName={createItem}/>
             {itemList.map((item) => {
                 return (
                     <div
@@ -21,8 +21,8 @@ export const Recipes = () => {
                             action={toggleIsFavorite(item.id)}/>
                         <EditableItem
                             origItem={item}
-                            renameItem={renameRecipe}/>
-                        <TrashControl action={deleteRecipe(item.id)}/>
+                            renameItem={renameItem}/>
+                        <TrashControl action={deleteItem(item.id)}/>
                     </div>
                 )
             })}

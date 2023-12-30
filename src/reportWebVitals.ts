@@ -1,3 +1,5 @@
+// noinspection SuspiciousTypeOfGuard,SpellCheckingInspection
+
 import { ReportHandler } from 'web-vitals';
 
 const reportWebVitals = (onPerfEntry?: ReportHandler) => {

@@ -32,7 +32,7 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createMeal: (state, action: PayloadAction<{ name: string, datestamp?: string, recipeId?: string }>) => {
+        createItem: (state, action: PayloadAction<{ name: string, datestamp?: string, recipeId?: string }>) => {
             const {name, datestamp, recipeId} = action.payload
             const item = createModel(name, datestamp, recipeId)
             state.items.push(item)
@@ -46,27 +46,33 @@ const slice = createSlice({
                 state.items = _.concat([toReschedule], state.items)
             }
         },
-        renameMeal: renameItemReducer,
+        renameItem: renameItemReducer,
         toggleIsChecked: toggleIsCheckedReducer,
-        deleteMeal: deleteItemReducer,
+        deleteItem: deleteItemReducer,
     }
 })
 
-const selectMealItems = (state: RootState) => state.meals.items
+const selectItemsInput = (state: RootState) => state.meals.items
 
-export const selectMeals = createSelector(
-    [selectMealItems],
+export const selectItems = createSelector(
+    [selectItemsInput],
     (items) => _.orderBy(items, ['datestamp'], ['asc'])
 )
 
-export const selectMeal = createSelector(
+export const selectItem = createSelector(
     [
-        selectMealItems,
+        selectItemsInput,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)
 )
 
-export const {createMeal, rescheduleMeal, renameMeal, toggleIsChecked, deleteMeal} = slice.actions
+export const {
+    createItem,
+    rescheduleMeal,
+    renameItem,
+    toggleIsChecked,
+    deleteItem,
+} = slice.actions
 
 export default slice.reducer

@@ -2,9 +2,9 @@ import React, {useState} from "react"
 import {useAppDispatch} from "../../app/hooks"
 import {classes} from "../../common/classUtils"
 import style from "./style.module.css"
-import {createMeal} from "./slice"
 import SuggestionMenu from "./SuggstionMenu"
 import {BaseItem} from "../../common/BaseItem"
+import {createItem} from "./slice"
 
 interface AddMealProps {
     datestamp: string
@@ -25,7 +25,7 @@ const AddMeal = ({datestamp}: AddMealProps) => {
                 const name = element.value.trim()
                 if (name) {
                     isEditPending = true
-                    dispatch(createMeal({name: name, datestamp: datestamp}))
+                    dispatch(createItem({name: name, datestamp: datestamp}))
                 }
                 element.value = ""
                 setQueryStr("")
@@ -50,9 +50,9 @@ const AddMeal = ({datestamp}: AddMealProps) => {
         console.log("AddMeal.onBlur")
         element = event.target as HTMLInputElement
         if (!isEditPending) {
-        //     element.value = ""
-        //     setQueryStr("")
-        //     isEditPending = false
+            //     element.value = ""
+            //     setQueryStr("")
+            //     isEditPending = false
         }
         element.blur()
     }
@@ -64,7 +64,7 @@ const AddMeal = ({datestamp}: AddMealProps) => {
     }
 
     const handleOnSuggestion = (recipe: BaseItem) => {
-        dispatch(createMeal({name: recipe.name, datestamp: datestamp, recipeId: recipe.id}))
+        dispatch(createItem({name: recipe.name, datestamp: datestamp, recipeId: recipe.id}))
         element.value = ""
         setQueryStr("")
     }

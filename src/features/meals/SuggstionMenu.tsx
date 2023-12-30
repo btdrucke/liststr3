@@ -1,10 +1,10 @@
 import React, {useMemo} from "react"
 import {suggestions} from "../../common/searchUtils"
 import {useSelector} from "react-redux"
-import {selectRecipes} from "../recipes/slice"
 import style from "./style.module.css"
 import {BaseItem} from "../../common/BaseItem"
 import {nanoid} from "@reduxjs/toolkit"
+import {selectItems} from "./slice"
 
 interface SuggestionMenuProps {
     queryStr: string,
@@ -12,7 +12,7 @@ interface SuggestionMenuProps {
 }
 
 const SuggestionMenu = ({queryStr, onSuggestion}: SuggestionMenuProps) => {
-    const items = useSelector(selectRecipes)
+    const items = useSelector(selectItems)
     const filteredItems = useMemo(() => suggestions(items, queryStr), [items, queryStr])
 
     return (
