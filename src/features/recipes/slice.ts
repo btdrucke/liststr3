@@ -52,8 +52,10 @@ const slice = createSlice({
     }
 })
 
-export const selectRecipeItems = createSelector(
-    [(state: RootState) => state.recipes.items],
+const selectRecipeItems = (state: RootState) => state.recipes.items
+
+export const selectRecipes = createSelector(
+    [selectRecipeItems],
     (items) => _.orderBy(
         items,
         ['isFavorite', 'lastUsedTimestamp', 'name'],
@@ -63,7 +65,7 @@ export const selectRecipeItems = createSelector(
 
 export const selectRecipe = createSelector(
     [
-        (state: RootState) => state.recipes.items,
+        selectRecipeItems,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)

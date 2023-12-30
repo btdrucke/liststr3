@@ -18,6 +18,10 @@ export function findIndexById<Type extends IdOwner>(elems: Array<Type>, id: Id):
     return elems.findIndex(equalsId(id))
 }
 
+export function ids<Type extends IdOwner>(elems: Array<Type>): string[] {
+    return elems.map(item => item.id)
+}
+
 export const deleteItemReducer = (
     state: Draft<{ items: IdOwner[] }>,
     action: PayloadAction<string>

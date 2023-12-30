@@ -42,7 +42,6 @@ const slice = createSlice({
             // Add rescheduled meal to the start to it shows on top.
             const toReschedule = _.chain(state.items).remove(equalsId(id)).first().value()
             if (toReschedule) {
-                console.log(`Setting ${id} to ${datestamp}`)
                 toReschedule.datestamp = datestamp
                 state.items = _.concat([toReschedule], state.items)
             }
@@ -53,14 +52,16 @@ const slice = createSlice({
     }
 })
 
-export const selectMealItems = createSelector(
-    [(state: RootState) => state.meals.items],
+const selectMealItems = (state: RootState) => state.meals.items
+
+export const selectMeals = createSelector(
+    [selectMealItems],
     (items) => _.orderBy(items, ['datestamp'], ['asc'])
 )
 
 export const selectMeal = createSelector(
     [
-        (state: RootState) => state.meals.items,
+        selectMealItems,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)

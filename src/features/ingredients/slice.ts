@@ -1,4 +1,4 @@
-import {createSelector, createSlice, Draft, nanoid, PayloadAction} from "@reduxjs/toolkit"
+import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
@@ -46,8 +46,10 @@ const slice = createSlice({
     }
 })
 
-export const selectIngredientItems = createSelector(
-    [(state: RootState) => state.ingredients.items],
+const selectIngredientItems = (state: RootState) => state.ingredients.items
+
+export const selectIngredients = createSelector(
+    [selectIngredientItems],
     (items) => _.orderBy(
         items,
         ['isFavorite', 'lastUsedTimestamp', 'name'],
@@ -57,7 +59,7 @@ export const selectIngredientItems = createSelector(
 
 export const selectIngredient = createSelector(
     [
-        (state: RootState) => state.ingredients.items,
+        selectIngredientItems,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)

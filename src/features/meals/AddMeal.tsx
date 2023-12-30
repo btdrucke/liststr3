@@ -49,11 +49,11 @@ const AddMeal = ({datestamp}: AddMealProps) => {
     const handleOnBlur: React.FocusEventHandler = (event) => {
         console.log("AddMeal.onBlur")
         element = event.target as HTMLInputElement
-        // if (!isEditPending) {
+        if (!isEditPending) {
         //     element.value = ""
         //     setQueryStr("")
         //     isEditPending = false
-        // }
+        }
         element.blur()
     }
 
@@ -64,7 +64,6 @@ const AddMeal = ({datestamp}: AddMealProps) => {
     }
 
     const handleOnSuggestion = (recipe: BaseItem) => {
-        console.log(`Create meal from recipe: ${JSON.stringify(recipe)}`)
         dispatch(createMeal({name: recipe.name, datestamp: datestamp, recipeId: recipe.id}))
         element.value = ""
         setQueryStr("")

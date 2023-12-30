@@ -1,5 +1,5 @@
 import React from "react"
-import {createIngredient, deleteIngredient, renameIngredient, selectIngredientItems, toggleIsFavorite} from "./slice"
+import {createIngredient, deleteIngredient, renameIngredient, selectIngredients, toggleIsFavorite} from "./slice"
 import {useAppSelector} from "../../app/hooks"
 import EditableItem from "../../common/EditableItem"
 import AddInput from "../../common/AddInput"
@@ -8,7 +8,7 @@ import TrashControl from "../../common/TrashControl"
 import IsFavoriteControl from "../../common/IsFavoriteControl"
 
 export const Ingredients = () => {
-    const itemList = useAppSelector(selectIngredientItems)
+    const itemList = useAppSelector(selectIngredients)
     return (
         <div className={style.list}>
             <AddInput placeholder={'+ new ingredient'} createFromName={createIngredient}/>

@@ -1,14 +1,13 @@
 import React from "react"
-import {useAppDispatch, useAppSelector} from "../../app/hooks"
+import {useAppSelector} from "../../app/hooks"
 import AddInput from "../../common/AddInput"
 import EditableItem from "../../common/EditableItem"
-import {createMarket, deleteMarket, renameMarket, selectMarketItems} from "./slice"
+import {createMarket, deleteMarket, renameMarket, selectMarkets} from "./slice"
 import style from "./style.module.css"
 import TrashControl from "../../common/TrashControl"
 
 export const Markets = () => {
-    const dispatch = useAppDispatch()
-    const items = useAppSelector(selectMarketItems)
+    const items = useAppSelector(selectMarkets)
     return (
         <div className={style.list}>
             <AddInput placeholder={'+ new store'} createFromName={createMarket}/>

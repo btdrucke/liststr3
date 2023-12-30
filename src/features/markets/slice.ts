@@ -53,14 +53,16 @@ const slice = createSlice({
     }
 })
 
-export const selectMarketItems = createSelector(
-    [(state: RootState) => state.markets.items],
+const selectMarketItems = (state: RootState) => state.markets.items
+
+export const selectMarkets = createSelector(
+    [selectMarketItems],
     (items) => items
 )
 
 export const selectMarket = createSelector(
     [
-        (state: RootState) => state.markets.items,
+        selectMarketItems,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)

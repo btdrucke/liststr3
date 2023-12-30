@@ -1,5 +1,5 @@
-import React from "react"
-import {MealModel, selectMealItems} from "./slice"
+import React, {useMemo, useState} from "react"
+import {MealModel, selectMeals} from "./slice"
 import {useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
 import {toDatestamp} from "../../common/dateUtils"
@@ -10,6 +10,14 @@ import MealDay from "./MealDay"
 type MealDayModel = { date: Dayjs, meals: MealModel[] }
 
 export const Meals = () => {
+    const meals = useAppSelector(selectMeals)
+    const [today, setToday] = useState(dayjs())
+
+    const otherToday = dayjs()
+    if (!otherToday.isSame(today, 'day')) {
+        setToday(otherToday)
+    }
+
     const calculateMealDays = (today: Dayjs, meals: MealModel[]): MealDayModel[]  => {
         const todayPlusWeek = today.add(6, 'day')
         const earliestItem = dayjs(_.first(meals)?.datestamp)
@@ -27,10 +35,7 @@ export const Meals = () => {
         return days
     }
 
-    const meals = useAppSelector(selectMealItems)
-    const days = calculateMealDays(dayjs(), meals)
-
-    console.log("Rendering Meals")
+    const days = useMemo(() => calculateMealDays(today, meals), [today, meals])
 
     return (
         <div className={style.table}>
