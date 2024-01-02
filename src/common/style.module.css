@@ -1,0 +1,19 @@
+.addItem {
+}
+
+.editableItem {
+    border: none;
+    background-color: transparent;
+}
+
+.suggestionMenu {
+    background-color: yellowgreen;
+    overflow-y:auto;
+    overflow-x:hidden;
+    max-height:150px;
+}
+
+.suggestionItem {
+    cursor: pointer;
+    padding: 5px 3px;
+}

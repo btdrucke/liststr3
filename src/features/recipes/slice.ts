@@ -12,8 +12,8 @@ export interface RecipeModel extends BaseItem, IsFavorite {
 
 function createModel(
     name: string,
+    id: string = nanoid(),
     isFavorite: boolean = false,
-    id: string = nanoid()
 ): RecipeModel {
     return {
         id: id, name: name, isFavorite: isFavorite,
@@ -45,7 +45,7 @@ const slice = createSlice({
             .addCase(createMeal, (state, action) => {
                 const {name, recipeId} = action.payload
                 if (recipeId && !state.items.some(equalsId(recipeId))) {
-                    const item = createModel(name, false, recipeId)
+                    const item = createModel(name, recipeId)
                     state.items.push(item)
                 }
             })

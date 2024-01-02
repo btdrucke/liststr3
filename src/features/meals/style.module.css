@@ -28,11 +28,6 @@
     background-color: #0000ff20;
 }
 
-.editableItem {
-    border: none;
-    background-color: transparent;
-}
-
 .isDragging {
     opacity: .5;
 }
@@ -46,16 +41,4 @@
 
 .isChecked .editableItem {
     text-decoration: line-through;
-}
-
-.suggestionMenu {
-    background-color: yellowgreen;
-    overflow-y:auto;
-    overflow-x:hidden;
-    max-height:150px;
-}
-
-.suggestionItem {
-    cursor: pointer;
-    padding: 5px 3px;
 }

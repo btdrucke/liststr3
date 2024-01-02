@@ -1,17 +1,18 @@
 import React, {useState} from "react"
-import {useAppDispatch} from "../../app/hooks"
-import {classes} from "../../common/classUtils"
+import {classes} from "./classUtils"
 import style from "./style.module.css"
-import SuggestionMenu from "./SuggstionMenu"
-import {BaseItem} from "../../common/BaseItem"
-import {createItem} from "./slice"
+import SuggestionMenu from "./SuggestionMenu"
+import {BaseItem} from "./BaseItem"
 
-interface AddMealProps {
-    datestamp: string
+interface AddItemProps {
+    placeholder: string
+    createFromName: (name: string) => void
+    suggestionItems?: BaseItem[]
+    createFromSuggestion?: (suggestion: BaseItem) => void
+    createFromNewSuggestion?: (name: string) => void
 }
 
-const AddMeal = ({datestamp}: AddMealProps) => {
-    const dispatch = useAppDispatch()
+const AddItem = ({placeholder, createFromName, suggestionItems, createFromSuggestion, createFromNewSuggestion}: AddItemProps) => {
     const [queryStr, setQueryStr] = useState("")
 
     let element: HTMLInputElement
@@ -25,7 +26,7 @@ const AddMeal = ({datestamp}: AddMealProps) => {
                 const name = element.value.trim()
                 if (name) {
                     isEditPending = true
-                    dispatch(createItem({name: name, datestamp: datestamp}))
+                    createFromName(name)
                 }
                 element.value = ""
                 setQueryStr("")
@@ -63,8 +64,14 @@ const AddMeal = ({datestamp}: AddMealProps) => {
         setQueryStr(query)
     }
 
-    const handleOnSuggestion = (recipe: BaseItem) => {
-        dispatch(createItem({name: recipe.name, datestamp: datestamp, recipeId: recipe.id}))
+    const handleOnSuggestion = (suggestion: BaseItem) => {
+        createFromSuggestion && createFromSuggestion(suggestion)
+        element.value = ""
+        setQueryStr("")
+    }
+
+    const handleOnNewSuggestion = (name: string) => {
+        createFromNewSuggestion && createFromNewSuggestion(name)
         element.value = ""
         setQueryStr("")
     }
@@ -72,17 +79,24 @@ const AddMeal = ({datestamp}: AddMealProps) => {
     return (
         <>
             <input
-                className={classes(style.editableItem)}
-                placeholder="+"
+                className={classes(style.addItem)}
+                placeholder={placeholder}
                 defaultValue={queryStr}
                 onKeyUp={handleOnKeyUp}
                 onClick={handleOnClick}
                 onBlur={handleOnBlur}
                 onChange={handleOnChange}
             />
-            {queryStr.length > 0 && <SuggestionMenu queryStr={queryStr} onSuggestion={handleOnSuggestion}/>}
+            {queryStr.length > 0 && suggestionItems && (
+                <SuggestionMenu
+                    queryStr={queryStr}
+                    suggestionItems={suggestionItems || []}
+                    onSuggestion={handleOnSuggestion}
+                    onNewSuggestion={handleOnNewSuggestion}
+                />
+            )}
         </>
     )
 }
 
-export default AddMeal
+export default AddItem

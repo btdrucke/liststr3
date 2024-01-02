@@ -3,8 +3,9 @@ import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
-import {deleteItemReducer, findById} from "../../common/IdOwner"
+import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
 import {NameOwner} from "../../common/NameOwner"
+import {createItem as createShoppingItem} from "../shoppingList/slice"
 
 export interface IngredientModel extends BaseItem, IsFavorite {
     readonly lastUsedTimestamp: number;
@@ -13,10 +14,10 @@ export interface IngredientModel extends BaseItem, IsFavorite {
 
 function createModel(
     name: string,
+    id: string = nanoid(),
     isFavorite: boolean = false,
     lastUsedTimestamp: number = Date.now(),
     usualMarketIds: string[] = [],
-    id: string = nanoid()
 ): IngredientModel {
     return {
         id: id, name: name, isFavorite: isFavorite,
@@ -44,6 +45,17 @@ const slice = createSlice({
         renameItem: renameItemReducer,
         toggleIsFavorite: toggleIsFavoriteReducer,
         deleteItem: deleteItemReducer,
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(createShoppingItem, (state, action) => {
+                const {name, ingredientId} = action.payload
+                if (ingredientId && !state.items.some(equalsId(ingredientId))) {
+                    const item = createModel(name, ingredientId)
+                    state.items.push(item)
+                }
+            })
+            .addDefaultCase(() => {})
     }
 })
 
