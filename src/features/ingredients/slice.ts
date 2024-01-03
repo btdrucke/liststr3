@@ -7,7 +7,7 @@ import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
 import {NameOwner} from "../../common/NameOwner"
 import {createItem as createShoppingItem} from "../shoppingList/slice"
 
-export interface IngredientModel extends BaseItem, IsFavorite {
+interface IngredientModel extends BaseItem, IsFavorite {
     readonly lastUsedTimestamp: number;
     readonly usualMarketIds: string[]
 }

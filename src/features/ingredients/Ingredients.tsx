@@ -6,6 +6,7 @@ import TrashControl from "../../common/TrashControl"
 import IsFavoriteControl from "../../common/IsFavoriteControl"
 import {createItem, deleteItem, renameItem, selectItems, toggleIsFavorite} from "./slice"
 import AddItem from "../../common/AddItem"
+import EditControl from "../../common/EditControl"
 
 export const Ingredients = () => {
     const dispatch = useAppDispatch()

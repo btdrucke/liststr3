@@ -28,13 +28,17 @@ const slice = createSlice({
             createModel("Burgers"),
             createModel("Stir Fry"),
             createModel("Middle Eastern"),
-        ]
+        ],
+        editingItemId: undefined as (string | undefined),
     },
     reducers: {
         createItem: (state, action: PayloadAction<NameOwner>) => {
             const {name} = action.payload
             const item = createModel(name)
             state.items.push(item)
+        },
+        editItem: (state, action: PayloadAction<string | undefined>) => {
+            state.editingItemId = action.payload
         },
         renameItem: renameItemReducer,
         toggleIsFavorite: toggleIsFavoriteReducer,
@@ -72,8 +76,18 @@ export const selectItem = createSelector(
     (items, id) => findById(items, id)
 )
 
+
+export const selectEditingItem = createSelector(
+    [
+        selectItemsInput,
+        (state: RootState) => state.recipes.editingItemId,
+    ],
+    (items, editingItemId) => editingItemId && findById(items, editingItemId)
+)
+
 export const {
     createItem,
+    editItem,
     renameItem,
     toggleIsFavorite,
     deleteItem,

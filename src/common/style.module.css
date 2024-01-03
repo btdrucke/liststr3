@@ -1,5 +1,6 @@
 .addItem {
     background-color: transparent;
+    border: thin solid;
 }
 
 .editableItem {

@@ -1,5 +1,7 @@
 import {createSelector, createSlice} from "@reduxjs/toolkit"
 import {RootState} from "../../app/store"
+import {editItem as editRecipe} from "../recipes/slice"
+import {equalsId} from "../../common/IdOwner"
 
 export enum AppMode {
     ManageMeals,
@@ -20,6 +22,14 @@ const slice = createSlice({
         updateMode: (state, action) => {
             state.value = action.payload
         }
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(editRecipe, (state, action) => {
+                const editingRecipeId = action.payload
+                state.value = editingRecipeId ? AppMode.ManageRecipe : AppMode.ManageRecipes
+            })
+            .addDefaultCase(() => {})
     }
 })
 
