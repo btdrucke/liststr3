@@ -2,10 +2,6 @@
 
 }
 
-.editableItem {
-    border: none;
-}
-
 .marketBackground0 {
     background-color: #3399ff88;
 }
@@ -29,11 +25,4 @@
 }
 .marketBackground7 {
     background-color: #3f7a7a88;
-}
-
-.enabled {
-    background-color: #cc0000;
-}
-.disabled {
-    background-color: #ccc;
 }

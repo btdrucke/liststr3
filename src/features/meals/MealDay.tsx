@@ -1,6 +1,5 @@
-import {Dayjs} from "dayjs"
 import {createItem, MealModel, rescheduleMeal} from "./slice"
-import {isToday, isWeekend, toDatestamp} from "../../common/dateUtils"
+import {dayOfWeek, isToday, isWeekend} from "../../common/dateUtils"
 import style from "./style.module.css"
 import {classes} from "../../common/classUtils"
 import Meal from "./Meal"
@@ -15,16 +14,16 @@ import {BaseItem} from "../../common/BaseItem"
 import {nanoid} from "@reduxjs/toolkit"
 
 interface MealDayProps {
-    date: Dayjs
+    datestamp: string
     meals: MealModel[]
 }
 
-const MealDay = ({date, meals}: MealDayProps) => {
+const MealDay = ({datestamp, meals}: MealDayProps) => {
     const dispatch = useAppDispatch()
     const recipes = useSelector(selectRecipes)
 
     const onDrop = (draggingItem: MealModel) => {
-        dispatch(rescheduleMeal({id: draggingItem.id, datestamp: toDatestamp(date)}))
+        dispatch(rescheduleMeal({id: draggingItem.id, datestamp: datestamp}))
     }
 
     const [{isOver, canDrop}, drop] = useDrop(
@@ -37,12 +36,8 @@ const MealDay = ({date, meals}: MealDayProps) => {
                 canDrop: monitor.canDrop()
             })
         }),
-        [toDatestamp(date)]
+        [datestamp]
     )
-
-    const dayOfWeek = (date: Dayjs) => date.format('ddd')
-    const rowColorClass = (isToday(date) && style.today) || (isWeekend(date) && style.weekend)
-    const datestamp = toDatestamp(date)
 
     const onCreateFromName = (name: string) => {
         dispatch(createItem({name: name, datestamp: datestamp}))
@@ -56,10 +51,12 @@ const MealDay = ({date, meals}: MealDayProps) => {
         dispatch(createItem({name: name, datestamp: datestamp, recipeId: nanoid()}))
     }
 
+    const rowClass = (isToday(datestamp) && style.today) || (isWeekend(datestamp) && style.weekend)
+
     return (
-        <div className={classes(style.tableRow, rowColorClass)}>
+        <div className={classes(style.tableRow, rowClass)}>
             <span className={style.tableCell}>
-                {dayOfWeek(date)}({datestamp})
+                {dayOfWeek(datestamp)}({datestamp})
             </span>
             <span
                 ref={drop}

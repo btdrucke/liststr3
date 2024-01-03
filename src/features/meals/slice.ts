@@ -1,9 +1,8 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
-import dayjs from 'dayjs'
 import {RootState} from "../../app/store"
 import _ from "lodash"
-import {toDatestamp} from "../../common/dateUtils"
+import {todayDatestamp} from "../../common/dateUtils"
 import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
 import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
 
@@ -15,7 +14,7 @@ export interface MealModel extends BaseItem, IsChecked {
 function createModel(name: string, datestamp?: string, id?: string, recipeId?: string): MealModel {
     return {
         name: name,
-        datestamp: datestamp || toDatestamp(dayjs()),
+        datestamp: datestamp || todayDatestamp(),
         id: id || nanoid(),
         isChecked: false,
         recipeId: recipeId,

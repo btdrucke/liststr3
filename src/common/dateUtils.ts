@@ -5,15 +5,24 @@ export function toDatestamp(date: Dayjs): string {
     return date.format('YYYY-MM-DD')
 }
 
-export function currentDateStamp(): string {
+export function todayDatestamp(): string {
     return toDatestamp(dayjs())
 }
 
-export function isWeekend(date: Dayjs): boolean {
+export function isWeekend(datestamp: string): boolean {
+    const date = dayjs(datestamp)
     const dayNum = date.day()
     return dayNum === 0 || dayNum === 6 // Sunday or Saturday
 }
 
-export function isToday(date: Dayjs):boolean {
-    return dayjs().isSame(date, 'day')
+export function isToday(datestamp: string): boolean {
+    return datestamp === todayDatestamp()
+}
+
+export function dayOfWeek(datestamp: string): string {
+    return dayjs(datestamp).format('ddd')
+}
+
+export function addDays(datestamp: string, numDays: number): string {
+    return toDatestamp(dayjs(datestamp).add(numDays, 'day'))
 }

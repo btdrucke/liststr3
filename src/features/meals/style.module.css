@@ -21,11 +21,11 @@
 }
 
 .today {
-    background-color: #0000ff40;
+    background-color: #0004;
 }
 
 .weekend {
-    background-color: #0000ff20;
+    background-color: #0001;
 }
 
 .isDragging {

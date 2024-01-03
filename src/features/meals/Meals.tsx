@@ -2,35 +2,34 @@ import React, {useMemo, useState} from "react"
 import {MealModel, selectItems} from "./slice"
 import {useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
-import {toDatestamp} from "../../common/dateUtils"
 import _ from "lodash"
-import dayjs, {Dayjs} from "dayjs"
 import MealDay from "./MealDay"
+import {addDays, todayDatestamp} from "../../common/dateUtils"
 
-type MealDayModel = { date: Dayjs, meals: MealModel[] }
+type MealDayModel = { datestamp: string, meals: MealModel[] }
 
 export const Meals = () => {
     const meals = useAppSelector(selectItems)
-    const [today, setToday] = useState(dayjs())
+    const [today, setToday] = useState(todayDatestamp)
 
-    const otherToday = dayjs()
-    if (!otherToday.isSame(today, 'day')) {
+    const otherToday = todayDatestamp()
+    if (otherToday !== today) {
         setToday(otherToday)
     }
 
-    const calculateMealDays = (today: Dayjs, meals: MealModel[]): MealDayModel[]  => {
-        const todayPlusWeek = today.add(6, 'day')
-        const earliestItem = dayjs(_.first(meals)?.datestamp)
-        const latestItemPlusDay = dayjs(_.last(meals)?.datestamp).add(1, 'day')
-        const firstDate = today.isBefore(earliestItem, 'day') ? today : earliestItem
+    const calculateMealDays = (today: string, meals: MealModel[]): MealDayModel[] => {
+        const todayPlusWeek = addDays(today, 6)
+        const earliestItem = _.first(meals)?.datestamp || today
+        const latestItemPlusDay = addDays(_.last(meals)?.datestamp || today, 1)
+        const firstDate = today < earliestItem ? today : earliestItem
 
         let days: MealDayModel[] = []
         for (
             let date = firstDate;
-            !(date.isAfter(todayPlusWeek, 'day') && date.isAfter(latestItemPlusDay, 'day'));
-            date = date.add(1, 'day')
+            !(date > todayPlusWeek && date > latestItemPlusDay);
+            date = addDays(date, 1)
         ) {
-            days.push({date: date, meals: meals.filter(it => date.isSame(it.datestamp, 'day'))})
+            days.push({datestamp: date, meals: meals.filter(it => date === it.datestamp)})
         }
         return days
     }
@@ -39,10 +38,10 @@ export const Meals = () => {
 
     return (
         <div className={style.table}>
-            {days.map(({date, meals}) =>
+            {days.map(({datestamp, meals}) =>
                 <MealDay
-                    key={toDatestamp(date)}
-                    date={date}
+                    key={datestamp}
+                    datestamp={datestamp}
                     meals={meals}
                 />
             )}

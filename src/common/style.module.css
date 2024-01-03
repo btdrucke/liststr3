@@ -1,4 +1,5 @@
 .addItem {
+    background-color: transparent;
 }
 
 .editableItem {
@@ -7,10 +8,13 @@
 }
 
 .suggestionMenu {
-    background-color: yellowgreen;
+    background-color: white;
+    border: solid thin black;
     overflow-y:auto;
     overflow-x:hidden;
     max-height:150px;
+    position: fixed;
+    box-shadow: 0 3px 5px 3px #0004;
 }
 
 .suggestionItem {
