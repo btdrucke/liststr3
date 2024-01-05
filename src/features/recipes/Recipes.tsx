@@ -2,11 +2,10 @@ import React from "react"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import EditableItem from "../../common/EditableItem"
 import style from "./style.module.css"
-import TrashControl from "../../common/TrashControl"
 import IsFavoriteControl from "../../common/IsFavoriteControl"
 import {createItem, deleteItem, editItem, renameItem, selectItems, toggleIsFavorite} from "./slice"
 import AddItem from "../../common/AddItem"
-import EditControl from "../../common/EditControl"
+import {EditControl, TrashControl} from "../../common/IconControls"
 
 export const Recipes = () => {
     const dispatch = useAppDispatch()

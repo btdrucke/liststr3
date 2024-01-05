@@ -5,8 +5,8 @@ import React from "react"
 import {useDrag} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
-import TrashControl from "../../common/TrashControl"
 import IsCheckedControl from "../../common/IsCheckedControl"
+import {TrashControl} from "../../common/IconControls"
 
 interface MealProps {
     meal: MealModel

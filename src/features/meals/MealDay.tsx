@@ -11,7 +11,6 @@ import {useSelector} from "react-redux"
 import {selectItems as selectRecipes} from '../recipes/slice'
 import AddItem from "../../common/AddItem"
 import {BaseItem} from "../../common/BaseItem"
-import {nanoid} from "@reduxjs/toolkit"
 
 interface MealDayProps {
     datestamp: string
@@ -47,10 +46,6 @@ const MealDay = ({datestamp, meals}: MealDayProps) => {
         dispatch(createItem({name: suggestion.name, datestamp: datestamp, recipeId: suggestion.id}))
     }
 
-    const onCreateFromNewSuggestion = (name: string) => {
-        dispatch(createItem({name: name, datestamp: datestamp, recipeId: nanoid()}))
-    }
-
     const rowClass = (isToday(datestamp) && style.today) || (isWeekend(datestamp) && style.weekend)
 
     return (
@@ -73,7 +68,6 @@ const MealDay = ({datestamp, meals}: MealDayProps) => {
                     createFromName={onCreateFromName}
                     suggestionItems={recipes}
                     createFromSuggestion={onCreateFromSuggestion}
-                    createFromNewSuggestion={onCreateFromNewSuggestion}
                 />
             </span>
         </div>

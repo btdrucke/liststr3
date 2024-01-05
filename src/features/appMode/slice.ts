@@ -1,7 +1,6 @@
 import {createSelector, createSlice} from "@reduxjs/toolkit"
 import {RootState} from "../../app/store"
 import {editItem as editRecipe} from "../recipes/slice"
-import {equalsId} from "../../common/IdOwner"
 
 export enum AppMode {
     ManageMeals,
@@ -10,13 +9,12 @@ export enum AppMode {
     ManageIngredients,
     ManageShoppingList,
     ManageMarkets,
-    Shop
 }
 
 const slice = createSlice({
     name: 'mode',
     initialState: {
-        value: AppMode.Shop
+        value: AppMode.ManageShoppingList
     },
     reducers: {
         updateMode: (state, action) => {
@@ -38,6 +36,6 @@ export const selectAppMode = createSelector(
     (appMode) => appMode
 )
 
-export const { updateMode } = slice.actions
+export const {updateMode} = slice.actions
 
 export default slice.reducer

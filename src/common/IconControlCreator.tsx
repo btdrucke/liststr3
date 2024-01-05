@@ -2,20 +2,21 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import React from "react"
 import {useAppDispatch} from "../app/hooks"
 import {AnyAction} from "@reduxjs/toolkit"
-import {faTrashCan} from "@fortawesome/free-solid-svg-icons"
+import {IconDefinition} from "@fortawesome/free-regular-svg-icons"
 
-interface TrashControlProps {
+interface IconControlProps {
     action: AnyAction
 }
 
-const TrashControl = ({action}: TrashControlProps) => {
+const IconControlCreator = (icon: IconDefinition) => ({action}: IconControlProps) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useAppDispatch()
     return (
         <FontAwesomeIcon
-            icon={faTrashCan}
+            icon={icon}
             onClick={() => dispatch(action)}
         />
     )
 }
 
-export default TrashControl
+export default IconControlCreator

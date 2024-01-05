@@ -3,16 +3,16 @@ import {classes} from "./classUtils"
 import style from "./style.module.css"
 import SuggestionMenu from "./SuggestionMenu"
 import {BaseItem} from "./BaseItem"
+import {nanoid} from "@reduxjs/toolkit"
 
 interface AddItemProps {
     placeholder: string
     createFromName: (name: string) => void
     suggestionItems?: BaseItem[]
     createFromSuggestion?: (suggestion: BaseItem) => void
-    createFromNewSuggestion?: (name: string) => void
 }
 
-const AddItem = ({placeholder, createFromName, suggestionItems, createFromSuggestion, createFromNewSuggestion}: AddItemProps) => {
+const AddItem = ({placeholder, createFromName, suggestionItems, createFromSuggestion}: AddItemProps) => {
     const [queryStr, setQueryStr] = useState("")
 
     let element: HTMLInputElement
@@ -71,9 +71,7 @@ const AddItem = ({placeholder, createFromName, suggestionItems, createFromSugges
     }
 
     const handleOnNewSuggestion = (name: string) => {
-        createFromNewSuggestion && createFromNewSuggestion(name)
-        element.value = ""
-        setQueryStr("")
+        handleOnSuggestion({name: name, id: nanoid()})
     }
 
     return (

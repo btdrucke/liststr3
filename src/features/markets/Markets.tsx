@@ -2,9 +2,9 @@ import React from "react"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import EditableItem from "../../common/EditableItem"
 import style from "./style.module.css"
-import TrashControl from "../../common/TrashControl"
 import {createItem, deleteItem, renameItem, selectItems} from "./slice"
 import AddItem from "../../common/AddItem"
+import {TrashControl} from "../../common/IconControls"
 
 export const Markets = () => {
     const dispatch = useAppDispatch()

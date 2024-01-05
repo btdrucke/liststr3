@@ -6,6 +6,7 @@ import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
 import {NameOwner} from "../../common/NameOwner"
 import {createItem as createShoppingItem} from "../shoppingList/slice"
+import {addRecipeIngredient} from "../recipes/slice"
 
 interface IngredientModel extends BaseItem, IsFavorite {
     readonly lastUsedTimestamp: number;
@@ -52,6 +53,13 @@ const slice = createSlice({
                 const {name, ingredientId} = action.payload
                 if (ingredientId && !state.items.some(equalsId(ingredientId))) {
                     const item = createModel(name, ingredientId)
+                    state.items.push(item)
+                }
+            })
+            .addCase(addRecipeIngredient, (state, action) => {
+                const {ingredientName, ingredientId} = action.payload
+                if (ingredientId && !state.items.some(equalsId(ingredientId))) {
+                    const item = createModel(ingredientName, ingredientId)
                     state.items.push(item)
                 }
             })

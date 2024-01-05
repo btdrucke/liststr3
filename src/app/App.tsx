@@ -4,7 +4,6 @@ import {useAppSelector} from "./hooks"
 import {AppMode} from "../features/appMode/slice"
 import {ShoppingList} from "../features/shoppingList/ShoppingList"
 import {Ingredients} from "../features/ingredients/Ingredients"
-import {Shop} from "../features/shop/Shop"
 import {Markets} from "../features/markets/Markets"
 import {Meals} from "../features/meals/Meals"
 import {Recipe} from "../features/recipe/Recipe"
@@ -22,7 +21,6 @@ const App = () => {
             {appMode === AppMode.ManageMeals && <Meals/>}
             {appMode === AppMode.ManageRecipe && <Recipe/>}
             {appMode === AppMode.ManageRecipes && <Recipes/>}
-            {appMode === AppMode.Shop && <Shop/>}
         </>
     )
 }
