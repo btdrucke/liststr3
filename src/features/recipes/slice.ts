@@ -28,15 +28,15 @@ interface RecipeModel extends BaseItem, IsFavorite {
 
 function createRecipeModel(
     name: string,
-    id: string = nanoid(),
-    isFavorite: boolean = false,
-    ingredients: RecipeIngredientModel[] = [],
+    id?: string,
+    isFavorite?: boolean,
+    ingredients?: RecipeIngredientModel[],
 ): RecipeModel {
     return {
         name: name,
-        id: id,
-        isFavorite: isFavorite,
-        ingredients: ingredients,
+        id: id || nanoid(),
+        isFavorite: isFavorite === true,
+        ingredients: ingredients || [],
     }
 }
 
@@ -100,7 +100,7 @@ export const selectItems = createSelector(
     [selectItemsInput],
     (items) => _.orderBy(
         items,
-        ['isFavorite', 'lastUsedTimestamp', 'name'],
+        ['isFavorite', 'name'],
         ['desc', 'desc', 'asc']
     )
 )

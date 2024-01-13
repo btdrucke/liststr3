@@ -16,8 +16,8 @@ function createModel(name: string, datestamp?: string, id?: string, recipeId?: s
         name: name,
         datestamp: datestamp || todayDatestamp(),
         id: id || nanoid(),
-        isChecked: false,
         recipeId: recipeId,
+        isChecked: false,
     }
 }
 

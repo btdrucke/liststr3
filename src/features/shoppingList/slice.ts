@@ -16,8 +16,8 @@ function createModel(
     return {
         name: name,
         id: id || nanoid(),
-        isChecked: false,
         ingredientId: ingredientId,
+        isChecked: false,
     }
 }
 

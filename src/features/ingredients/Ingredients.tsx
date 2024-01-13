@@ -31,7 +31,6 @@ export const Ingredients = () => {
                         <EditableItem
                             origItem={item}
                             renameItem={renameItem}/>
-                        <span>{new Date(item.lastUsedTimestamp).toLocaleDateString()}</span>
                         <TrashControl action={deleteItem(item.id)}/>
                     </div>
                 )

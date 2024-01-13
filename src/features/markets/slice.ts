@@ -9,8 +9,12 @@ export interface MarketModel extends BaseItem {
     readonly color: string;
 }
 
-function createMarketModel(name: string, color: string, id: string = nanoid()): MarketModel {
-    return {id: id, name: name, color: color}
+function createMarketModel(name: string, color: string, id?: string): MarketModel {
+    return {
+        name: name,
+        color: color,
+        id: id || nanoid(),
+    }
 }
 
 function colorForNewMarket(items: MarketModel[] | number): string {

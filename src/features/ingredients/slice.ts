@@ -9,21 +9,20 @@ import {createItem as createShoppingItem} from "../shoppingList/slice"
 import {addRecipeIngredient} from "../recipes/slice"
 
 interface IngredientModel extends BaseItem, IsFavorite {
-    readonly lastUsedTimestamp: number;
     readonly usualMarketIds: string[]
 }
 
 function createModel(
     name: string,
-    id: string = nanoid(),
-    isFavorite: boolean = false,
-    lastUsedTimestamp: number = Date.now(),
-    usualMarketIds: string[] = [],
+    id?: string,
+    isFavorite?: boolean,
+    usualMarketIds?: string[],
 ): IngredientModel {
     return {
-        id: id, name: name, isFavorite: isFavorite,
-        lastUsedTimestamp: lastUsedTimestamp,
-        usualMarketIds: usualMarketIds
+        name: name,
+        id: id || nanoid(),
+        isFavorite: isFavorite === true,
+        usualMarketIds: usualMarketIds || []
     }
 }
 
@@ -73,7 +72,7 @@ export const selectItems = createSelector(
     [selectItemsInput],
     (items) => _.orderBy(
         items,
-        ['isFavorite', 'lastUsedTimestamp', 'name'],
+        ['isFavorite', 'name'],
         ['desc', 'desc', 'asc']
     )
 )
