@@ -9,20 +9,20 @@ import {createItem as createShoppingItem} from "../shoppingList/slice"
 import {addRecipeIngredient} from "../recipes/slice"
 
 interface IngredientModel extends BaseItem, IsFavorite {
-    readonly usualMarketIds: string[]
+    readonly tagIds: string[]
 }
 
 function createModel(
     name: string,
     id?: string,
     isFavorite?: boolean,
-    usualMarketIds?: string[],
+    tagIds?: string[],
 ): IngredientModel {
     return {
         name: name,
         id: id || nanoid(),
         isFavorite: isFavorite === true,
-        usualMarketIds: usualMarketIds || []
+        tagIds: tagIds || []
     }
 }
 

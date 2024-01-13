@@ -8,7 +8,7 @@ export enum AppMode {
     ManageRecipe,
     ManageIngredients,
     ManageShoppingList,
-    ManageMarkets,
+    ManageTags,
 }
 
 const slice = createSlice({

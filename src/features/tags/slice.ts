@@ -5,11 +5,11 @@ import {RootState} from "../../app/store"
 import {deleteItemReducer, findById} from "../../common/IdOwner"
 import {NameOwner} from "../../common/NameOwner"
 
-export interface MarketModel extends BaseItem {
+export interface TagModel extends BaseItem {
     readonly color: string;
 }
 
-function createMarketModel(name: string, color: string, id?: string): MarketModel {
+function createTagModel(name: string, color: string, id?: string): TagModel {
     return {
         name: name,
         color: color,
@@ -17,7 +17,7 @@ function createMarketModel(name: string, color: string, id?: string): MarketMode
     }
 }
 
-function colorForNewMarket(items: MarketModel[] | number): string {
+function styleForNewTag(items: TagModel[] | number): string {
     if (typeof items === "number") {
         return colorForNumber(items)
     } else {
@@ -34,23 +34,23 @@ function colorForNewMarket(items: MarketModel[] | number): string {
 }
 
 function colorForNumber(i: number): string {
-    return style["marketBackground" + (i % 8)]
+    return style["tagStyle" + (i % 8)]
 }
 
 const slice = createSlice({
-    name: 'markets',
+    name: 'tags',
     initialState: {
         items: [
-            createMarketModel("Fred Meyer", colorForNewMarket(0)),
-            createMarketModel("New Seasons", colorForNewMarket(1)),
-            createMarketModel("Trader Joe's", colorForNewMarket(2)),
-            createMarketModel("Costco", colorForNewMarket(3)),
+            createTagModel("Fred Meyer", styleForNewTag(0)),
+            createTagModel("New Seasons", styleForNewTag(1)),
+            createTagModel("Trader Joe's", styleForNewTag(2)),
+            createTagModel("Costco", styleForNewTag(3)),
         ]
     },
     reducers: {
         createItem: (state, action: PayloadAction<NameOwner>) => {
             const {name} = action.payload
-            const item = createMarketModel(name, colorForNewMarket(state.items))
+            const item = createTagModel(name, styleForNewTag(state.items))
             state.items.push(item)
         },
         renameItem: renameItemReducer,
@@ -58,7 +58,7 @@ const slice = createSlice({
     }
 })
 
-const selectItemsInput = (state: RootState) => state.markets.items
+const selectItemsInput = (state: RootState) => state.tags.items
 
 export const selectItems = createSelector(
     [selectItemsInput],

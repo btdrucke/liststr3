@@ -4,7 +4,7 @@ import {useAppSelector} from "./hooks"
 import {AppMode} from "../features/appMode/slice"
 import {ShoppingList} from "../features/shoppingList/ShoppingList"
 import {Ingredients} from "../features/ingredients/Ingredients"
-import {Markets} from "../features/markets/Markets"
+import {Tags} from "../features/tags/Tags"
 import {Meals} from "../features/meals/Meals"
 import {Recipe} from "../features/recipe/Recipe"
 import {Recipes} from "../features/recipes/Recipes"
@@ -17,7 +17,7 @@ const App = () => {
             <AppModePicker/>
             {appMode === AppMode.ManageShoppingList && <ShoppingList/>}
             {appMode === AppMode.ManageIngredients && <Ingredients/>}
-            {appMode === AppMode.ManageMarkets && <Markets/>}
+            {appMode === AppMode.ManageTags && <Tags/>}
             {appMode === AppMode.ManageMeals && <Meals/>}
             {appMode === AppMode.ManageRecipe && <Recipe/>}
             {appMode === AppMode.ManageRecipes && <Recipes/>}

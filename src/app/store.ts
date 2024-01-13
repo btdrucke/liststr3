@@ -1,7 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit'
 import appModeReducer from '../features/appMode/slice'
 import ingredientsReducer from '../features/ingredients/slice'
-import marketsReducer from '../features/markets/slice'
+import tagsReducer from '../features/tags/slice'
 import mealsReducer from '../features/meals/slice'
 import recipeReducer from '../features/recipes/slice'
 import shoppingListReducer from '../features/shoppingList/slice'
@@ -10,7 +10,7 @@ const store = configureStore({
     reducer: {
         appMode: appModeReducer,
         ingredients: ingredientsReducer,
-        markets: marketsReducer,
+        tags: tagsReducer,
         meals: mealsReducer,
         recipes: recipeReducer,
         shoppingList: shoppingListReducer,

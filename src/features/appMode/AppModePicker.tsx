@@ -8,7 +8,7 @@ const modeDisplayData = [
     {mode: AppMode.ManageRecipe, title: "Manage Recipe"},
     {mode: AppMode.ManageIngredients, title: "Manage Ingredients"},
     {mode: AppMode.ManageShoppingList, title: "Manage Shopping List"},
-    {mode: AppMode.ManageMarkets, title: "Manage Markets"},
+    {mode: AppMode.ManageTags, title: "Manage Tags"},
 ]
 
 export const AppModePicker = () => {
