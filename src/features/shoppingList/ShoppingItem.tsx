@@ -1,15 +1,15 @@
 import React from "react"
 import EditableItem from "../../common/EditableItem"
-import {deleteItem, renameItem, ShoppingItemModel, toggleIsChecked} from "./slice"
+import {addTag, deleteItem, removeTag, renameItem, ShoppingItemModel, toggleIsChecked} from "./slice"
 import IsCheckedControl from "../../common/IsCheckedControl"
-import {DismissControl, TrashControl} from "../../common/IconControls"
+import {TrashControl} from "../../common/IconControls"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import {selectItemsByIds as selectTagsByIds, TagModel} from "../tags/slice"
-import {addTag, removeTag} from "./slice"
 import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
 import style from "../ingredients/style.module.css"
+import TagList from "../tags/TagList"
 
 interface Props {
     item: ShoppingItemModel
@@ -48,19 +48,10 @@ export const ShoppingItem = ({item}: Props) => {
                 origItem={item}
                 renameItem={renameItem}/>
             {itemTags && (
-                <div className={style.itemTags}>
-                    {itemTags.map(tag => {
-                        return (
-                            <div
-                                key={tag.id}
-                                className={classes(style.itemTag, tag.color)}
-                            >
-                                {tag.name}
-                                <DismissControl action={removeTag({itemOwnerId: item.id, tagId: tag.id})}/>
-                            </div>
-                        )
-                    })}
-                </div>
+                <TagList
+                    item={item}
+                    onRemoveTag={removeTag}
+                />
             )}
             <TrashControl action={deleteItem(item.id)}/>
         </div>

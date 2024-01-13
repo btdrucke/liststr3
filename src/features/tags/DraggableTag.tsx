@@ -23,7 +23,7 @@ const DraggableTag = ({tag, isActive, onClick}: Props) => {
     return (
         <div
             ref={drag}
-            className={classes(style.tagItem, tag.color, tagStyle, isDragging && style.isDragging)}
+            className={classes(style.draggableTag, tag.color, tagStyle, isDragging && style.isDragging)}
             onClick={onClick}
         >
             {tag.name}

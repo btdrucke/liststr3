@@ -6,7 +6,7 @@ import {createItem, deleteItem, renameItem, selectItems} from "./slice"
 import AddItem from "../../common/AddItem"
 import {TrashControl} from "../../common/IconControls"
 
-export const Tags = () => {
+export const TagsScreen = () => {
     const dispatch = useAppDispatch()
     const items = useAppSelector(selectItems)
 

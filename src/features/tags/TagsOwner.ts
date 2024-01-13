@@ -6,14 +6,14 @@ export interface TagsOwner {
     readonly tagIds: string[]
 }
 
-interface ActionProps {
+export interface TagActionProps {
     itemOwnerId: string
     tagId: string
 }
 
 export const addTagReducer = (
     state: Draft<{ items: (IdOwner & TagsOwner)[] }>,
-    action: PayloadAction<ActionProps>
+    action: PayloadAction<TagActionProps>
 ) => {
     const {itemOwnerId, tagId} = action.payload
     const pos = findIndexById(state.items, itemOwnerId)
@@ -27,7 +27,7 @@ export const addTagReducer = (
 
 export const removeTagReducer = (
     state: Draft<{ items: (IdOwner & TagsOwner)[] }>,
-    action: PayloadAction<ActionProps>
+    action: PayloadAction<TagActionProps>
 ) => {
     const {itemOwnerId, tagId} = action.payload
     const pos = findIndexById(state.items, itemOwnerId)

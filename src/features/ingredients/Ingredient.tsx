@@ -9,6 +9,7 @@ import {classes} from "../../common/classUtils"
 import style from "./style.module.css"
 import {selectItemsByIds as selectTagsByIds, TagModel} from "../tags/slice"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
+import TagList from "../tags/TagList"
 
 interface Props {
     item: IngredientModel
@@ -47,19 +48,10 @@ const Ingredient = ({item}: Props) => {
                 origItem={item}
                 renameItem={renameItem}/>
             {itemTags && (
-                <div className={style.itemTags}>
-                    {itemTags.map(tag => {
-                        return (
-                            <div
-                                key={tag.id}
-                                className={classes(style.itemTag, tag.color)}
-                            >
-                                {tag.name}
-                                <DismissControl action={removeTag({itemOwnerId: item.id, tagId: tag.id})}/>
-                            </div>
-                        )
-                    })}
-                </div>
+                <TagList
+                    item={item}
+                    onRemoveTag={removeTag}
+                />
             )}
             <TrashControl action={deleteItem(item.id)}/>
         </div>

@@ -3,9 +3,9 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
 import {createItem, selectItems as selectShoppingItems} from "./slice"
 import AddItem from "../../common/AddItem"
-import {IngredientModel, selectItems as selectIngredients} from "../ingredients/slice"
+import {selectItems as selectIngredients} from "../ingredients/slice"
 import {BaseItem} from "../../common/BaseItem"
-import {TagBar} from "../tags/TagBar"
+import {DraggableTags} from "../tags/DraggableTags"
 import {ShoppingItem} from "./ShoppingItem"
 import {TagsOwner} from "../tags/TagsOwner"
 
@@ -18,18 +18,18 @@ export const ShoppingList = () => {
         dispatch(createItem({name: name}))
     }
 
-    function isTagsOwner(test: any): test is TagsOwner{
+    function isTagsOwner(test: any): test is TagsOwner {
         return (test as TagsOwner).tagIds !== undefined
     }
 
     const onCreateFromSuggestion = (suggestion: BaseItem) => {
         const tagsIds = isTagsOwner(suggestion) ? suggestion.tagIds : []
-        dispatch(createItem({name: suggestion.name, ingredientId: suggestion.id, tagIds:tagsIds}))
+        dispatch(createItem({name: suggestion.name, ingredientId: suggestion.id, tagIds: tagsIds}))
     }
 
     return (
         <div className={style.list}>
-            <TagBar/>
+            <DraggableTags/>
             <AddItem
                 placeholder={"+ new item"}
                 createFromName={onCreateFromName}

@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
 import {createItem, selectItems} from "./slice"
 import AddItem from "../../common/AddItem"
-import {TagBar} from "../tags/TagBar"
+import {DraggableTags} from "../tags/DraggableTags"
 import Ingredient from "./Ingredient"
 
 export const Ingredients = () => {
@@ -16,7 +16,7 @@ export const Ingredients = () => {
 
     return (
         <div className={style.list}>
-            <TagBar/>
+            <DraggableTags/>
             <AddItem
                 placeholder={'+ new ingredient'}
                 createFromName={onCreateFromName}

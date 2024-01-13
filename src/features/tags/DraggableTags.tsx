@@ -4,7 +4,7 @@ import style from "./style.module.css"
 import DraggableTag from "./DraggableTag"
 import {useAppSelector} from "../../app/hooks"
 
-export const TagBar = () => {
+export const DraggableTags = () => {
     const tags = useAppSelector(selectTags)
     const [activeTagId, setActiveTagId] = useState(undefined as string | undefined)
 
@@ -14,7 +14,7 @@ export const TagBar = () => {
     }
 
     return (
-        <div className={style.tagList}>
+        <div className={style.draggableTags}>
             {tags.map(tag => {
                 return (
                     <DraggableTag
