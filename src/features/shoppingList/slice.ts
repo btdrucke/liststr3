@@ -12,8 +12,8 @@ export interface ShoppingItemModel extends BaseItem, IsChecked, TagsOwner {
 function createModel(
     name: string,
     ingredientId?: string,
-    id?: string,
     tagIds?: string[],
+    id?: string,
 ): ShoppingItemModel {
     return {
         name: name,
@@ -33,9 +33,9 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createItem: (state, action: PayloadAction<{ name: string, ingredientId?: string }>) => {
-            const {name, ingredientId} = action.payload
-            const item = createModel(name, ingredientId)
+        createItem: (state, action: PayloadAction<{ name: string, ingredientId?: string, tagIds?: string[] }>) => {
+            const {name, ingredientId, tagIds} = action.payload
+            const item = createModel(name, ingredientId, tagIds)
             state.items.push(item)
         },
         addTag: addTagReducer,

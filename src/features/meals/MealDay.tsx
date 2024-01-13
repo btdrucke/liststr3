@@ -48,14 +48,14 @@ const MealDay = ({datestamp, meals}: Props) => {
     const rowClass = (isToday(datestamp) && style.today) || (isWeekend(datestamp) && style.weekend)
 
     return (
-        <div className={classes(style.tableRow, rowClass)}>
+        <div
+            ref={drop}
+            className={classes(style.tableRow, rowClass, isOver && canDrop && style.isOver)}
+        >
             <span className={style.tableCell}>
                 {dayOfWeek(datestamp)}({datestamp})
             </span>
-            <span
-                ref={drop}
-                className={classes(style.tableCell, isOver && canDrop && style.isOver)}
-            >
+            <span className={classes(style.tableCell)}>
                 {meals.map((meal) =>
                     <Meal
                         key={meal.id}

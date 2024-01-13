@@ -24,7 +24,9 @@ export const Recipes = () => {
             {itemList.map((item) => {
                 return (
                     <div
-                        key={item.id}>
+                        key={item.id}
+                        className={style.listItem}
+                    >
                         <IsFavoriteControl
                             isFavorite={item.isFavorite}
                             action={toggleIsFavorite(item.id)}/>

@@ -5,6 +5,7 @@ import AddItem from "../../common/AddItem"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import {BaseItem} from "../../common/BaseItem"
 import {DoneControl, TrashControl} from "../../common/IconControls"
+import style from "../recipes/style.module.css"
 
 export const Recipe = () => {
     const dispatch = useAppDispatch()
@@ -41,7 +42,10 @@ export const Recipe = () => {
                         createFromSuggestion={onCreateFromSuggestion}
                     />
                     {editingRecipe.ingredients.map(recipeIngredient => (
-                        <div key={recipeIngredient.id}>
+                        <div
+                            key={recipeIngredient.id}
+                            className={style.listItem}
+                        >
                             <span>
                                 {recipeIngredient.name}
                             </span>
