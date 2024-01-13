@@ -1,3 +1,4 @@
 export const DragTypes = {
-    MEAL: "meal"
+    MEAL: "meal",
+    TAG: "tag",
 }

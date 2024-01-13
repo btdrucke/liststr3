@@ -8,11 +8,11 @@ import {classes} from "../../common/classUtils"
 import IsCheckedControl from "../../common/IsCheckedControl"
 import {TrashControl} from "../../common/IconControls"
 
-interface MealProps {
+interface Props {
     meal: MealModel
 }
 
-const Meal = ({meal}: MealProps) => {
+const Meal = ({meal}: Props) => {
     const [{isDragging}, drag] = useDrag(() => ({
         type: DragTypes.MEAL,
         item: meal,

@@ -1,16 +1,15 @@
-import {useSelector} from "react-redux"
 import {addRecipeIngredient, editItem, removeRecipeIngredient, selectEditingItem} from "../recipes/slice"
 import {selectItems as selectIngredients} from "../ingredients/slice"
 import React from "react"
 import AddItem from "../../common/AddItem"
-import {useAppDispatch} from "../../app/hooks"
+import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import {BaseItem} from "../../common/BaseItem"
 import {DoneControl, TrashControl} from "../../common/IconControls"
 
 export const Recipe = () => {
     const dispatch = useAppDispatch()
-    const ingredients = useSelector(selectIngredients)
-    const editingRecipe = useSelector(selectEditingItem)
+    const ingredients = useAppSelector(selectIngredients)
+    const editingRecipe = useAppSelector(selectEditingItem)
 
     const onCreateFromName = (name: string) => {
         if (editingRecipe) {

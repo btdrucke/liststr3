@@ -7,9 +7,9 @@ import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
 import {NameOwner} from "../../common/NameOwner"
 import {createItem as createShoppingItem} from "../shoppingList/slice"
 import {addRecipeIngredient} from "../recipes/slice"
+import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 
-interface IngredientModel extends BaseItem, IsFavorite {
-    readonly tagIds: string[]
+export interface IngredientModel extends BaseItem, IsFavorite, TagsOwner {
 }
 
 function createModel(
@@ -22,7 +22,7 @@ function createModel(
         name: name,
         id: id || nanoid(),
         isFavorite: isFavorite === true,
-        tagIds: tagIds || []
+        tagIds: tagIds || [],
     }
 }
 
@@ -42,6 +42,8 @@ const slice = createSlice({
             const item = createModel(name)
             state.items.push(item)
         },
+        addTag: addTagReducer,
+        removeTag: removeTagReducer,
         renameItem: renameItemReducer,
         toggleIsFavorite: toggleIsFavoriteReducer,
         deleteItem: deleteItemReducer,
@@ -87,6 +89,8 @@ export const selectItem = createSelector(
 
 export const {
     createItem,
+    addTag,
+    removeTag,
     renameItem,
     toggleIsFavorite,
     deleteItem,

@@ -25,9 +25,9 @@ const slice = createSlice({
     name: 'meals',
     initialState: {
         items: [
-            createModel("Tacos", '2023-12-24'),
-            createModel("Lentil Soup", '2023-12-26'),
-            createModel("Channa + cauliflower", '2023-12-27'),
+            createModel("Tacos", '2024-01-12'),
+            createModel("Lentil Soup", '2024-01-14'),
+            createModel("Channa + cauliflower", '2024-01-16'),
         ]
     },
     reducers: {

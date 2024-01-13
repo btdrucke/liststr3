@@ -1,5 +1,4 @@
 .list {
-
 }
 
 .tagStyle0 {
@@ -25,4 +24,30 @@
 }
 .tagStyle7 {
     background-color: #3f7a7a88;
+}
+
+.tagList {
+    display: flex;
+}
+
+.tagItem {
+    width: fit-content;
+    padding: 1px 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border: solid thin transparent;
+    border-radius: 10px;
+    transition-duration: .15s;
+}
+
+.tagEnabled {
+    border: solid thin black;
+}
+
+.tagDisabled {
+    opacity: 50%;
+}
+
+.isDragging {
+    /*opacity: .5;*/
 }

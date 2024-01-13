@@ -17,7 +17,7 @@ export const Tags = () => {
     return (
         <div className={style.list}>
             <AddItem
-                placeholder={'+ new store'}
+                placeholder={'+ new tag'}
                 createFromName={onCreateFromName}
             />
             {items.map((item) => {

@@ -6,7 +6,10 @@ import _ from "lodash"
 import MealDay from "./MealDay"
 import {addDays, todayDatestamp} from "../../common/dateUtils"
 
-type MealDayModel = { datestamp: string, meals: MealModel[] }
+interface MealDayModel {
+    datestamp: string
+    meals: MealModel[]
+}
 
 export const Meals = () => {
     const meals = useAppSelector(selectItems)

@@ -1,9 +1,10 @@
-import {faCheck, faPencil, faTrashCan} from "@fortawesome/free-solid-svg-icons"
-import IconControlCreator from "./IconControlCreator"
+import {faCheck, faPencil, faTrashCan, faXmark} from "@fortawesome/free-solid-svg-icons"
+import IconComponentCreator from "./IconComponentCreator"
 
-export const DoneControl = IconControlCreator(faCheck)
+export const DoneControl = IconComponentCreator(faCheck)
 
-export const EditControl = IconControlCreator(faPencil)
+export const EditControl = IconComponentCreator(faPencil)
 
-export const TrashControl = IconControlCreator(faTrashCan)
+export const TrashControl = IconComponentCreator(faTrashCan)
 
+export const DismissControl = IconComponentCreator(faXmark)

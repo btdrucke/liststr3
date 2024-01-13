@@ -4,11 +4,11 @@ import {useAppDispatch} from "../app/hooks"
 import {AnyAction} from "@reduxjs/toolkit"
 import {IconDefinition} from "@fortawesome/free-regular-svg-icons"
 
-interface IconControlProps {
+interface Props {
     action: AnyAction
 }
 
-const IconControlCreator = (icon: IconDefinition) => ({action}: IconControlProps) => {
+const IconComponentCreator = (icon: IconDefinition) => ({action}: Props) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useAppDispatch()
     return (
@@ -19,4 +19,4 @@ const IconControlCreator = (icon: IconDefinition) => ({action}: IconControlProps
     )
 }
 
-export default IconControlCreator
+export default IconComponentCreator

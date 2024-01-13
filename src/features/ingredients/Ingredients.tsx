@@ -1,11 +1,10 @@
 import React from "react"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import EditableItem from "../../common/EditableItem"
 import style from "./style.module.css"
-import IsFavoriteControl from "../../common/IsFavoriteControl"
-import {createItem, deleteItem, renameItem, selectItems, toggleIsFavorite} from "./slice"
+import {createItem, selectItems} from "./slice"
 import AddItem from "../../common/AddItem"
-import {TrashControl} from "../../common/IconControls"
+import {TagBar} from "../tags/TagBar"
+import Ingredient from "./Ingredient"
 
 export const Ingredients = () => {
     const dispatch = useAppDispatch()
@@ -17,22 +16,17 @@ export const Ingredients = () => {
 
     return (
         <div className={style.list}>
+            <TagBar/>
             <AddItem
                 placeholder={'+ new ingredient'}
                 createFromName={onCreateFromName}
             />
             {itemList.map((item) => {
                 return (
-                    <div
-                        key={item.id}>
-                        <IsFavoriteControl
-                            isFavorite={item.isFavorite}
-                            action={toggleIsFavorite(item.id)}/>
-                        <EditableItem
-                            origItem={item}
-                            renameItem={renameItem}/>
-                        <TrashControl action={deleteItem(item.id)}/>
-                    </div>
+                    <Ingredient
+                        key={item.id}
+                        item={item}
+                    />
                 )
             })}
         </div>

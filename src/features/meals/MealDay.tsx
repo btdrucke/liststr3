@@ -6,20 +6,19 @@ import Meal from "./Meal"
 import React from "react"
 import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
-import {useAppDispatch} from "../../app/hooks"
-import {useSelector} from "react-redux"
+import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import {selectItems as selectRecipes} from '../recipes/slice'
 import AddItem from "../../common/AddItem"
 import {BaseItem} from "../../common/BaseItem"
 
-interface MealDayProps {
+interface Props {
     datestamp: string
     meals: MealModel[]
 }
 
-const MealDay = ({datestamp, meals}: MealDayProps) => {
+const MealDay = ({datestamp, meals}: Props) => {
     const dispatch = useAppDispatch()
-    const recipes = useSelector(selectRecipes)
+    const recipes = useAppSelector(selectRecipes)
 
     const onDrop = (draggingItem: MealModel) => {
         dispatch(rescheduleMeal({id: draggingItem.id, datestamp: datestamp}))

@@ -65,6 +65,19 @@ export const selectItems = createSelector(
     (items) => items
 )
 
+export const selectItemsByIds = createSelector(
+    [
+        selectItemsInput,
+        (_: RootState, ids: string[]) => ids
+    ],
+    (items, ids) => {
+        return ids.flatMap(id => {
+            const item = findById(items, id)
+            return (item === undefined) ? [] : [item]
+        })
+    }
+)
+
 export const selectItem = createSelector(
     [
         selectItemsInput,
