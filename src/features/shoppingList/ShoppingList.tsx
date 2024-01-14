@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
 import {createItem, selectItems as selectShoppingItems} from "./slice"
@@ -13,6 +13,7 @@ export const ShoppingList = () => {
     const dispatch = useAppDispatch()
     const shoppingItems = useAppSelector(selectShoppingItems)
     const ingredients = useAppSelector(selectIngredients)
+    const [activeTagId, setActiveTagId] = useState(undefined as string | undefined)
 
     const onCreateFromName = (name: string) => {
         dispatch(createItem({name: name}))
@@ -27,16 +28,25 @@ export const ShoppingList = () => {
         dispatch(createItem({name: suggestion.name, ingredientId: suggestion.id, tagIds: tagsIds}))
     }
 
+    const onTagSelected = (tagId?: string) => {
+        setActiveTagId(tagId)
+    }
+
+    const activeShoppingItems = shoppingItems.filter(item => !activeTagId || item.tagIds.some(id => id === activeTagId))
+
     return (
         <div className={style.list}>
-            <DraggableTags/>
+            <DraggableTags
+                activeTagId={activeTagId}
+                onTagSelected={onTagSelected}
+            />
             <AddItem
                 placeholder={"+ new item"}
                 createFromName={onCreateFromName}
                 suggestionItems={ingredients}
                 createFromSuggestion={onCreateFromSuggestion}
             />
-            {shoppingItems.map((item) => {
+            {activeShoppingItems.map((item) => {
                 return (
                     <ShoppingItem
                         key={item.id}
