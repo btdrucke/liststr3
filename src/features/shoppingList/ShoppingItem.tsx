@@ -8,7 +8,7 @@ import {selectItemsByIds as selectTagsByIds, TagModel} from "../tags/slice"
 import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
-import style from "../ingredients/style.module.css"
+import style from "./style.module.css"
 import TagList from "../tags/TagList"
 
 interface Props {
@@ -39,7 +39,7 @@ export const ShoppingItem = ({item}: Props) => {
     return (
         <div
             ref={drop}
-            className={classes(style.listItem, isOver && canDrop && style.isOver)}
+            className={classes(style.listItem, isOver && canDrop && style.isOver, item.isChecked && style.isChecked)}
         >
             <IsCheckedControl
                 isChecked={item.isChecked}

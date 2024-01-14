@@ -39,6 +39,7 @@
 .isChecked {
 }
 
-.isChecked .editableItem {
+.isChecked input {
     text-decoration: line-through;
+    opacity: 50%;
 }

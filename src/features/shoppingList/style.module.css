@@ -15,3 +15,11 @@
 .isOver {
     background-color: yellow;
 }
+
+.isChecked {
+}
+
+.isChecked input {
+    text-decoration: line-through;
+    opacity: 50%;
+}
