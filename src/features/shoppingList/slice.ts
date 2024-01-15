@@ -4,21 +4,27 @@ import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {deleteItemReducer} from "../../common/IdOwner"
 import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
 import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
-import {NameOwner} from "../../common/NameOwner"
+import {IngredientModel} from "../ingredients/slice"
 
 export interface ShoppingItemModel extends BaseItem, IsChecked, TagsOwner {
+    ingredientId?: string,
 }
 
-function createModel(
-    name: string,
-    tagIds?: string[],
-    id?: string,
-): ShoppingItemModel {
+function createModelFromName(name: string): ShoppingItemModel {
     return {
         name: name,
-        id: id || nanoid(),
+        id: nanoid(),
         isChecked: false,
-        tagIds: tagIds || [],
+        tagIds: [],
+    }
+}
+
+function createModelFromIngredient(ingredient: IngredientModel): ShoppingItemModel {
+    return {
+        name: ingredient.name,
+        tagIds: ingredient.tagIds,
+        id: nanoid(),
+        isChecked: false,
     }
 }
 
@@ -26,24 +32,33 @@ const slice = createSlice({
     name: 'shoppingList',
     initialState: {
         items: [
-            createModel("Apples"),
-            createModel("Chips"),
+            createModelFromName("Apples"),
+            createModelFromName("Chips"),
         ]
     },
     reducers: {
         createShoppingItem: (state, action: PayloadAction<string>) => {
-            const item = createModel(action.payload)
+            const name = action.payload
+            const item = createModelFromName(name)
             state.items.push(item)
         },
         createShoppingItemFromNewIngredient: (state, action: PayloadAction<string>) => {
-            const item = createModel(action.payload)
+            const name = action.payload
+            const item = createModelFromName(name)
             state.items.push(item)
         },
         // Shopping item is a copy of the current state of an ingredient, but then can be independently modified.
-        createShoppingItemFromIngredient: (state, action: PayloadAction<NameOwner & TagsOwner>) => {
-            const {name, tagIds} = action.payload
-            const item = createModel(name, tagIds)
+        createShoppingItemFromIngredient: (state, action: PayloadAction<IngredientModel>) => {
+            const item = createModelFromIngredient(action.payload)
             state.items.push(item)
+        },
+        createShoppingItemsFromMeal: (state, action: PayloadAction<{
+            ingredientNames: string[],
+            ingredients: IngredientModel[]
+        }>) => {
+            const {ingredientNames, ingredients} = action.payload
+            ingredientNames.forEach(name => state.items.push(createModelFromName(name)))
+            ingredients.forEach(ingredient => state.items.push(createModelFromIngredient(ingredient)))
         },
         addTagToShoppingItem: addTagReducer,
         removeTagFromShoppingItem: removeTagReducer,
@@ -64,6 +79,7 @@ export const {
     createShoppingItem,
     createShoppingItemFromNewIngredient,
     createShoppingItemFromIngredient,
+    createShoppingItemsFromMeal,
     addTagToShoppingItem,
     removeTagFromShoppingItem,
     renameShoppingItem,

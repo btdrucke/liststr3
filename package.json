@@ -61,6 +61,8 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/lodash": "^4.14.202",
     "@types/react-beautiful-dnd": "^13.1.6",
-    "@types/react-fontawesome": "^1.6.8"
+    "@types/react-fontawesome": "^1.6.8",
+    "@types/redux-logger": "^3.0.12",
+    "redux-logger": "^3.0.6"
   }
 }

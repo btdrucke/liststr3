@@ -27,7 +27,7 @@ export const ShoppingList = () => {
     }
 
     const onCreateFromSuggestion = (suggestion: IngredientModel) => {
-        dispatch(createShoppingItemFromIngredient({name: suggestion.name, tagIds: suggestion.tagIds}))
+        dispatch(createShoppingItemFromIngredient(suggestion))
     }
 
     const onTagSelected = (tagId?: string) => {

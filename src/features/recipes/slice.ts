@@ -94,12 +94,20 @@ export const selectRecipes = createSelector(
     )
 )
 
+export const selectRecipe = createSelector(
+    [
+        selectRecipesInput,
+        (_: RootState, id?: string) => id
+    ],
+    (items, id) => (id && findById(items, id)) || undefined
+)
+
 export const selectEditingRecipe = createSelector(
     [
         selectRecipesInput,
         (state: RootState) => state.recipes.editingItemId,
     ],
-    (items, editingItemId) => editingItemId && findById(items, editingItemId)
+    (items, id) => (id && findById(items, id)) || undefined
 )
 
 export const {
