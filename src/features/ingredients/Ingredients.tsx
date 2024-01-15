@@ -1,14 +1,14 @@
 import React from "react"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
-import {createItem, selectItems} from "./slice"
+import {createItem, selectIngredients} from "./slice"
 import AddItem from "../../common/AddItem"
 import {DraggableTags} from "../tags/DraggableTags"
 import Ingredient from "./Ingredient"
 
 export const Ingredients = () => {
     const dispatch = useAppDispatch()
-    const itemList = useAppSelector(selectItems)
+    const itemList = useAppSelector(selectIngredients)
 
     const onCreateFromName = (name: string) => {
         dispatch(createItem({name: name}))

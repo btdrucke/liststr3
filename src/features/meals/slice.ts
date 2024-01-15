@@ -2,21 +2,21 @@ import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolk
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
-import {todayDatestamp} from "../../common/dateUtils"
-import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
+import {deleteItemReducer, equalsId} from "../../common/IdOwner"
 import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
+import {NameOwner} from "../../common/NameOwner"
 
 export interface MealModel extends BaseItem, IsChecked {
-    readonly datestamp: string //YYYY-MM-DD
-    readonly recipeId?: string
+    readonly datestamp: string, //YYYY-MM-DD
+    readonly recipeId?: string,
 }
 
-function createModel(name: string, datestamp?: string, id?: string, recipeId?: string): MealModel {
+function createModel(name: string, datestamp: string, recipe?: string): MealModel {
     return {
         name: name,
-        datestamp: datestamp || todayDatestamp(),
-        id: id || nanoid(),
-        recipeId: recipeId,
+        datestamp: datestamp,
+        recipeId: recipe,  // For future linking from meal to recipe in the UI.
+        id: nanoid(),
         isChecked: false,
     }
 }
@@ -31,7 +31,7 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createItem: (state, action: PayloadAction<{ name: string, datestamp?: string, recipeId?: string }>) => {
+        createMeal: (state, action: PayloadAction<NameOwner & { datestamp: string, recipeId?: string }>) => {
             const {name, datestamp, recipeId} = action.payload
             const item = createModel(name, datestamp, recipeId)
             state.items.push(item)
@@ -45,33 +45,25 @@ const slice = createSlice({
                 state.items = _.concat([toReschedule], state.items)
             }
         },
-        renameItem: renameItemReducer,
-        toggleIsChecked: toggleIsCheckedReducer,
-        deleteItem: deleteItemReducer,
+        renameMeal: renameItemReducer,
+        toggleMealIsChecked: toggleIsCheckedReducer,
+        deleteMeal: deleteItemReducer,
     }
 })
 
-const selectItemsInput = (state: RootState) => state.meals.items
+const selectMealsInput = (state: RootState) => state.meals.items
 
-export const selectItems = createSelector(
-    [selectItemsInput],
+export const selectMeals = createSelector(
+    [selectMealsInput],
     (items) => _.orderBy(items, ['datestamp'], ['asc'])
 )
 
-export const selectItem = createSelector(
-    [
-        selectItemsInput,
-        (_: RootState, id: string) => id
-    ],
-    (items, id) => findById(items, id)
-)
-
 export const {
-    createItem,
+    createMeal,
     rescheduleMeal,
-    renameItem,
-    toggleIsChecked,
-    deleteItem,
+    renameMeal,
+    toggleMealIsChecked,
+    deleteMeal,
 } = slice.actions
 
 export default slice.reducer

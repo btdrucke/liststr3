@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from "react"
-import {MealModel, selectItems} from "./slice"
+import {MealModel, selectMeals} from "./slice"
 import {useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
 import _ from "lodash"
@@ -12,7 +12,7 @@ interface MealDayModel {
 }
 
 export const Meals = () => {
-    const meals = useAppSelector(selectItems)
+    const meals = useAppSelector(selectMeals)
     const [today, setToday] = useState(todayDatestamp)
 
     const otherToday = todayDatestamp()

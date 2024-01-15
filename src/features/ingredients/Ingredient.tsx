@@ -7,7 +7,7 @@ import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
 import style from "./style.module.css"
-import {selectItemsByIds as selectTagsByIds, TagModel} from "../tags/slice"
+import {selectTagsByIds as selectTagsByIds, TagModel} from "../tags/slice"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import TagList from "../tags/TagList"
 

@@ -1,13 +1,16 @@
 import React, {useState} from "react"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
-import {createItem, selectItems as selectShoppingItems} from "./slice"
+import {
+    createShoppingItem,
+    createShoppingItemFromIngredient,
+    createShoppingItemFromNewIngredient,
+    selectShoppingItems
+} from "./slice"
 import AddItem from "../../common/AddItem"
-import {selectItems as selectIngredients} from "../ingredients/slice"
-import {BaseItem} from "../../common/BaseItem"
+import {IngredientModel, selectIngredients} from "../ingredients/slice"
 import {DraggableTags} from "../tags/DraggableTags"
 import {ShoppingItem} from "./ShoppingItem"
-import {TagsOwner} from "../tags/TagsOwner"
 
 export const ShoppingList = () => {
     const dispatch = useAppDispatch()
@@ -16,16 +19,15 @@ export const ShoppingList = () => {
     const [activeTagId, setActiveTagId] = useState(undefined as string | undefined)
 
     const onCreateFromName = (name: string) => {
-        dispatch(createItem({name: name}))
+        dispatch(createShoppingItem(name))
     }
 
-    function isTagsOwner(test: any): test is TagsOwner {
-        return (test as TagsOwner).tagIds !== undefined
+    const onCreateFromNewSuggestion = (name: string) => {
+        dispatch(createShoppingItemFromNewIngredient(name))
     }
 
-    const onCreateFromSuggestion = (suggestion: BaseItem) => {
-        const tagsIds = isTagsOwner(suggestion) ? suggestion.tagIds : []
-        dispatch(createItem({name: suggestion.name, ingredientId: suggestion.id, tagIds: tagsIds}))
+    const onCreateFromSuggestion = (suggestion: IngredientModel) => {
+        dispatch(createShoppingItemFromIngredient({name: suggestion.name, tagIds: suggestion.tagIds}))
     }
 
     const onTagSelected = (tagId?: string) => {
@@ -45,6 +47,7 @@ export const ShoppingList = () => {
                 createFromName={onCreateFromName}
                 suggestionItems={ingredients}
                 createFromSuggestion={onCreateFromSuggestion}
+                createFromNewSuggestion={onCreateFromNewSuggestion}
             />
             {activeShoppingItems.map((item) => {
                 return (

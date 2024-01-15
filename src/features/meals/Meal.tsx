@@ -1,6 +1,6 @@
 import style from "./style.module.css"
 import EditableItem from "../../common/EditableItem"
-import {deleteItem, MealModel, renameItem, toggleIsChecked} from "./slice"
+import {deleteMeal, MealModel, renameMeal, toggleMealIsChecked} from "./slice"
 import React from "react"
 import {useDrag} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
@@ -28,12 +28,12 @@ const Meal = ({meal}: Props) => {
         >
             <IsCheckedControl
                 isChecked={meal.isChecked}
-                action={toggleIsChecked(meal.id)}/>
+                action={toggleMealIsChecked(meal.id)}/>
             <EditableItem
                 origItem={meal}
-                renameItem={renameItem}
+                renameItem={renameMeal}
                 extraClass={classes(style.editableItem)}/>
-            <TrashControl action={deleteItem(meal.id)}/>
+            <TrashControl action={deleteMeal(meal.id)}/>
         </div>
     )
 }

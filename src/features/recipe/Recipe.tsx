@@ -1,58 +1,62 @@
-import {addRecipeIngredient, editItem, removeRecipeIngredient, selectEditingItem} from "../recipes/slice"
-import {selectItems as selectIngredients} from "../ingredients/slice"
+import {addIngredientToRecipe, editRecipe, removeFromRecipe, selectEditingRecipe} from "../recipes/slice"
+import {IngredientModel, selectIngredients} from "../ingredients/slice"
 import React from "react"
 import AddItem from "../../common/AddItem"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import {BaseItem} from "../../common/BaseItem"
 import {DoneControl, TrashControl} from "../../common/IconControls"
 import style from "../recipes/style.module.css"
+import {nanoid} from "@reduxjs/toolkit"
+import {findById} from "../../common/IdOwner"
 
 export const Recipe = () => {
     const dispatch = useAppDispatch()
     const ingredients = useAppSelector(selectIngredients)
-    const editingRecipe = useAppSelector(selectEditingItem)
+    const editingRecipe = useAppSelector(selectEditingRecipe)
 
     const onCreateFromName = (name: string) => {
         if (editingRecipe) {
-            dispatch(addRecipeIngredient({id: editingRecipe.id, ingredientName: name}))
+            dispatch(addIngredientToRecipe({id: editingRecipe.id, ingredientName: name}))
         }
     }
 
-    const onCreateFromSuggestion = (suggestion: BaseItem) => {
+    const onCreateFromNewSuggestion = (name: string) => {
         if (editingRecipe) {
-            dispatch(
-                addRecipeIngredient(
-                    {id: editingRecipe.id, ingredientName: suggestion.name, ingredientId: suggestion.id}
-                )
-            )
+            dispatch(addIngredientToRecipe({id: editingRecipe.id, ingredientName: name, ingredientId: nanoid()}))
         }
     }
 
+    const onCreateFromSuggestion = (suggestion: IngredientModel) => {
+        if (editingRecipe) {
+            dispatch(addIngredientToRecipe({id: editingRecipe.id, ingredientId: suggestion.id}))
+        }
+    }
+
+    let index = 0
     return (
         <>
             {editingRecipe && (
                 <>
                     <span>Editing recipe {editingRecipe.name}</span>
-                    <DoneControl action={editItem()}/>
+                    <DoneControl action={editRecipe()}/>
                     <br/>
                     <AddItem
                         placeholder={"+ ingredient"}
                         createFromName={onCreateFromName}
                         suggestionItems={ingredients}
                         createFromSuggestion={onCreateFromSuggestion}
+                        createFromNewSuggestion={onCreateFromNewSuggestion}
                     />
                     {editingRecipe.ingredients.map(recipeIngredient => (
                         <div
-                            key={recipeIngredient.id}
+                            key={index++}
                             className={style.listItem}
                         >
                             <span>
-                                {recipeIngredient.name}
+                                {recipeIngredient.ingredientName || (recipeIngredient.ingredientId && findById(ingredients, recipeIngredient.ingredientId)?.name)}
                             </span>
-                            <TrashControl action={removeRecipeIngredient({
-                                id: editingRecipe.id,
-                                recipeIngredientId: recipeIngredient.id
-                            })}/>
+                            <TrashControl action={removeFromRecipe(
+                                {id: editingRecipe.id, recipeIngredient: recipeIngredient}
+                            )}/>
                         </div>
                     ))}
                 </>

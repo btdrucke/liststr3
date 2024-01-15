@@ -2,13 +2,13 @@ import React from "react"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import EditableItem from "../../common/EditableItem"
 import style from "./style.module.css"
-import {createItem, deleteItem, renameItem, selectItems} from "./slice"
+import {createItem, deleteItem, renameItem, selectTags} from "./slice"
 import AddItem from "../../common/AddItem"
 import {TrashControl} from "../../common/IconControls"
 
 export const TagsScreen = () => {
     const dispatch = useAppDispatch()
-    const items = useAppSelector(selectItems)
+    const items = useAppSelector(selectTags)
 
     const onCreateFromName = (name: string) => {
         dispatch(createItem({name: name}))

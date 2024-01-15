@@ -58,16 +58,16 @@ const slice = createSlice({
     }
 })
 
-const selectItemsInput = (state: RootState) => state.tags.items
+const selectTagsInput = (state: RootState) => state.tags.items
 
-export const selectItems = createSelector(
-    [selectItemsInput],
+export const selectTags = createSelector(
+    [selectTagsInput],
     (items) => items
 )
 
-export const selectItemsByIds = createSelector(
+export const selectTagsByIds = createSelector(
     [
-        selectItemsInput,
+        selectTagsInput,
         (_: RootState, ids: string[]) => ids
     ],
     (items, ids) => {
@@ -76,14 +76,6 @@ export const selectItemsByIds = createSelector(
             return (item === undefined) ? [] : [item]
         })
     }
-)
-
-export const selectItem = createSelector(
-    [
-        selectItemsInput,
-        (_: RootState, id: string) => id
-    ],
-    (items, id) => findById(items, id)
 )
 
 export const {

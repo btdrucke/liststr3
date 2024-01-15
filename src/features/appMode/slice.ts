@@ -1,6 +1,6 @@
 import {createSelector, createSlice} from "@reduxjs/toolkit"
 import {RootState} from "../../app/store"
-import {editItem as editRecipe} from "../recipes/slice"
+import {editRecipe} from "../recipes/slice"
 
 export enum AppMode {
     ManageMeals,

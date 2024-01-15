@@ -1,10 +1,16 @@
 import React from "react"
 import EditableItem from "../../common/EditableItem"
-import {addTag, deleteItem, removeTag, renameItem, ShoppingItemModel, toggleIsChecked} from "./slice"
+import {
+    addTagToShoppingItem, deleteShoppingItem,
+    removeTagFromShoppingItem,
+    renameShoppingItem,
+    ShoppingItemModel,
+    toggleShoppingItemIsChecked
+} from "./slice"
 import IsCheckedControl from "../../common/IsCheckedControl"
 import {TrashControl} from "../../common/IconControls"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import {selectItemsByIds as selectTagsByIds, TagModel} from "../tags/slice"
+import {selectTagsByIds as selectTagsByIds, TagModel} from "../tags/slice"
 import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
@@ -20,7 +26,7 @@ export const ShoppingItem = ({item}: Props) => {
     const itemTags = useAppSelector(state => selectTagsByIds(state, item.tagIds))
 
     const onDrop = (draggingItem: TagModel) => {
-        dispatch(addTag({itemOwnerId: item.id, tagId: draggingItem.id}))
+        dispatch(addTagToShoppingItem({itemOwnerId: item.id, tagId: draggingItem.id}))
     }
 
     const [{isOver, canDrop}, drop] = useDrop(
@@ -43,17 +49,17 @@ export const ShoppingItem = ({item}: Props) => {
         >
             <IsCheckedControl
                 isChecked={item.isChecked}
-                action={toggleIsChecked(item.id)}/>
+                action={toggleShoppingItemIsChecked(item.id)}/>
             <EditableItem
                 origItem={item}
-                renameItem={renameItem}/>
+                renameItem={renameShoppingItem}/>
             {itemTags && (
                 <TagList
                     item={item}
-                    onRemoveTag={removeTag}
+                    onRemoveTag={removeTagFromShoppingItem}
                 />
             )}
-            <TrashControl action={deleteItem(item.id)}/>
+            <TrashControl action={deleteShoppingItem(item.id)}/>
         </div>
     )
 }

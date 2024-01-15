@@ -3,11 +3,11 @@ import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
-import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
+import {deleteItemReducer, findById} from "../../common/IdOwner"
 import {NameOwner} from "../../common/NameOwner"
-import {createItem as createShoppingItem} from "../shoppingList/slice"
-import {addRecipeIngredient} from "../recipes/slice"
+import {createShoppingItemFromNewIngredient} from "../shoppingList/slice"
 import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
+import {addIngredientToRecipe} from "../recipes/slice"
 
 export interface IngredientModel extends BaseItem, IsFavorite, TagsOwner {
 }
@@ -15,8 +15,8 @@ export interface IngredientModel extends BaseItem, IsFavorite, TagsOwner {
 function createModel(
     name: string,
     id?: string,
-    isFavorite?: boolean,
     tagIds?: string[],
+    isFavorite?: boolean,
 ): IngredientModel {
     return {
         name: name,
@@ -50,28 +50,28 @@ const slice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(createShoppingItem, (state, action) => {
-                const {name, ingredientId} = action.payload
-                if (ingredientId && !state.items.some(equalsId(ingredientId))) {
-                    const item = createModel(name, ingredientId)
-                    state.items.push(item)
-                }
+            .addCase(createShoppingItemFromNewIngredient, (state, action) => {
+                const name = action.payload
+                const item = createModel(name)
+                state.items.push(item)
             })
-            .addCase(addRecipeIngredient, (state, action) => {
-                const {ingredientName, ingredientId} = action.payload
-                if (ingredientId && !state.items.some(equalsId(ingredientId))) {
-                    const item = createModel(ingredientName, ingredientId)
-                    state.items.push(item)
+            .addCase(addIngredientToRecipe, (state, action) => {
+                const {ingredientId, ingredientName} = action.payload
+                if (ingredientId && ingredientName) {
+                    if (!findById(state.items, ingredientId)) {
+                        const item = createModel(ingredientName, ingredientId)
+                        state.items.push(item)
+                    }
                 }
             })
             .addDefaultCase(() => {})
     }
 })
 
-const selectItemsInput = (state: RootState) => state.ingredients.items
+const selectIngredientsInput = (state: RootState) => state.ingredients.items
 
-export const selectItems = createSelector(
-    [selectItemsInput],
+export const selectIngredients = createSelector(
+    [selectIngredientsInput],
     (items) => _.orderBy(
         items,
         ['isFavorite', 'name'],
@@ -81,7 +81,7 @@ export const selectItems = createSelector(
 
 export const selectItem = createSelector(
     [
-        selectItemsInput,
+        selectIngredientsInput,
         (_: RootState, id: string) => id
     ],
     (items, id) => findById(items, id)

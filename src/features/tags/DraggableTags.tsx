@@ -1,4 +1,4 @@
-import {selectItems as selectTags} from '../tags/slice'
+import {selectTags} from './slice'
 import style from "./style.module.css"
 import DraggableTag from "./DraggableTag"
 import {useAppSelector} from "../../app/hooks"

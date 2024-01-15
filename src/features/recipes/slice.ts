@@ -3,40 +3,24 @@ import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
-import {deleteItemReducer, equalsId, findById} from "../../common/IdOwner"
-import {NameOwner} from "../../common/NameOwner"
-import {createItem as createMeal} from "../meals/slice"
+import {deleteItemReducer, findById, IdOwner} from "../../common/IdOwner"
+import {createMeal} from "../meals/slice"
 
-interface RecipeIngredientModel extends BaseItem {
-    ingredientId?: string
-}
-
-function createRecipeIngredientModel(
-    name: string,
+interface RecipeIngredientModel {
+    ingredientName?: string,
     ingredientId?: string,
-): RecipeIngredientModel {
-    return {
-        name: name,
-        id: nanoid(),
-        ingredientId: ingredientId,
-    }
 }
 
-interface RecipeModel extends BaseItem, IsFavorite {
+export interface RecipeModel extends BaseItem, IsFavorite {
     ingredients: RecipeIngredientModel[]
 }
 
-function createRecipeModel(
-    name: string,
-    id?: string,
-    isFavorite?: boolean,
-    ingredients?: RecipeIngredientModel[],
-): RecipeModel {
+function createRecipeModel(name: string, id?: string): RecipeModel {
     return {
         name: name,
         id: id || nanoid(),
-        isFavorite: isFavorite === true,
-        ingredients: ingredients || [],
+        isFavorite: false,
+        ingredients: [],
     }
 }
 
@@ -52,52 +36,57 @@ const slice = createSlice({
         editingItemId: undefined as (string | undefined),
     },
     reducers: {
-        createItem: (state, action: PayloadAction<NameOwner>) => {
-            const {name} = action.payload
+        createRecipe: (state, action: PayloadAction<string>) => {
+            const name = action.payload
             const item = createRecipeModel(name)
             state.items.push(item)
         },
-        editItem: (state, action: PayloadAction<string | undefined>) => {
+        editRecipe: (state, action: PayloadAction<string | undefined>) => {
             state.editingItemId = action.payload
         },
-        addRecipeIngredient: (
-            state,
-            action: PayloadAction<{ id: string, ingredientName: string, ingredientId?: string }>
-        ) => {
+        addIngredientToRecipe: (state, action: PayloadAction<IdOwner & RecipeIngredientModel>) => {
             const {id, ingredientName, ingredientId} = action.payload
-            const item = findById(state.items, id)
-            if (item) {
-                item.ingredients.push(createRecipeIngredientModel(ingredientName, ingredientId))
+            console.log(`addIngredientToRecipe: name=${ingredientName}, id=${ingredientId}`)
+            if (ingredientName || ingredientId) {
+                const item = findById(state.items, id)
+                console.log(`addIngredientToRecipe: recipe=${item?.name}, id=${item?.id}`)
+                if (item) {
+                    item.ingredients.push({ingredientId: ingredientId, ingredientName: ingredientName})
+                    console.log(`addIngredientToRecipe: pushed`)
+                }
             }
         },
-        removeRecipeIngredient: (state, action: PayloadAction<{ id: string, recipeIngredientId: string }>) => {
-            const {id, recipeIngredientId} = action.payload
+        removeFromRecipe: (state, action: PayloadAction<IdOwner & { recipeIngredient: RecipeIngredientModel }>) => {
+            const {id, recipeIngredient} = action.payload
             const item = findById(state.items, id)
             if (item) {
-                item.ingredients = item.ingredients.filter(it => it.id !== recipeIngredientId)
+                _.remove(item.ingredients, it => it === recipeIngredient)
             }
         },
-        renameItem: renameItemReducer,
-        toggleIsFavorite: toggleIsFavoriteReducer,
-        deleteItem: deleteItemReducer,
+        renameRecipe: renameItemReducer,
+        toggleRecipeIsFavorite: toggleIsFavoriteReducer,
+        deleteRecipe: deleteItemReducer,
     },
     extraReducers: (builder) => {
         builder
             .addCase(createMeal, (state, action) => {
                 const {name, recipeId} = action.payload
-                if (recipeId && !state.items.some(equalsId(recipeId))) {
-                    const item = createRecipeModel(name, recipeId)
-                    state.items.push(item)
+                if (recipeId) {
+                    const item = findById(state.items, recipeId)
+                    if (!item) {
+                        const item = createRecipeModel(name, recipeId)
+                        state.items.push(item)
+                    }
                 }
             })
             .addDefaultCase(() => {})
     }
 })
 
-const selectItemsInput = (state: RootState) => state.recipes.items
+const selectRecipesInput = (state: RootState) => state.recipes.items
 
-export const selectItems = createSelector(
-    [selectItemsInput],
+export const selectRecipes = createSelector(
+    [selectRecipesInput],
     (items) => _.orderBy(
         items,
         ['isFavorite', 'name'],
@@ -105,31 +94,22 @@ export const selectItems = createSelector(
     )
 )
 
-export const selectItem = createSelector(
+export const selectEditingRecipe = createSelector(
     [
-        selectItemsInput,
-        (_: RootState, id: string) => id
-    ],
-    (items, id) => findById(items, id)
-)
-
-
-export const selectEditingItem = createSelector(
-    [
-        selectItemsInput,
+        selectRecipesInput,
         (state: RootState) => state.recipes.editingItemId,
     ],
     (items, editingItemId) => editingItemId && findById(items, editingItemId)
 )
 
 export const {
-    createItem,
-    editItem,
-    addRecipeIngredient,
-    removeRecipeIngredient,
-    renameItem,
-    toggleIsFavorite,
-    deleteItem,
+    createRecipe,
+    editRecipe,
+    addIngredientToRecipe,
+    removeFromRecipe,
+    renameRecipe,
+    toggleRecipeIsFavorite,
+    deleteRecipe,
 } = slice.actions
 
 export default slice.reducer

@@ -3,14 +3,21 @@ import {getSuggestions} from "./searchUtils"
 import style from "./style.module.css"
 import {BaseItem} from "./BaseItem"
 
-interface SuggestionMenuProps {
+interface SuggestionMenuProps<T extends BaseItem> {
     queryStr: string
-    suggestionItems: BaseItem[]
-    onSuggestion: (suggestion: BaseItem) => void
+    suggestionItems: T[]
+    onSuggestion: (suggestion: T) => void
     onNewSuggestion?: (suggestion: string) => void
 }
 
-const SuggestionMenu = ({queryStr, suggestionItems, onSuggestion, onNewSuggestion}: SuggestionMenuProps) => {
+const SuggestionMenu = <T extends BaseItem>(
+    {
+        queryStr,
+        suggestionItems,
+        onSuggestion,
+        onNewSuggestion
+    }: SuggestionMenuProps<T>
+) => {
     const filteredItems = useMemo(() => getSuggestions(suggestionItems, queryStr), [suggestionItems, queryStr])
 
     return (
