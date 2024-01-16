@@ -1,3 +1,5 @@
+@import url("./common-vars.css");
+
 .addItem {
     background-color: transparent;
     border: thin solid;
@@ -21,4 +23,10 @@
 .suggestionItem {
     cursor: pointer;
     padding: 5px 3px;
+}
+
+.page {
+    background-color: var(--page-color);
+    padding: var(--page-padding);
+    width: 100%;
 }

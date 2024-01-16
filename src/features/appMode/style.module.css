@@ -1,10 +1,28 @@
+@import url("../../common/common-vars.css");
+
 .appModePicker {
-    margin-bottom: 20px;
+    background-color: #ccc;
+    padding-top: var(--page-padding);
+    padding-left: var(--page-padding);
+    padding-right: var(--page-padding);
+    display: flex;
+    &:last-child {
+        margin-right: 0;
+    }
 }
 
-.enabled {
-    background-color: #cc0000;
+.appModeControl {
+    background-color: #ddd;
+    padding: 3px 10px;
+    margin-right: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
-.disabled {
-    background-color: #ccc;
+
+.appModeControl svg {
+    padding-right: 5px;
+}
+
+.appModeControl.enabled {
+    background-color: var(--page-color);
 }

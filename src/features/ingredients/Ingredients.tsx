@@ -5,6 +5,7 @@ import {createItem, selectIngredients} from "./slice"
 import AddItem from "../../common/AddItem"
 import {DraggableTags} from "../tags/DraggableTags"
 import Ingredient from "./Ingredient"
+import {Page} from "../../common/Page"
 
 export const Ingredients = () => {
     const dispatch = useAppDispatch()
@@ -15,20 +16,22 @@ export const Ingredients = () => {
     }
 
     return (
-        <div className={style.list}>
+        <Page>
             <DraggableTags/>
             <AddItem
                 placeholder={'+ new ingredient'}
                 createFromName={onCreateFromName}
             />
-            {itemList.map((item) => {
-                return (
-                    <Ingredient
-                        key={item.id}
-                        item={item}
-                    />
-                )
-            })}
-        </div>
+            <div className={style.list}>
+                {itemList.map((item) => {
+                    return (
+                        <Ingredient
+                            key={item.id}
+                            item={item}
+                        />
+                    )
+                })}
+            </div>
+        </Page>
     )
 }

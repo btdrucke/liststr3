@@ -1,4 +1,5 @@
 .list {
+    padding-top: 20px;
 }
 
 .tagStyle0 {
@@ -28,13 +29,13 @@
 
 .draggableTags {
     display: flex;
+    margin-bottom: 20px;
 }
 
 .draggableTag {
     width: fit-content;
     padding: 1px 5px;
     margin-right: 5px;
-    margin-bottom: 5px;
     border: solid thin transparent;
     border-radius: 10px;
     transition-duration: .15s;

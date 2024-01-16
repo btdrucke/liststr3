@@ -1,14 +1,17 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import {AppMode, selectAppMode, updateMode} from "./slice"
 import style from "./style.module.css"
+import {faBars, faListCheck, faTags, faUtensils} from "@fortawesome/free-solid-svg-icons"
+import {faCalendarDays} from "@fortawesome/free-regular-svg-icons"
+import {classes} from "../../common/classUtils"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 const modeDisplayData = [
-    {mode: AppMode.ManageMeals, title: "Manage Meals"},
-    {mode: AppMode.ManageRecipes, title: "Manage Recipes"},
-    {mode: AppMode.ManageRecipe, title: "Manage Recipe"},
-    {mode: AppMode.ManageIngredients, title: "Manage Ingredients"},
-    {mode: AppMode.ManageShoppingList, title: "Manage Shopping List"},
-    {mode: AppMode.ManageTags, title: "Manage Tags"},
+    {mode: AppMode.ManageShoppingList, title: "Shopping List", icon: faListCheck},
+    {mode: AppMode.ManageMeals, title: "Meals", icon: faCalendarDays},
+    {mode: AppMode.ManageRecipes, title: "Recipes", icon: faUtensils},
+    {mode: AppMode.ManageIngredients, title: "Ingredients", icon: faBars},
+    {mode: AppMode.ManageTags, title: "Tags", icon: faTags},
 ]
 
 export const AppModePicker = () => {
@@ -16,13 +19,16 @@ export const AppModePicker = () => {
     const appMode = useAppSelector(selectAppMode)
     return (
         <div className={style.appModePicker}>
-            {modeDisplayData.map(({mode, title}) => {
+            {modeDisplayData.map(({mode, title, icon}) => {
                 return (
-                    <button
+                    <div
                         key={mode}
-                        className={(appMode === mode) ? style.enabled : style.disabled}
-                        onClick={() => dispatch(updateMode(mode))}>{title}
-                    </button>
+                        className={classes(style.appModeControl, (appMode === mode) && style.enabled)}
+                        onClick={() => dispatch(updateMode(mode))}
+                    >
+                        <FontAwesomeIcon icon={icon}/>
+                        {title}
+                    </div>
                 )
             })}
         </div>

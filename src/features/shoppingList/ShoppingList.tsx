@@ -11,6 +11,7 @@ import AddItem from "../../common/AddItem"
 import {IngredientModel, selectIngredients} from "../ingredients/slice"
 import {DraggableTags} from "../tags/DraggableTags"
 import {ShoppingItem} from "./ShoppingItem"
+import {Page} from "../../common/Page"
 
 export const ShoppingList = () => {
     const dispatch = useAppDispatch()
@@ -37,7 +38,7 @@ export const ShoppingList = () => {
     const activeShoppingItems = shoppingItems.filter(item => !activeTagId || item.tagIds.some(id => id === activeTagId))
 
     return (
-        <div className={style.list}>
+        <Page>
             <DraggableTags
                 activeTagId={activeTagId}
                 onTagSelected={onTagSelected}
@@ -49,14 +50,16 @@ export const ShoppingList = () => {
                 createFromSuggestion={onCreateFromSuggestion}
                 createFromNewSuggestion={onCreateFromNewSuggestion}
             />
-            {activeShoppingItems.map((item) => {
-                return (
-                    <ShoppingItem
-                        key={item.id}
-                        item={item}
-                    />
-                )
-            })}
-        </div>
+            <div className={style.list}>
+                {activeShoppingItems.map((item) => {
+                    return (
+                        <ShoppingItem
+                            key={item.id}
+                            item={item}
+                        />
+                    )
+                })}
+            </div>
+        </Page>
     )
 }

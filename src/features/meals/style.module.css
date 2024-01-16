@@ -43,3 +43,7 @@
     text-decoration: line-through;
     opacity: 50%;
 }
+
+.tableRow input {
+    border: thin solid transparent;
+}

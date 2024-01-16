@@ -14,28 +14,30 @@ export const Recipes = () => {
     const onCreateFromName = (name: string) => dispatch(createRecipe(name))
 
     return (
-        <div className={style.list}>
+        <>
             <AddItem
                 placeholder={'+ new recipe'}
                 createFromName={onCreateFromName}
             />
-            {itemList.map((item) => {
-                return (
-                    <div
-                        key={item.id}
-                        className={style.listItem}
-                    >
-                        <IsFavoriteControl
-                            isFavorite={item.isFavorite}
-                            action={toggleRecipeIsFavorite(item.id)}/>
-                        <EditControl action={editRecipe(item.id)}/>
-                        <EditableItem
-                            origItem={item}
-                            renameItem={renameRecipe}/>
-                        <TrashControl action={deleteRecipe(item.id)}/>
-                    </div>
-                )
-            })}
-        </div>
+            <div className={style.list}>
+                {itemList.map((item) => {
+                    return (
+                        <div
+                            key={item.id}
+                            className={style.listItem}
+                        >
+                            <IsFavoriteControl
+                                isFavorite={item.isFavorite}
+                                action={toggleRecipeIsFavorite(item.id)}/>
+                            <EditControl action={editRecipe(item.id)}/>
+                            <EditableItem
+                                origItem={item}
+                                renameItem={renameRecipe}/>
+                            <TrashControl action={deleteRecipe(item.id)}/>
+                        </div>
+                    )
+                })}
+            </div>
+        </>
     )
 }

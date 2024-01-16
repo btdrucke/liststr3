@@ -5,6 +5,7 @@ import style from "./style.module.css"
 import _ from "lodash"
 import MealDay from "./MealDay"
 import {addDays, todayDatestamp} from "../../common/dateUtils"
+import {Page} from "../../common/Page"
 
 interface MealDayModel {
     datestamp: string
@@ -40,7 +41,7 @@ export const Meals = () => {
     const days = useMemo(() => calculateMealDays(today, meals), [today, meals])
 
     return (
-        <div className={style.table}>
+        <Page className={style.table}>
             {days.map(({datestamp, meals}) =>
                 <MealDay
                     key={datestamp}
@@ -48,6 +49,6 @@ export const Meals = () => {
                     meals={meals}
                 />
             )}
-        </div>
+        </Page>
     )
 }

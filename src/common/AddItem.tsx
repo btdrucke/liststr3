@@ -4,12 +4,13 @@ import style from "./style.module.css"
 import SuggestionMenu from "./SuggestionMenu"
 import {BaseItem} from "./BaseItem"
 
-interface AddItemProps<T extends BaseItem> {
+interface Props<T extends BaseItem> {
     placeholder: string
     createFromName: (name: string) => void
     suggestionItems?: T[]
     createFromSuggestion?: (suggestion: T) => void
     createFromNewSuggestion?: (name: string) => void
+    className?: string
 }
 
 const AddItem = <T extends BaseItem>(
@@ -18,8 +19,9 @@ const AddItem = <T extends BaseItem>(
         createFromName,
         suggestionItems,
         createFromSuggestion,
-        createFromNewSuggestion
-    }: AddItemProps<T>
+        createFromNewSuggestion,
+        className,
+    }: Props<T>
 ) => {
     const [queryStr, setQueryStr] = useState("")
 
@@ -87,7 +89,7 @@ const AddItem = <T extends BaseItem>(
     return (
         <>
             <input
-                className={classes(style.addItem)}
+                className={classes(style.addItem, className)}
                 placeholder={placeholder}
                 defaultValue={queryStr}
                 onKeyUp={handleOnKeyUp}
