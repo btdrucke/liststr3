@@ -46,12 +46,12 @@ export const Recipe = ({recipe}: Props) => {
                     key={index++}
                     className={style.listItem}
                 >
-                            <span>
-                                {recipeIngredient.ingredientName || (recipeIngredient.ingredientId && findById(ingredients, recipeIngredient.ingredientId)?.name)}
-                            </span>
-                    <TrashControl action={removeFromRecipe(
-                        {id: recipe.id, recipeIngredient: recipeIngredient}
-                    )}/>
+                    <span>
+                        {recipeIngredient.ingredientName || (recipeIngredient.ingredientId && findById(ingredients, recipeIngredient.ingredientId)?.name)}
+                    </span>
+                    <TrashControl
+                        action={removeFromRecipe({id: recipe.id, recipeIngredientId: recipeIngredient.id})}
+                    />
                 </div>
             ))}
         </>

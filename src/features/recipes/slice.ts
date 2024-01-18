@@ -3,10 +3,10 @@ import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
-import {deleteItemReducer, findById, IdOwner} from "../../common/IdOwner"
+import {deleteItemReducer, equalsId, findById, IdOwner} from "../../common/IdOwner"
 import {createMeal} from "../meals/slice"
 
-interface RecipeIngredientModel {
+export interface RecipeIngredientModel extends IdOwner {
     ingredientName?: string,
     ingredientId?: string,
 }
@@ -51,16 +51,16 @@ const slice = createSlice({
                 const item = findById(state.items, id)
                 console.log(`addIngredientToRecipe: recipe=${item?.name}, id=${item?.id}`)
                 if (item) {
-                    item.ingredients.push({ingredientId: ingredientId, ingredientName: ingredientName})
+                    item.ingredients.push({id: nanoid(), ingredientId: ingredientId, ingredientName: ingredientName})
                     console.log(`addIngredientToRecipe: pushed`)
                 }
             }
         },
-        removeFromRecipe: (state, action: PayloadAction<IdOwner & { recipeIngredient: RecipeIngredientModel }>) => {
-            const {id, recipeIngredient} = action.payload
+        removeFromRecipe: (state, action: PayloadAction<IdOwner & { recipeIngredientId: string }>) => {
+            const {id, recipeIngredientId} = action.payload
             const item = findById(state.items, id)
             if (item) {
-                _.remove(item.ingredients, it => it === recipeIngredient)
+                _.remove(item.ingredients, equalsId(recipeIngredientId))
             }
         },
         renameRecipe: renameItemReducer,
