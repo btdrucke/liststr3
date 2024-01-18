@@ -1,11 +1,12 @@
 import React, {useMemo, useState} from "react"
-import {MealModel, selectMeals} from "./slice"
+import {MealModel, selectAboutToAddMeal, selectMeals} from "./slice"
 import {useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
 import _ from "lodash"
 import MealDay from "./MealDay"
 import {addDays, todayDatestamp} from "../../common/dateUtils"
 import {Page} from "../../common/Page"
+import {ReviewAddShoppingItems} from "./ReviewAddShoppingItems"
 
 interface MealDayModel {
     datestamp: string
@@ -14,6 +15,7 @@ interface MealDayModel {
 
 export const Meals = () => {
     const meals = useAppSelector(selectMeals)
+    const aboutToAddMeal = useAppSelector(selectAboutToAddMeal)
     const [today, setToday] = useState(todayDatestamp)
 
     const otherToday = todayDatestamp()
@@ -41,14 +43,17 @@ export const Meals = () => {
     const days = useMemo(() => calculateMealDays(today, meals), [today, meals])
 
     return (
-        <Page className={style.table}>
-            {days.map(({datestamp, meals}) =>
-                <MealDay
-                    key={datestamp}
-                    datestamp={datestamp}
-                    meals={meals}
-                />
-            )}
-        </Page>
+        <>
+            <Page className={style.table}>
+                {days.map(({datestamp, meals}) =>
+                    <MealDay
+                        key={datestamp}
+                        datestamp={datestamp}
+                        meals={meals}
+                    />
+                )}
+            </Page>
+            {aboutToAddMeal && <ReviewAddShoppingItems aboutToAddMeal={aboutToAddMeal}/>}
+        </>
     )
 }

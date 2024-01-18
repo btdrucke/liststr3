@@ -1,7 +1,8 @@
 import React from "react"
 import EditableItem from "../../common/EditableItem"
 import {
-    addTagToShoppingItem, deleteShoppingItem,
+    addTagToShoppingItem,
+    deleteShoppingItem,
     removeTagFromShoppingItem,
     renameShoppingItem,
     ShoppingItemModel,

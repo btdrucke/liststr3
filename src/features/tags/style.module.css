@@ -1,3 +1,7 @@
+:root {
+    --tagBorderSize: 99999px;
+}
+
 .list {
     padding-top: 20px;
 }
@@ -37,7 +41,7 @@
     padding: 1px 5px;
     margin-right: 5px;
     border: solid thin transparent;
-    border-radius: 10px;
+    border-radius: var(--tagBorderSize);
     transition-duration: .15s;
 }
 
@@ -60,11 +64,10 @@
 .tagListItem {
     width: fit-content;
     padding: 1px 5px;
-    border-radius: 10px;
+    border-radius: var(--tagBorderSize);
     margin-right: 5px;
     font-size: smaller;
-}
-
-.tagListItem :first-child {
-    padding-left: 10px;
+    & :first-child {
+        padding-left: 10px;
+    }
 }

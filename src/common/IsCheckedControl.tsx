@@ -3,17 +3,18 @@ import React from "react"
 import {useAppDispatch} from "../app/hooks"
 import {AnyAction} from "@reduxjs/toolkit"
 import {faSquare, faSquareCheck} from "@fortawesome/free-regular-svg-icons"
+import {faSquareMinus} from "@fortawesome/free-solid-svg-icons"
 
-interface IsCheckedControlProps {
-    isChecked: boolean
+interface Props {
+    isChecked: boolean | undefined
     action: AnyAction
 }
 
-const IsCheckedControl = ({isChecked, action}: IsCheckedControlProps) => {
+const IsCheckedControl = ({isChecked, action}: Props) => {
     const dispatch = useAppDispatch()
     return (
         <FontAwesomeIcon
-            icon={isChecked ? faSquareCheck : faSquare}
+            icon={(isChecked === undefined) ? faSquareMinus : (isChecked ? faSquareCheck : faSquare)}
             onClick={() => dispatch(action)}
         />
     )

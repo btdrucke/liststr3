@@ -5,6 +5,7 @@ import {deleteItemReducer} from "../../common/IdOwner"
 import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
 import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 import {IngredientModel} from "../ingredients/slice"
+import {NameOwner} from "../../common/NameOwner"
 
 export interface ShoppingItemModel extends BaseItem, IsChecked, TagsOwner {
     ingredientId?: string,
@@ -53,11 +54,11 @@ const slice = createSlice({
             state.items.push(item)
         },
         createShoppingItemsFromMeal: (state, action: PayloadAction<{
-            ingredientNames: string[],
+            ingredientNames: NameOwner[],
             ingredients: IngredientModel[]
         }>) => {
             const {ingredientNames, ingredients} = action.payload
-            ingredientNames.forEach(name => state.items.push(createModelFromName(name)))
+            ingredientNames.forEach(({name}) => state.items.push(createModelFromName(name)))
             ingredients.forEach(ingredient => state.items.push(createModelFromIngredient(ingredient)))
         },
         addTagToShoppingItem: addTagReducer,
