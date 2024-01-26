@@ -2,10 +2,11 @@ import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolk
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
-import {deleteItemReducer, equalsId, IdOwner} from "../../common/IdOwner"
+import {equalsId, IdOwner} from "../../common/IdOwner"
 import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
 import {NameOwner} from "../../common/NameOwner"
 import {IngredientModel} from "../ingredients/slice"
+import {deleteItemReducer} from "../../common/IdOwnerRedux"
 
 export interface MealModel extends BaseItem, IsChecked {
     readonly datestamp: string, //YYYY-MM-DD
@@ -45,7 +46,7 @@ const slice = createSlice({
         },
         reviewAddShoppingItems: (
             state,
-            action: PayloadAction<NameOwner & {ingredientNames: NameOwner[], ingredients: IngredientModel[]}>
+            action: PayloadAction<NameOwner & { ingredientNames: NameOwner[], ingredients: IngredientModel[] }>
         ) => {
             const {name, ingredientNames, ingredients} = action.payload
             state.aboutToAddMeal = {
@@ -59,7 +60,7 @@ const slice = createSlice({
         },
         confirmAddShoppingItems: (
             state,
-            action: PayloadAction<{ingredientNames: NameOwner[], ingredients: IngredientModel[]}>
+            action: PayloadAction<{ ingredientNames: NameOwner[], ingredients: IngredientModel[] }>
         ) => {
             state.aboutToAddMeal = undefined
         },

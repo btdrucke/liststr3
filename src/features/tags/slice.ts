@@ -2,8 +2,8 @@ import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolk
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import style from "./style.module.css"
 import {RootState} from "../../app/store"
-import {deleteItemReducer, findById} from "../../common/IdOwner"
 import {NameOwner} from "../../common/NameOwner"
+import {deleteItemReducer, selectItemsByIds} from "../../common/IdOwnerRedux"
 
 export interface TagModel extends BaseItem {
     readonly color: string;
@@ -48,13 +48,13 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createItem: (state, action: PayloadAction<NameOwner>) => {
+        createTag: (state, action: PayloadAction<NameOwner>) => {
             const {name} = action.payload
             const item = createTagModel(name, styleForNewTag(state.items))
             state.items.push(item)
         },
-        renameItem: renameItemReducer,
-        deleteItem: deleteItemReducer,
+        renameTag: renameItemReducer,
+        deleteTag: deleteItemReducer,
     }
 })
 
@@ -65,23 +65,12 @@ export const selectTags = createSelector(
     (items) => items
 )
 
-export const selectTagsByIds = createSelector(
-    [
-        selectTagsInput,
-        (_: RootState, ids: string[]) => ids
-    ],
-    (items, ids) => {
-        return ids.flatMap(id => {
-            const item = findById(items, id)
-            return (item === undefined) ? [] : [item]
-        })
-    }
-)
+export const selectTagsByIds = selectItemsByIds(selectTagsInput)
 
 export const {
-    createItem,
-    renameItem,
-    deleteItem,
+    createTag,
+    renameTag,
+    deleteTag,
 } = slice.actions
 
 export default slice.reducer

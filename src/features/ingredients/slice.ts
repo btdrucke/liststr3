@@ -3,11 +3,12 @@ import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
-import {deleteItemReducer, findById} from "../../common/IdOwner"
+import {findById} from "../../common/IdOwner"
 import {NameOwner} from "../../common/NameOwner"
 import {createShoppingItemFromNewIngredient} from "../shoppingList/slice"
 import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 import {addIngredientToRecipe} from "../recipes/slice"
+import {deleteItemReducer, selectItemsByIds} from "../../common/IdOwnerRedux"
 
 export interface IngredientModel extends BaseItem, IsFavorite, TagsOwner {
 }
@@ -37,16 +38,16 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createItem: (state, action: PayloadAction<NameOwner>) => {
+        createIngredient: (state, action: PayloadAction<NameOwner>) => {
             const {name} = action.payload
             const item = createModel(name)
             state.items.push(item)
         },
-        addTag: addTagReducer,
-        removeTag: removeTagReducer,
-        renameItem: renameItemReducer,
-        toggleIsFavorite: toggleIsFavoriteReducer,
-        deleteItem: deleteItemReducer,
+        addTagToIngredient: addTagReducer,
+        removeTagFromIngredient: removeTagReducer,
+        renameIngredient: renameItemReducer,
+        toggleIngredientIsFavorite: toggleIsFavoriteReducer,
+        deleteIngredient: deleteItemReducer,
     },
     extraReducers: (builder) => {
         builder
@@ -79,26 +80,15 @@ export const selectIngredients = createSelector(
     )
 )
 
-export const selectIngredientsByIds = createSelector(
-    [
-        selectIngredientsInput,
-        (_: RootState, ids: string[]) => ids
-    ],
-    (items, ids) => {
-        return ids.flatMap(id => {
-            const item = findById(items, id)
-            return (item === undefined) ? [] : [item]
-        })
-    }
-)
+export const selectIngredientsByIds = selectItemsByIds(selectIngredientsInput)
 
 export const {
-    createItem,
-    addTag,
-    removeTag,
-    renameItem,
-    toggleIsFavorite,
-    deleteItem,
+    createIngredient,
+    addTagToIngredient,
+    removeTagFromIngredient,
+    renameIngredient,
+    toggleIngredientIsFavorite,
+    deleteIngredient,
 } = slice.actions
 
 export default slice.reducer

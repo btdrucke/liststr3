@@ -1,7 +1,7 @@
 import React from "react"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import EditableItem from "../../common/EditableItem"
-import {createItem, deleteItem, renameItem, selectTags} from "./slice"
+import {createTag, deleteTag, renameTag, selectTags} from "./slice"
 import AddItem from "../../common/AddItem"
 import {TrashControl} from "../../common/IconControls"
 import {Page} from "../../common/Page"
@@ -12,7 +12,7 @@ export const TagsScreen = () => {
     const items = useAppSelector(selectTags)
 
     const onCreateFromName = (name: string) => {
-        dispatch(createItem({name: name}))
+        dispatch(createTag({name: name}))
     }
 
     return (
@@ -29,9 +29,9 @@ export const TagsScreen = () => {
                             className={item.color}>
                             <EditableItem
                                 origItem={item}
-                                renameItem={renameItem}
+                                renameItem={renameTag}
                                 extraClass={item.color}/>
-                            <TrashControl action={deleteItem(item.id)}/>
+                            <TrashControl action={deleteTag(item.id)}/>
                         </div>
                     )
                 })}

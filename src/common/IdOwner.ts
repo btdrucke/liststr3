@@ -1,5 +1,3 @@
-import {Draft, PayloadAction} from "@reduxjs/toolkit"
-
 type Id = string
 
 export interface IdOwner {
@@ -18,17 +16,6 @@ export function findIndexById<Type extends IdOwner>(elems: Array<Type>, id: Id):
     return elems.findIndex(equalsId(id))
 }
 
-export function ids<Type extends IdOwner>(elems: Array<Type>): string[] {
+export function ids<Type extends IdOwner>(elems: Array<Type>): Id[] {
     return elems.map(item => item.id)
-}
-
-export const deleteItemReducer = (
-    state: Draft<{ items: IdOwner[] }>,
-    action: PayloadAction<string>
-) => {
-    const id = action.payload
-    const pos = findIndexById(state.items, id)
-    if (pos >= 0) {
-        state.items.splice(pos, 1)
-    }
 }

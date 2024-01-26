@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import {AppMode, selectAppMode, updateMode} from "./slice"
+import {AppMode, selectAppMode, updateAppMode} from "./slice"
 import style from "./style.module.css"
 import {faBars, faListCheck, faTags, faUtensils} from "@fortawesome/free-solid-svg-icons"
 import {faCalendarDays} from "@fortawesome/free-regular-svg-icons"
@@ -24,7 +24,7 @@ export const AppModePicker = () => {
                     <div
                         key={mode}
                         className={classes(style.appModeControl, (appMode === mode) && style.enabled)}
-                        onClick={() => dispatch(updateMode(mode))}
+                        onClick={() => dispatch(updateAppMode(mode))}
                     >
                         <FontAwesomeIcon icon={icon}/>
                         {title}

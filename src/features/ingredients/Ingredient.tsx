@@ -1,7 +1,14 @@
 import React from "react"
 import EditableItem from "../../common/EditableItem"
 import IsFavoriteControl from "../../common/IsFavoriteControl"
-import {addTag, deleteItem, IngredientModel, removeTag, renameItem, toggleIsFavorite} from "./slice"
+import {
+    addTagToIngredient,
+    deleteIngredient,
+    IngredientModel,
+    removeTagFromIngredient,
+    renameIngredient,
+    toggleIngredientIsFavorite
+} from "./slice"
 import {TrashControl} from "../../common/IconControls"
 import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
@@ -20,7 +27,7 @@ const Ingredient = ({item}: Props) => {
     const itemTags = useAppSelector(state => selectTagsByIds(state, item.tagIds))
 
     const onDrop = (draggingItem: TagModel) => {
-        dispatch(addTag({itemOwnerId: item.id, tagId: draggingItem.id}))
+        dispatch(addTagToIngredient({itemOwnerId: item.id, tagId: draggingItem.id}))
     }
 
     const [{isOver, canDrop}, drop] = useDrop(
@@ -43,17 +50,17 @@ const Ingredient = ({item}: Props) => {
         >
             <IsFavoriteControl
                 isFavorite={item.isFavorite}
-                action={toggleIsFavorite(item.id)}/>
+                action={toggleIngredientIsFavorite(item.id)}/>
             <EditableItem
                 origItem={item}
-                renameItem={renameItem}/>
+                renameItem={renameIngredient}/>
             {itemTags && (
                 <TagList
                     item={item}
-                    onRemoveTag={removeTag}
+                    onRemoveTag={removeTagFromIngredient}
                 />
             )}
-            <TrashControl action={deleteItem(item.id)}/>
+            <TrashControl action={deleteIngredient(item.id)}/>
         </div>
     )
 }

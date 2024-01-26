@@ -1,11 +1,11 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {RootState} from "../../app/store"
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
-import {deleteItemReducer} from "../../common/IdOwner"
 import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
 import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 import {IngredientModel} from "../ingredients/slice"
 import {NameOwner} from "../../common/NameOwner"
+import {deleteItemReducer} from "../../common/IdOwnerRedux"
 
 export interface ShoppingItemModel extends BaseItem, IsChecked, TagsOwner {
     ingredientId?: string,

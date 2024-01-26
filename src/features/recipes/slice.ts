@@ -3,8 +3,9 @@ import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
-import {deleteItemReducer, equalsId, findById, IdOwner} from "../../common/IdOwner"
+import {equalsId, findById, IdOwner} from "../../common/IdOwner"
 import {createMeal} from "../meals/slice"
+import {deleteItemReducer, selectItemById} from "../../common/IdOwnerRedux"
 
 export interface RecipeIngredientModel extends IdOwner {
     ingredientName?: string,
@@ -94,13 +95,7 @@ export const selectRecipes = createSelector(
     )
 )
 
-export const selectRecipe = createSelector(
-    [
-        selectRecipesInput,
-        (_: RootState, id?: string) => id
-    ],
-    (items, id) => (id && findById(items, id)) || undefined
-)
+export const selectRecipe = selectItemById(selectRecipesInput)
 
 export const selectEditingRecipe = createSelector(
     [
