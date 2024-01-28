@@ -8,7 +8,7 @@ import {NameOwner} from "../../common/NameOwner"
 import {createShoppingItemFromNewIngredient} from "../shoppingList/slice"
 import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 import {addIngredientToRecipe} from "../recipes/slice"
-import {deleteItemReducer, selectItemsByIds} from "../../common/IdOwnerRedux"
+import {deleteItemReducer, selectItemById, selectItemsByIds} from "../../common/IdOwnerRedux"
 
 export interface IngredientModel extends BaseItem, IsFavorite, TagsOwner {
 }
@@ -38,8 +38,8 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createIngredient: (state, action: PayloadAction<NameOwner>) => {
-            const {name} = action.payload
+        createIngredient: (state, action: PayloadAction<string>) => {
+            const name = action.payload
             const item = createModel(name)
             state.items.push(item)
         },
@@ -79,6 +79,8 @@ export const selectIngredients = createSelector(
         ['desc', 'desc', 'asc']
     )
 )
+
+export const selectIngredientById = selectItemById(selectIngredientsInput)
 
 export const selectIngredientsByIds = selectItemsByIds(selectIngredientsInput)
 

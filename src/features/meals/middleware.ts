@@ -1,12 +1,12 @@
 import {Middleware} from "@reduxjs/toolkit"
-import {selectRecipe} from "../recipes/slice"
+import {selectRecipeById} from "../recipes/slice"
 import {createMeal, reviewAddShoppingItems} from "./slice"
 import {selectIngredientsByIds} from "../ingredients/slice"
 
 export const mealMiddleware: Middleware = storeApi => next => action => {
     let result = next(action)
     if (action.type === createMeal.type) {
-        const recipe = selectRecipe(storeApi.getState(), action.payload.recipeId)
+        const recipe = selectRecipeById(storeApi.getState(), action.payload.recipeId)
         if (recipe) {
             const ingredientNames = recipe.ingredients.flatMap(it =>
                 (it.ingredientName !== undefined && it.ingredientId === undefined) ? [{name: it.ingredientName}] : []

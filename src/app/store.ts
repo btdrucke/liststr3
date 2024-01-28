@@ -8,6 +8,7 @@ import shoppingListReducer from '../features/shoppingList/slice'
 import logger from 'redux-logger'
 import {shoppingListMiddleware} from "../features/shoppingList/middleware"
 import {mealMiddleware} from "../features/meals/middleware"
+import {recipeMiddleware} from "../features/recipes/middleware"
 
 const store = configureStore({
     reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
         .concat(logger)
         .concat(shoppingListMiddleware)
         .concat(mealMiddleware)
+        .concat(recipeMiddleware)
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

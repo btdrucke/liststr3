@@ -6,6 +6,7 @@ import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
 import {equalsId, findById, IdOwner} from "../../common/IdOwner"
 import {createMeal} from "../meals/slice"
 import {deleteItemReducer, selectItemById} from "../../common/IdOwnerRedux"
+import {deleteIngredient, IngredientModel} from "../ingredients/slice"
 
 export interface RecipeIngredientModel extends IdOwner {
     ingredientName?: string,
@@ -45,15 +46,12 @@ const slice = createSlice({
         editRecipe: (state, action: PayloadAction<string | undefined>) => {
             state.editingItemId = action.payload
         },
-        addIngredientToRecipe: (state, action: PayloadAction<IdOwner & RecipeIngredientModel>) => {
+        addIngredientToRecipe: (state, action: PayloadAction<RecipeIngredientModel>) => {
             const {id, ingredientName, ingredientId} = action.payload
-            console.log(`addIngredientToRecipe: name=${ingredientName}, id=${ingredientId}`)
             if (ingredientName || ingredientId) {
                 const item = findById(state.items, id)
-                console.log(`addIngredientToRecipe: recipe=${item?.name}, id=${item?.id}`)
                 if (item) {
                     item.ingredients.push({id: nanoid(), ingredientId: ingredientId, ingredientName: ingredientName})
-                    console.log(`addIngredientToRecipe: pushed`)
                 }
             }
         },
@@ -63,6 +61,17 @@ const slice = createSlice({
             if (item) {
                 _.remove(item.ingredients, equalsId(recipeIngredientId))
             }
+        },
+        deleteIngredientFromAllRecipes: (state, action: PayloadAction<IngredientModel>) => {
+            const ingredient = action.payload
+            state.items.forEach(recipe => {
+                recipe.ingredients.forEach(recipeIngredient => {
+                    if (recipeIngredient.ingredientId === ingredient.id) {
+                        recipeIngredient.ingredientName = ingredient.name
+                        recipeIngredient.ingredientId = undefined
+                    }
+                })
+            })
         },
         renameRecipe: renameItemReducer,
         toggleRecipeIsFavorite: toggleIsFavoriteReducer,
@@ -95,7 +104,7 @@ export const selectRecipes = createSelector(
     )
 )
 
-export const selectRecipe = selectItemById(selectRecipesInput)
+export const selectRecipeById = selectItemById(selectRecipesInput)
 
 export const selectEditingRecipe = createSelector(
     [
@@ -110,6 +119,7 @@ export const {
     editRecipe,
     addIngredientToRecipe,
     removeFromRecipe,
+    deleteIngredientFromAllRecipes,
     renameRecipe,
     toggleRecipeIsFavorite,
     deleteRecipe,
