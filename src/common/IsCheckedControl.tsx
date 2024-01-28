@@ -2,8 +2,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import React from "react"
 import {useAppDispatch} from "../app/hooks"
 import {AnyAction} from "@reduxjs/toolkit"
-import {faSquare, faSquareCheck} from "@fortawesome/free-regular-svg-icons"
-import {faSquareMinus} from "@fortawesome/free-solid-svg-icons"
+import {faSquare, faSquareCheck, faSquareMinus} from "@fortawesome/free-regular-svg-icons"
 
 interface Props {
     isChecked: boolean | undefined

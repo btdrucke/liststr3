@@ -41,7 +41,7 @@ export const Recipe = ({recipe}: Props) => {
                 createFromSuggestion={onCreateFromSuggestion}
                 createFromNewSuggestion={onCreateFromNewSuggestion}
             />
-            {recipe.ingredients.map(recipeIngredient => (
+            {recipe.recipeIngredients.map(recipeIngredient => (
                 <div
                     key={index++}
                     className={style.listItem}

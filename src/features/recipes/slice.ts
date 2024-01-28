@@ -6,7 +6,7 @@ import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
 import {equalsId, findById, IdOwner} from "../../common/IdOwner"
 import {createMeal} from "../meals/slice"
 import {deleteItemReducer, selectItemById} from "../../common/IdOwnerRedux"
-import {deleteIngredient, IngredientModel} from "../ingredients/slice"
+import {IngredientModel} from "../ingredients/slice"
 
 export interface RecipeIngredientModel extends IdOwner {
     ingredientName?: string,
@@ -14,7 +14,7 @@ export interface RecipeIngredientModel extends IdOwner {
 }
 
 export interface RecipeModel extends BaseItem, IsFavorite {
-    ingredients: RecipeIngredientModel[]
+    recipeIngredients: RecipeIngredientModel[]
 }
 
 function createRecipeModel(name: string, id?: string): RecipeModel {
@@ -22,7 +22,7 @@ function createRecipeModel(name: string, id?: string): RecipeModel {
         name: name,
         id: id || nanoid(),
         isFavorite: false,
-        ingredients: [],
+        recipeIngredients: [],
     }
 }
 
@@ -51,7 +51,7 @@ const slice = createSlice({
             if (ingredientName || ingredientId) {
                 const item = findById(state.items, id)
                 if (item) {
-                    item.ingredients.push({id: nanoid(), ingredientId: ingredientId, ingredientName: ingredientName})
+                    item.recipeIngredients.push({id: nanoid(), ingredientId: ingredientId, ingredientName: ingredientName})
                 }
             }
         },
@@ -59,13 +59,13 @@ const slice = createSlice({
             const {id, recipeIngredientId} = action.payload
             const item = findById(state.items, id)
             if (item) {
-                _.remove(item.ingredients, equalsId(recipeIngredientId))
+                _.remove(item.recipeIngredients, equalsId(recipeIngredientId))
             }
         },
         deleteIngredientFromAllRecipes: (state, action: PayloadAction<IngredientModel>) => {
             const ingredient = action.payload
             state.items.forEach(recipe => {
-                recipe.ingredients.forEach(recipeIngredient => {
+                recipe.recipeIngredients.forEach(recipeIngredient => {
                     if (recipeIngredient.ingredientId === ingredient.id) {
                         recipeIngredient.ingredientName = ingredient.name
                         recipeIngredient.ingredientId = undefined

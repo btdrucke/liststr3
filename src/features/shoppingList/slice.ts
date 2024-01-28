@@ -6,6 +6,7 @@ import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 import {IngredientModel} from "../ingredients/slice"
 import {NameOwner} from "../../common/NameOwner"
 import {deleteItemReducer} from "../../common/IdOwnerRedux"
+import {AboutToAddMealModel} from "../meals/slice"
 
 export interface ShoppingItemModel extends BaseItem, IsChecked, TagsOwner {
     ingredientId?: string,
@@ -20,7 +21,7 @@ function createModelFromName(name: string): ShoppingItemModel {
     }
 }
 
-function createModelFromIngredient(ingredient: IngredientModel): ShoppingItemModel {
+function createModelFromIngredient(ingredient: NameOwner & TagsOwner): ShoppingItemModel {
     return {
         name: ingredient.name,
         tagIds: ingredient.tagIds,
@@ -49,17 +50,21 @@ const slice = createSlice({
             state.items.push(item)
         },
         // Shopping item is a copy of the current state of an ingredient, but then can be independently modified.
-        createShoppingItemFromIngredient: (state, action: PayloadAction<IngredientModel>) => {
+        createShoppingItemFromIngredient: (state, action: PayloadAction<NameOwner & TagsOwner>) => {
             const item = createModelFromIngredient(action.payload)
             state.items.push(item)
         },
-        createShoppingItemsFromMeal: (state, action: PayloadAction<{
-            ingredientNames: NameOwner[],
-            ingredients: IngredientModel[]
-        }>) => {
-            const {ingredientNames, ingredients} = action.payload
-            ingredientNames.forEach(({name}) => state.items.push(createModelFromName(name)))
-            ingredients.forEach(ingredient => state.items.push(createModelFromIngredient(ingredient)))
+        createShoppingItemsFromMeal: (state, action: PayloadAction<AboutToAddMealModel>) => {
+            console.log("createShoppingItemsFromMeal()")
+            action.payload.recipeIngredients.forEach(recipeIngredient => {
+                if (recipeIngredient.isChecked) {
+                    if (recipeIngredient.ingredient) {
+                        state.items.push(createModelFromIngredient(recipeIngredient.ingredient))
+                    } else if (recipeIngredient.ingredientName) {
+                        state.items.push(createModelFromName(recipeIngredient.ingredientName))
+                    }
+                }
+            })
         },
         addTagToShoppingItem: addTagReducer,
         removeTagFromShoppingItem: removeTagReducer,

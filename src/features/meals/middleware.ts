@@ -1,27 +1,28 @@
 import {Middleware} from "@reduxjs/toolkit"
 import {selectRecipeById} from "../recipes/slice"
-import {createMeal, reviewAddShoppingItems} from "./slice"
-import {selectIngredientsByIds} from "../ingredients/slice"
+import {AboutToAddRecipeIngredientModel, createMeal, reviewAddShoppingItems} from "./slice"
+import {selectIngredientById} from "../ingredients/slice"
 
 export const mealMiddleware: Middleware = storeApi => next => action => {
     let result = next(action)
     if (action.type === createMeal.type) {
-        const recipe = selectRecipeById(storeApi.getState(), action.payload.recipeId)
-        if (recipe) {
-            const ingredientNames = recipe.ingredients.flatMap(it =>
-                (it.ingredientName !== undefined && it.ingredientId === undefined) ? [{name: it.ingredientName}] : []
+        const state = storeApi.getState()
+        const recipe = selectRecipeById(state, action.payload.recipeId)
+        if (recipe && recipe.recipeIngredients.length > 0) {
+            const recipeIngredients: AboutToAddRecipeIngredientModel[] = recipe.recipeIngredients.map(it => {
+                return {
+                    id: it.id,
+                    isChecked: false,
+                    ingredientName: it.ingredientName,
+                    ingredient: selectIngredientById(state, it.ingredientId)
+                }
+            })
+            storeApi.dispatch(
+                reviewAddShoppingItems({
+                    name: action.payload.name,
+                    recipeIngredients: recipeIngredients,
+                })
             )
-            const ingredientIds = recipe.ingredients.flatMap(it => (it.ingredientId !== undefined) ? [it.ingredientId] : [])
-            const ingredients = selectIngredientsByIds(storeApi.getState(), ingredientIds)
-            if (ingredientNames.length || ingredients.length) {
-                storeApi.dispatch(
-                    reviewAddShoppingItems({
-                        name: action.payload.name,
-                        ingredientNames: ingredientNames,
-                        ingredients: ingredients
-                    })
-                )
-            }
         }
     }
     return result

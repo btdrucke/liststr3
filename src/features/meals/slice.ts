@@ -2,27 +2,31 @@ import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolk
 import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
-import {equalsId, IdOwner} from "../../common/IdOwner"
-import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
+import {equalsId, findById, IdOwner} from "../../common/IdOwner"
+import {isChecked, IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
 import {NameOwner} from "../../common/NameOwner"
-import {IngredientModel} from "../ingredients/slice"
 import {deleteItemReducer} from "../../common/IdOwnerRedux"
+import {TagsOwner} from "../tags/TagsOwner"
 
 export interface MealModel extends BaseItem, IsChecked {
     readonly datestamp: string, //YYYY-MM-DD
     readonly recipeId?: string,
 }
 
-export interface AboutToAddMealModel extends NameOwner {
-    ingredientNames: (IsChecked & NameOwner)[],
-    ingredients: (IsChecked & IngredientModel)[],
+export interface AboutToAddRecipeIngredientModel extends IdOwner, IsChecked {
+    ingredientName?: string
+    ingredient?: BaseItem & TagsOwner
 }
 
-function createModel(name: string, datestamp: string, recipe?: string): MealModel {
+export interface AboutToAddMealModel extends NameOwner {
+    recipeIngredients: AboutToAddRecipeIngredientModel[]
+}
+
+function createModel(name: string, datestamp: string, recipeId?: string): MealModel {
     return {
         name: name,
         datestamp: datestamp,
-        recipeId: recipe,  // For future linking from meal to recipe in the UI.
+        recipeId: recipeId,  // For future linking from meal to recipe in the UI.
         id: nanoid(),
         isChecked: false,
     }
@@ -32,9 +36,9 @@ const slice = createSlice({
     name: 'meals',
     initialState: {
         items: [
-            createModel("Tacos", '2024-01-12'),
-            createModel("Lentil Soup", '2024-01-14'),
-            createModel("Channa + cauliflower", '2024-01-16'),
+            createModel("Tacos", '2024-01-28'),
+            createModel("Lentil Soup", '2024-01-29'),
+            createModel("Channa + cauliflower", '2024-01-30'),
         ],
         aboutToAddMeal: undefined as (AboutToAddMealModel | undefined),
     },
@@ -44,24 +48,26 @@ const slice = createSlice({
             const item = createModel(name, datestamp, recipeId)
             state.items.push(item)
         },
-        reviewAddShoppingItems: (
-            state,
-            action: PayloadAction<NameOwner & { ingredientNames: NameOwner[], ingredients: IngredientModel[] }>
-        ) => {
-            const {name, ingredientNames, ingredients} = action.payload
-            state.aboutToAddMeal = {
-                name: name,
-                ingredientNames: ingredientNames.map(it => ({...it, isChecked: false})),
-                ingredients: ingredients.map(it => ({...it, isChecked: false})),
-            }
-        },
-        updateAddShoppingItems: (state, action: PayloadAction<AboutToAddMealModel>) => {
+        reviewAddShoppingItems: (state, action: PayloadAction<AboutToAddMealModel>) => {
             state.aboutToAddMeal = action.payload
         },
-        confirmAddShoppingItems: (
-            state,
-            action: PayloadAction<{ ingredientNames: NameOwner[], ingredients: IngredientModel[] }>
-        ) => {
+        toggleAddShoppingItem: (state, action: PayloadAction<string>) => {
+            const recipeIngredientId = action.payload
+            if (state.aboutToAddMeal) {
+                const recipeIngredient = findById(state.aboutToAddMeal.recipeIngredients, recipeIngredientId)
+                if (recipeIngredient) {
+                    recipeIngredient.isChecked = !recipeIngredient.isChecked
+                }
+            }
+        },
+        toggleAllAddShoppingItems: (state) => {
+            if (state.aboutToAddMeal) {
+                const areAllChecked = state.aboutToAddMeal.recipeIngredients.every(isChecked())
+                const newIsCheckedValue = !areAllChecked
+                state.aboutToAddMeal.recipeIngredients.forEach(it => it.isChecked = newIsCheckedValue)
+            }
+        },
+        confirmAddShoppingItems: (state) => {
             state.aboutToAddMeal = undefined
         },
         rescheduleMeal: (state, action: PayloadAction<IdOwner & { datestamp: string }>) => {
@@ -94,6 +100,8 @@ export const selectAboutToAddMeal = createSelector(
 export const {
     createMeal,
     reviewAddShoppingItems,
+    toggleAddShoppingItem,
+    toggleAllAddShoppingItems,
     confirmAddShoppingItems,
     rescheduleMeal,
     renameMeal,

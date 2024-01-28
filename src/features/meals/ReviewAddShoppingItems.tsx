@@ -1,5 +1,5 @@
 import {Dialog} from "../../common/Dialog"
-import {AboutToAddMealModel, confirmAddShoppingItems} from "./slice"
+import {AboutToAddMealModel, confirmAddShoppingItems, toggleAddShoppingItem, toggleAllAddShoppingItems} from "./slice"
 import IsCheckedControl from "../../common/IsCheckedControl"
 import {isChecked, isNotChecked} from "../../common/IsChecked"
 import {DoneControl} from "../../common/IconControls"
@@ -10,41 +10,33 @@ interface Props {
 
 export const ReviewAddShoppingItems = ({aboutToAddMeal}: Props) => {
 
-    const areSomeChecked = aboutToAddMeal.ingredientNames.some(isChecked()) ||
-        aboutToAddMeal.ingredients.some(isChecked())
-    const areSomeUnchecked = aboutToAddMeal.ingredientNames.some(isNotChecked()) ||
-        aboutToAddMeal.ingredients.some(isNotChecked())
+    const areSomeChecked = aboutToAddMeal.recipeIngredients.some(isChecked())
+    const areSomeUnchecked = aboutToAddMeal.recipeIngredients.some(isNotChecked())
     const checkState = (areSomeChecked === areSomeUnchecked) ? undefined : areSomeChecked
 
-    let index = 0
     return (
         <Dialog>
             <span>
-                About to add {aboutToAddMeal.name}!
+                Add from "{aboutToAddMeal.name}" to your shopping list?
             </span>
-            <DoneControl action={confirmAddShoppingItems(aboutToAddMeal)}/>
+            <DoneControl action={confirmAddShoppingItems()}/>
+            <br/>
             <IsCheckedControl
                 isChecked={checkState}
-                action={{type: "nil"}}
+                action={toggleAllAddShoppingItems()}
             />
-            {aboutToAddMeal.ingredientNames.map(ingredientName => (
-                <div key={++index}>
-                    <IsCheckedControl
-                        isChecked={ingredientName.isChecked}
-                        action={{type: "nil"}}
-                    />
-                    {ingredientName.name}
-                </div>
-            ))}
-            {aboutToAddMeal.ingredients.map(ingredient => (
-                <div key={ingredient.id}>
-                    <IsCheckedControl
-                        isChecked={ingredient.isChecked}
-                        action={{type: "nil"}}
-                    />
-                    {ingredient.name}
-                </div>
-            ))}
+            {aboutToAddMeal.recipeIngredients.map(recipeIngredient => {
+                const name = recipeIngredient.ingredientName || recipeIngredient.ingredient?.name
+                return name && (
+                    <div key={recipeIngredient.id}>
+                        <IsCheckedControl
+                            isChecked={recipeIngredient.isChecked}
+                            action={toggleAddShoppingItem(recipeIngredient.id)}
+                        />
+                        {name}
+                    </div>
+                )
+            })}
         </Dialog>
     )
 }

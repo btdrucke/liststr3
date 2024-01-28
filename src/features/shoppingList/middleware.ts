@@ -1,14 +1,15 @@
 import {Middleware} from "@reduxjs/toolkit"
 import {createShoppingItemsFromMeal} from "./slice"
-import {confirmAddShoppingItems} from "../meals/slice"
+import {confirmAddShoppingItems, selectAboutToAddMeal} from "../meals/slice"
 
 export const shoppingListMiddleware: Middleware = storeApi => next => action => {
-    let result = next(action)
     if (action.type === confirmAddShoppingItems.type) {
-        const {ingredientNames, ingredients} = action.payload
-        storeApi.dispatch(
-            createShoppingItemsFromMeal({ingredientNames: ingredientNames, ingredients: ingredients})
-        )
+        console.log("Confirmed add shopping items")
+        const meal = selectAboutToAddMeal(storeApi.getState())
+        console.log(`Found meal: ${JSON.stringify(meal)}`)
+        if (meal) {
+            storeApi.dispatch(createShoppingItemsFromMeal(meal))
+        }
     }
-    return result
+    return next(action)
 }
