@@ -1,4 +1,3 @@
-import {AppModePicker} from "../features/appMode/AppModePicker"
 import {useAppSelector} from "./hooks"
 import {AppMode} from "../features/appMode/slice"
 import {ShoppingList} from "../features/shoppingList/ShoppingList"
@@ -12,7 +11,6 @@ const App = () => {
     const appMode = useAppSelector((state) => state.appMode.value)
     return (
         <>
-            <AppModePicker/>
             {appMode === AppMode.ManageShoppingList && <ShoppingList/>}
             {appMode === AppMode.ManageIngredients && <Ingredients/>}
             {appMode === AppMode.ManageTags && <TagsScreen/>}

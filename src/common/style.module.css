@@ -1,5 +1,9 @@
 @import url("./common-vars.css");
 
+html * {
+    overscroll-behavior: none;
+}
+
 .addItem {
     background-color: transparent;
     border: thin solid;
@@ -13,9 +17,9 @@
 .suggestionMenu {
     background-color: white;
     border: solid thin black;
-    overflow-y:auto;
-    overflow-x:hidden;
-    max-height:150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 150px;
     position: fixed;
     box-shadow: 0 3px 5px 3px #0004;
 }
@@ -25,12 +29,26 @@
     padding: 5px 3px;
 }
 
+.outerPage {
+    background-color: var(--outer-page-color);
+    width: 100vw;
+    height: 100vh;
+}
+
 .page {
-    /*background-color: var(--page-color);*/
-    padding: var(--page-padding);
-    width: 100%;
-    overflow-y:auto;
-    overflow-x:hidden;
+    background-color: var(--page-color);
+    margin: 0 calc((100vw - var(--page-width)) / 2);
+    width: var(--page-width);
+    height: 100vh;
+}
+
+.innerPage {
+    margin: var(--page-padding) 0;
+    padding: 0 var(--page-padding);
+    height: calc(100% - 40px - 50px);
+    overscroll-behavior-y: contain;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .dialog {
@@ -62,7 +80,7 @@
     padding: var(--page-padding);
     border: solid thin black;
     box-shadow: 0 3px 5px 3px #0004;
-    overflow-y:auto;
-    overflow-x:hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
