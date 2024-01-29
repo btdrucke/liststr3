@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import {DndProvider} from "react-dnd"
 import {HTML5Backend} from "react-dnd-html5-backend"
-import {PrimeReactProvider} from "primereact/api"
 import App from './app/App'
 import reportWebVitals from './reportWebVitals'
-import store from "./app/store"
+import store, {persistor} from "./app/store"
 import {Provider} from "react-redux"
+import {PersistGate} from "redux-persist/integration/react"
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -16,11 +16,11 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <DndProvider backend={HTML5Backend}>
-            <PrimeReactProvider>
-                <Provider store={store}>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
                     <App/>
-                </Provider>
-            </PrimeReactProvider>
+                </PersistGate>
+            </Provider>
         </DndProvider>
     </React.StrictMode>
 )

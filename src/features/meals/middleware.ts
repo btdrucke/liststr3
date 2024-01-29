@@ -3,7 +3,7 @@ import {selectRecipeById} from "../recipes/slice"
 import {AboutToAddRecipeIngredientModel, createMeal, reviewAddShoppingItems} from "./slice"
 import {selectIngredientById} from "../ingredients/slice"
 
-export const mealMiddleware: Middleware = storeApi => next => action => {
+const mealMiddleware: Middleware = storeApi => next => action => {
     let result = next(action)
     if (action.type === createMeal.type) {
         const state = storeApi.getState()
@@ -12,7 +12,7 @@ export const mealMiddleware: Middleware = storeApi => next => action => {
             const recipeIngredients: AboutToAddRecipeIngredientModel[] = recipe.recipeIngredients.map(it => {
                 return {
                     id: it.id,
-                    isChecked: false,
+                    isChecked: true,
                     ingredientName: it.ingredientName,
                     ingredient: selectIngredientById(state, it.ingredientId)
                 }
@@ -27,3 +27,5 @@ export const mealMiddleware: Middleware = storeApi => next => action => {
     }
     return result
 }
+
+export default mealMiddleware

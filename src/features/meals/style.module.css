@@ -2,6 +2,12 @@
 
 }
 
+.listItem {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+}
+
 .table {
     display: table;
 }
@@ -54,4 +60,9 @@
 
 .addItem {
     margin-left: var(--min-control-size)
+}
+
+.title {
+    display: flex;
+    align-items: center;
 }

@@ -54,13 +54,13 @@ const Ingredient = ({item}: Props) => {
             <EditableItem
                 origItem={item}
                 renameItem={renameIngredient}/>
+            <TrashControl action={deleteIngredient(item.id)}/>
             {itemTags && (
                 <TagList
                     item={item}
                     onRemoveTag={removeTagFromIngredient}
                 />
             )}
-            <TrashControl action={deleteIngredient(item.id)}/>
         </div>
     )
 }
