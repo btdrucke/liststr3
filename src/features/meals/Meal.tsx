@@ -24,7 +24,7 @@ const Meal = ({meal}: Props) => {
     return (
         <div
             ref={drag}
-            className={classes(isDragging && style.isDragging, meal.isChecked && style.isChecked)}
+            className={classes(style.meal, isDragging && style.isDragging, meal.isChecked && style.isChecked)}
         >
             <IsCheckedControl
                 isChecked={meal.isChecked}

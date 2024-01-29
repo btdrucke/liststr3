@@ -47,3 +47,11 @@
 .tableRow input {
     border: thin solid transparent;
 }
+
+.meal {
+    display: flex;
+}
+
+.addItem {
+    margin-left: var(--min-control-size)
+}

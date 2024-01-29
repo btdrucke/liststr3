@@ -56,10 +56,10 @@ const MealDay = ({datestamp, meals}: Props) => {
             ref={drop}
             className={classes(style.tableRow, rowClass, isOver && canDrop && style.isOver)}
         >
-            <span className={style.tableCell}>
-                {dayOfWeek(datestamp)}({datestamp})
-            </span>
-            <span className={classes(style.tableCell)}>
+            <div className={style.tableCell}>
+                {dayOfWeek(datestamp)} ({datestamp.substring(6)})
+            </div>
+            <div className={classes(style.tableCell)}>
                 {meals.map((meal) =>
                     <Meal
                         key={meal.id}
@@ -67,13 +67,14 @@ const MealDay = ({datestamp, meals}: Props) => {
                     />
                 )}
                 <AddItem
+                    className={style.addItem}
                     placeholder={"+"}
                     createFromName={onCreateFromName}
                     suggestionItems={recipes}
                     createFromSuggestion={onCreateFromSuggestion}
                     createFromNewSuggestion={onCreateFromNewSuggestion}
                 />
-            </span>
+            </div>
         </div>
     )
 }
