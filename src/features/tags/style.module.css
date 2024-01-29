@@ -6,6 +6,11 @@
     padding-top: 20px;
 }
 
+.listItem {
+    display: flex;
+    width: fit-content;
+}
+
 .tagStyle0 {
     background-color: #3399ff88;
 }
@@ -38,11 +43,17 @@
 
 .draggableTag {
     width: fit-content;
-    padding: 1px 5px;
+    min-width: var(--min-control-size);
+    min-height: var(--min-control-size);
+    padding: 0 10px;
     margin-right: 5px;
     border: solid thin transparent;
     border-radius: var(--tagBorderSize);
     transition-duration: .15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(0, 0);  /* To hide corners while dragging */
 }
 
 .tagEnabled {
@@ -63,11 +74,13 @@
 
 .tagListItem {
     width: fit-content;
-    padding: 1px 5px;
+    padding-left: 10px;
     border-radius: var(--tagBorderSize);
-    margin-right: 5px;
     font-size: smaller;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     & :first-child {
-        padding-left: 10px;
+        /*padding-left: 10px;*/
     }
 }

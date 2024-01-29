@@ -6,6 +6,7 @@ import AddItem from "../../common/AddItem"
 import {TrashControl} from "../../common/IconControls"
 import {Page} from "../../common/Page"
 import style from "./style.module.css"
+import {classes} from "../../common/classUtils"
 
 export const TagsScreen = () => {
     const dispatch = useAppDispatch()
@@ -26,7 +27,7 @@ export const TagsScreen = () => {
                     return (
                         <div
                             key={item.id}
-                            className={item.color}>
+                            className={classes(style.listItem, item.color)}>
                             <EditableItem
                                 origItem={item}
                                 renameItem={renameTag}

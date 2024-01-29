@@ -4,6 +4,7 @@ import {useAppDispatch} from "../app/hooks"
 import {AnyAction} from "@reduxjs/toolkit"
 import {faStar} from "@fortawesome/free-solid-svg-icons"
 import {faStar as faEmptyStar} from "@fortawesome/free-regular-svg-icons"
+import style from "./style.module.css"
 
 interface IsFavoriteControlProps {
     isFavorite: boolean
@@ -13,10 +14,12 @@ interface IsFavoriteControlProps {
 const IsFavoriteControl = ({isFavorite, action}: IsFavoriteControlProps) => {
     const dispatch = useAppDispatch()
     return (
-        <FontAwesomeIcon
-            icon={isFavorite ? faStar : faEmptyStar}
+        <div
+            className={style.iconControl}
             onClick={() => dispatch(action)}
-        />
+        >
+            <FontAwesomeIcon icon={isFavorite ? faStar : faEmptyStar}/>
+        </div>
     )
 }
 

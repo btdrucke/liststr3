@@ -31,9 +31,10 @@ export const Recipe = ({recipe}: Props) => {
     let index = 0
     return (
         <>
-            <span>Editing recipe {recipe.name}</span>
-            <DoneControl action={editRecipe()}/>
-            <br/>
+            <div className={style.title}>
+                <div>Editing recipe {recipe.name}</div>
+                <DoneControl action={editRecipe()}/>
+            </div>
             <AddItem
                 placeholder={"+ ingredient"}
                 createFromName={onCreateFromName}
@@ -41,19 +42,21 @@ export const Recipe = ({recipe}: Props) => {
                 createFromSuggestion={onCreateFromSuggestion}
                 createFromNewSuggestion={onCreateFromNewSuggestion}
             />
-            {recipe.recipeIngredients.map(recipeIngredient => (
-                <div
-                    key={index++}
-                    className={style.listItem}
-                >
-                    <span>
-                        {recipeIngredient.ingredientName || (recipeIngredient.ingredientId && findById(ingredients, recipeIngredient.ingredientId)?.name)}
-                    </span>
-                    <TrashControl
-                        action={removeFromRecipe({id: recipe.id, recipeIngredientId: recipeIngredient.id})}
-                    />
-                </div>
-            ))}
+            <div className={style.list}>
+                {recipe.recipeIngredients.map(recipeIngredient => (
+                    <div
+                        key={index++}
+                        className={style.listItem}
+                    >
+                        <div>
+                            {recipeIngredient.ingredientName || (recipeIngredient.ingredientId && findById(ingredients, recipeIngredient.ingredientId)?.name)}
+                        </div>
+                        <TrashControl
+                            action={removeFromRecipe({id: recipe.id, recipeIngredientId: recipeIngredient.id})}
+                        />
+                    </div>
+                ))}
+            </div>
         </>
     )
 }
