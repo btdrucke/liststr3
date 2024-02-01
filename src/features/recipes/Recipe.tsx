@@ -7,6 +7,7 @@ import {DoneControl, TrashControl} from "../../common/IconControls"
 import style from "./style.module.css"
 import {nanoid} from "@reduxjs/toolkit"
 import {findById} from "../../common/IdOwner"
+import {Dialog} from "../../common/Dialog"
 
 interface Props {
     recipe: RecipeModel
@@ -30,7 +31,7 @@ export const Recipe = ({recipe}: Props) => {
 
     let index = 0
     return (
-        <>
+        <Dialog>
             <div className={style.title}>
                 <div>Editing recipe {recipe.name}</div>
                 <DoneControl action={editRecipe()}/>
@@ -57,6 +58,6 @@ export const Recipe = ({recipe}: Props) => {
                     </div>
                 ))}
             </div>
-        </>
+        </Dialog>
     )
 }

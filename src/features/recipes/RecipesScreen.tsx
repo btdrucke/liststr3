@@ -8,9 +8,11 @@ export const RecipesScreen = () => {
     const editingRecipe = useAppSelector(selectEditingRecipe)
 
     return (
-        <Page>
-            {editingRecipe === undefined && <Recipes/>}
-            {editingRecipe !== undefined && <Recipe recipe={editingRecipe}/>}
-        </Page>
+        <>
+            <Page>
+                <Recipes/>
+            </Page>
+            {editingRecipe && <Recipe recipe={editingRecipe}/>}
+        </>
     )
 }

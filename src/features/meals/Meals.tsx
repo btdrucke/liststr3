@@ -7,6 +7,7 @@ import MealDay from "./MealDay"
 import {addDays, todayDatestamp} from "../../common/dateUtils"
 import {Page} from "../../common/Page"
 import {ReviewAddShoppingItems} from "./ReviewAddShoppingItems"
+import {classes} from "../../common/classUtils"
 
 interface MealDayModel {
     datestamp: string
@@ -44,14 +45,16 @@ export const Meals = () => {
 
     return (
         <>
-            <Page className={style.table}>
-                {days.map(({datestamp, meals}) =>
-                    <MealDay
-                        key={datestamp}
-                        datestamp={datestamp}
-                        meals={meals}
-                    />
-                )}
+            <Page className={style.list}>
+                <div className={style.table}>
+                    {days.map(({datestamp, meals}) =>
+                        <MealDay
+                            key={datestamp}
+                            datestamp={datestamp}
+                            meals={meals}
+                        />
+                    )}
+                </div>
             </Page>
             {aboutToAddMeal && <ReviewAddShoppingItems aboutToAddMeal={aboutToAddMeal}/>}
         </>

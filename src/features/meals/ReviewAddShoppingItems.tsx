@@ -28,21 +28,23 @@ export const ReviewAddShoppingItems = ({aboutToAddMeal}: Props) => {
                 isChecked={checkState}
                 action={toggleAllAddShoppingItems()}
             />
-            {aboutToAddMeal.recipeIngredients.map(recipeIngredient => {
-                const name = recipeIngredient.ingredientName || recipeIngredient.ingredient?.name
-                return name && (
-                    <div
-                        key={recipeIngredient.id}
-                        className={style.listItem}
-                    >
-                        <IsCheckedControl
-                            isChecked={recipeIngredient.isChecked}
-                            action={toggleAddShoppingItem(recipeIngredient.id)}
-                        />
-                        {name}
-                    </div>
-                )
-            })}
+            <div className={style.list}>
+                {aboutToAddMeal.recipeIngredients.map(recipeIngredient => {
+                    const name = recipeIngredient.ingredientName || recipeIngredient.ingredient?.name
+                    return name && (
+                        <div
+                            key={recipeIngredient.id}
+                            className={style.listItem}
+                        >
+                            <IsCheckedControl
+                                isChecked={recipeIngredient.isChecked}
+                                action={toggleAddShoppingItem(recipeIngredient.id)}
+                            />
+                            {name}
+                        </div>
+                    )
+                })}
+            </div>
         </Dialog>
     )
 }

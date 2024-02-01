@@ -4,7 +4,6 @@ import {RootState} from "../../app/store"
 export enum AppMode {
     ManageMeals,
     ManageRecipes,
-    ManageRecipe,
     ManageIngredients,
     ManageShoppingList,
     ManageTags,
@@ -23,8 +22,8 @@ const slice = createSlice({
 })
 
 export const selectAppMode = createSelector(
-    [(state: RootState) => state.appMode.value],
-    (appMode) => appMode
+    [(state: RootState) => state.appMode],
+    (appMode) => appMode.value
 )
 
 export const {updateAppMode} = slice.actions

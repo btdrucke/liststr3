@@ -1,6 +1,7 @@
 :root {
     --outer-page-color: #555;
     --page-color: white;
+    --dialog-color: white;
     --page-padding: 20px;
     --page-width: 100%;
     --min-control-size: 48px;
