@@ -13,6 +13,14 @@ export interface RecipeIngredientModel extends IdOwner {
     ingredientId?: EntityId,
 }
 
+function createRecipeIngredientModel(ingredientName?: string, ingredientId?: EntityId): RecipeIngredientModel {
+    return {
+        ingredientName: ingredientName,
+        ingredientId: ingredientId,
+        id: nanoid(),
+    }
+}
+
 export interface RecipeModel extends NamedBaseItem, IsFavorite {
     recipeIngredients: RecipeIngredientModel[]
 }
@@ -51,7 +59,9 @@ const slice = createSlice({
             if (ingredientName || ingredientId) {
                 const item = findById(state.items, id)
                 if (item) {
-                    item.recipeIngredients.push({id: nanoid(), ingredientId: ingredientId, ingredientName: ingredientName})
+                    // When creating a recipe ingredient from a new ingredient, only save the ingredient ID.
+                    const nameToUse = ingredientId ? undefined : ingredientName
+                    item.recipeIngredients.push(createRecipeIngredientModel(nameToUse, ingredientId))
                 }
             }
         },

@@ -1,13 +1,13 @@
-import {addIngredientToRecipe, editRecipe, RecipeModel, removeFromRecipe} from "./slice"
+import {addIngredientToRecipe, editRecipe, RecipeModel} from "./slice"
 import {IngredientModel, selectIngredients} from "../ingredients/slice"
 import React from "react"
 import AddItem from "../../common/AddItem"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import {DoneControl, TrashControl} from "../../common/IconControls"
+import {DoneControl} from "../../common/IconControls"
 import style from "./style.module.css"
 import {nanoid} from "@reduxjs/toolkit"
-import {findById} from "../../common/IdOwner"
 import {Dialog} from "../../common/Dialog"
+import {RecipeIngredient} from "./RecipeIngredient"
 
 interface Props {
     recipe: RecipeModel
@@ -45,17 +45,11 @@ export const Recipe = ({recipe}: Props) => {
             />
             <div className={style.list}>
                 {recipe.recipeIngredients.map(recipeIngredient => (
-                    <div
+                    <RecipeIngredient
                         key={index++}
-                        className={style.listItem}
-                    >
-                        <div>
-                            {recipeIngredient.ingredientName || (recipeIngredient.ingredientId && findById(ingredients, recipeIngredient.ingredientId)?.name)}
-                        </div>
-                        <TrashControl
-                            action={removeFromRecipe({id: recipe.id, recipeIngredientId: recipeIngredient.id})}
-                        />
-                    </div>
+                        recipeId={recipe.id}
+                        recipeIngredient={recipeIngredient}
+                    />
                 ))}
             </div>
         </Dialog>
