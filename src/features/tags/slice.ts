@@ -1,11 +1,11 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, renameItemReducer} from "../../common/BaseItem"
+import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import style from "./style.module.css"
 import {RootState} from "../../app/store"
 import {NameOwner} from "../../common/NameOwner"
 import {deleteItemReducer, selectItemsByIds} from "../../common/IdOwnerRedux"
 
-export interface TagModel extends BaseItem {
+export interface TagModel extends NamedBaseItem {
     readonly color: string;
 }
 

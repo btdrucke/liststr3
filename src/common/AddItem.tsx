@@ -2,9 +2,9 @@ import React, {useState} from "react"
 import {classes} from "./classUtils"
 import style from "./style.module.css"
 import SuggestionMenu from "./SuggestionMenu"
-import {BaseItem} from "./BaseItem"
+import {NamedBaseItem} from "./BaseItem"
 
-interface Props<T extends BaseItem> {
+interface Props<T extends NamedBaseItem> {
     placeholder: string
     createFromName: (name: string) => void
     suggestionItems?: T[]
@@ -13,7 +13,7 @@ interface Props<T extends BaseItem> {
     className?: string
 }
 
-const AddItem = <T extends BaseItem>(
+const AddItem = <T extends NamedBaseItem>(
     {
         placeholder,
         createFromName,

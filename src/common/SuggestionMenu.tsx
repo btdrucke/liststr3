@@ -1,16 +1,16 @@
 import React, {useMemo} from "react"
 import {getSuggestions} from "./searchUtils"
 import style from "./style.module.css"
-import {BaseItem} from "./BaseItem"
+import {NamedBaseItem} from "./BaseItem"
 
-interface SuggestionMenuProps<T extends BaseItem> {
+interface SuggestionMenuProps<T extends NamedBaseItem> {
     queryStr: string
     suggestionItems: T[]
     onSuggestion: (suggestion: T) => void
     onNewSuggestion?: (suggestion: string) => void
 }
 
-const SuggestionMenu = <T extends BaseItem>(
+const SuggestionMenu = <T extends NamedBaseItem>(
     {
         queryStr,
         suggestionItems,

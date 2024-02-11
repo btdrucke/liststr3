@@ -2,12 +2,12 @@ import React from "react"
 import {ActionCreatorWithPayload} from "@reduxjs/toolkit"
 import {useAppDispatch} from "../app/hooks"
 import {classes} from "./classUtils"
-import {BaseItem} from "./BaseItem"
+import {NamedBaseItem} from "./BaseItem"
 import style from "./style.module.css"
 
 export interface EditableItemProps {
-    origItem: BaseItem
-    renameItem: ActionCreatorWithPayload<BaseItem>
+    origItem: NamedBaseItem
+    renameItem: ActionCreatorWithPayload<NamedBaseItem>
     extraClass?: string
 }
 

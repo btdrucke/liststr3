@@ -1,5 +1,5 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, renameItemReducer} from "../../common/BaseItem"
+import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {equalsId, findById, IdOwner} from "../../common/IdOwner"
@@ -8,14 +8,14 @@ import {NameOwner} from "../../common/NameOwner"
 import {deleteItemReducer} from "../../common/IdOwnerRedux"
 import {TagsOwner} from "../tags/TagsOwner"
 
-export interface MealModel extends BaseItem, IsChecked {
+export interface MealModel extends NamedBaseItem, IsChecked {
     readonly datestamp: string, //YYYY-MM-DD
     readonly recipeId?: string,
 }
 
 export interface AboutToAddRecipeIngredientModel extends IdOwner, IsChecked {
     ingredientName?: string
-    ingredient?: BaseItem & TagsOwner
+    ingredient?: NamedBaseItem & TagsOwner
 }
 
 export interface AboutToAddMealModel extends NameOwner {

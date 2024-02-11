@@ -1,11 +1,15 @@
-import {NameOwner} from "./NameOwner"
+import {NameOwner, OptionalNameOwner} from "./NameOwner"
 import {findIndexById, IdOwner} from "./IdOwner"
 import {Draft, PayloadAction} from "@reduxjs/toolkit"
 
-export interface BaseItem extends IdOwner, NameOwner {}
+export interface NamedBaseItem extends IdOwner, NameOwner {
+}
+
+export interface BaseItem extends IdOwner, OptionalNameOwner {
+}
 
 export const renameItemReducer = (
-    state: Draft<{ items: BaseItem[] }>,
+    state: Draft<{ items: NamedBaseItem[] }>,
     action: PayloadAction<{ name: string, id: string }>
 ) => {
     const item = action.payload

@@ -1,13 +1,13 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {RootState} from "../../app/store"
-import {BaseItem, renameItemReducer} from "../../common/BaseItem"
+import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
 import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 import {NameOwner} from "../../common/NameOwner"
 import {deleteItemReducer} from "../../common/IdOwnerRedux"
 import {AboutToAddMealModel} from "../meals/slice"
 
-export interface ShoppingItemModel extends BaseItem, IsChecked, TagsOwner {
+export interface ShoppingItemModel extends NamedBaseItem, IsChecked, TagsOwner {
     ingredientId?: string,
 }
 

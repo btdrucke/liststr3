@@ -2,7 +2,7 @@ import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolk
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
-import {BaseItem, renameItemReducer} from "../../common/BaseItem"
+import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import {findById} from "../../common/IdOwner"
 import {NameOwner} from "../../common/NameOwner"
 import {createShoppingItemFromNewIngredient} from "../shoppingList/slice"
@@ -10,7 +10,7 @@ import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 import {addIngredientToRecipe} from "../recipes/slice"
 import {deleteItemReducer, selectItemById, selectItemsByIds} from "../../common/IdOwnerRedux"
 
-export interface IngredientModel extends BaseItem, IsFavorite, TagsOwner {
+export interface IngredientModel extends NamedBaseItem, IsFavorite, TagsOwner {
 }
 
 function createModel(

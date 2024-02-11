@@ -1,5 +1,5 @@
 import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {BaseItem, renameItemReducer} from "../../common/BaseItem"
+import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
@@ -13,7 +13,7 @@ export interface RecipeIngredientModel extends IdOwner {
     ingredientId?: string,
 }
 
-export interface RecipeModel extends BaseItem, IsFavorite {
+export interface RecipeModel extends NamedBaseItem, IsFavorite {
     recipeIngredients: RecipeIngredientModel[]
 }
 
