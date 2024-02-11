@@ -1,10 +1,10 @@
-import {createSelector, Draft, PayloadAction} from "@reduxjs/toolkit"
+import {createSelector, Draft, EntityId, PayloadAction} from "@reduxjs/toolkit"
 import {RootState} from "../app/store"
 import {findById, findIndexById, IdOwner} from "./IdOwner"
 
 export const deleteItemReducer = (
     state: Draft<{ items: IdOwner[] }>,
-    action: PayloadAction<string>
+    action: PayloadAction<EntityId>
 ) => {
     const id = action.payload
     const pos = findIndexById(state.items, id)
@@ -16,7 +16,7 @@ export const deleteItemReducer = (
 export const selectItemById = <T extends IdOwner>(selectInput: (state: RootState) => T[]) => createSelector(
     [
         selectInput,
-        (_: RootState, id?: string) => id
+        (_: RootState, id?: EntityId) => id
     ],
     (items, id) => (id && findById(items, id)) || undefined
 )
@@ -24,7 +24,7 @@ export const selectItemById = <T extends IdOwner>(selectInput: (state: RootState
 export const selectItemsByIds = <T extends IdOwner>(selectInput: (state: RootState) => T[]) => createSelector(
     [
         selectInput,
-        (_: RootState, ids: string[]) => ids
+        (_: RootState, ids: EntityId[]) => ids
     ],
     (items, ids) => {
         return ids.flatMap(id => {

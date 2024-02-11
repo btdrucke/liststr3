@@ -1,4 +1,4 @@
-import {Draft, PayloadAction} from "@reduxjs/toolkit"
+import {Draft, EntityId, PayloadAction} from "@reduxjs/toolkit"
 import {findIndexById, IdOwner} from "./IdOwner"
 
 export interface IsChecked {
@@ -13,7 +13,7 @@ export function isNotChecked(): (owner: IsChecked) => boolean {
     return (o) => !o.isChecked
 }
 
-export const toggleIsCheckedReducer = (state: Draft<{ items: (IdOwner & IsChecked)[] }>, action: PayloadAction<string>) => {
+export const toggleIsCheckedReducer = (state: Draft<{ items: (IdOwner & IsChecked)[] }>, action: PayloadAction<EntityId>) => {
     const id = action.payload
     const pos = findIndexById(state.items, id)
     if (pos >= 0) {

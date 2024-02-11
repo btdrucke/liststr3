@@ -1,21 +1,21 @@
-type Id = string
+import {EntityId} from "@reduxjs/toolkit"
 
 export interface IdOwner {
-    readonly id: string
+    readonly id: EntityId
 }
 
-export function equalsId(id: Id): (owner: IdOwner) => boolean {
+export function equalsId(id: EntityId): (owner: IdOwner) => boolean {
     return (o) => o.id === id
 }
 
-export function findById<Type extends IdOwner>(elems: Array<Type>, id: Id): Type | undefined {
+export function findById<Type extends IdOwner>(elems: Array<Type>, id: EntityId): Type | undefined {
     return elems.find(equalsId(id))
 }
 
-export function findIndexById<Type extends IdOwner>(elems: Array<Type>, id: Id): number {
+export function findIndexById<Type extends IdOwner>(elems: Array<Type>, id: EntityId): number {
     return elems.findIndex(equalsId(id))
 }
 
-export function ids<Type extends IdOwner>(elems: Array<Type>): Id[] {
+export function ids<Type extends IdOwner>(elems: Array<Type>): EntityId[] {
     return elems.map(item => item.id)
 }

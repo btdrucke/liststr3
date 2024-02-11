@@ -12,12 +12,13 @@ import {IngredientModel, selectIngredients} from "../ingredients/slice"
 import {DraggableTags} from "../tags/DraggableTags"
 import {ShoppingItem} from "./ShoppingItem"
 import {Page} from "../../common/Page"
+import {EntityId} from "@reduxjs/toolkit"
 
 export const ShoppingList = () => {
     const dispatch = useAppDispatch()
     const shoppingItems = useAppSelector(selectShoppingItems)
     const ingredients = useAppSelector(selectIngredients)
-    const [activeTagId, setActiveTagId] = useState(undefined as string | undefined)
+    const [activeTagId, setActiveTagId] = useState(undefined as EntityId | undefined)
 
     const onCreateFromName = (name: string) => {
         dispatch(createShoppingItem(name))
@@ -31,7 +32,7 @@ export const ShoppingList = () => {
         dispatch(createShoppingItemFromIngredient(suggestion))
     }
 
-    const onTagSelected = (tagId?: string) => {
+    const onTagSelected = (tagId?: EntityId) => {
         setActiveTagId(tagId)
     }
 

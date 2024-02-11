@@ -1,4 +1,4 @@
-import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
+import {createSelector, createSlice, EntityId, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {RootState} from "../../app/store"
 import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
@@ -8,7 +8,7 @@ import {deleteItemReducer} from "../../common/IdOwnerRedux"
 import {AboutToAddMealModel} from "../meals/slice"
 
 export interface ShoppingItemModel extends NamedBaseItem, IsChecked, TagsOwner {
-    ingredientId?: string,
+    ingredientId?: EntityId,
 }
 
 function createModelFromName(name: string): ShoppingItemModel {

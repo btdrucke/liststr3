@@ -1,10 +1,9 @@
-import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
+import {createSelector, createSlice, EntityId, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {IsFavorite, toggleIsFavoriteReducer} from "../../common/IsFavorite"
 import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import {findById} from "../../common/IdOwner"
-import {NameOwner} from "../../common/NameOwner"
 import {createShoppingItemFromNewIngredient} from "../shoppingList/slice"
 import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 import {addIngredientToRecipe} from "../recipes/slice"
@@ -15,8 +14,8 @@ export interface IngredientModel extends NamedBaseItem, IsFavorite, TagsOwner {
 
 function createModel(
     name: string,
-    id?: string,
-    tagIds?: string[],
+    id?: EntityId,
+    tagIds?: EntityId[],
     isFavorite?: boolean,
 ): IngredientModel {
     return {

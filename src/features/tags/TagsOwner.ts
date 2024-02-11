@@ -1,14 +1,14 @@
-import {Draft, PayloadAction} from "@reduxjs/toolkit"
+import {Draft, EntityId, PayloadAction} from "@reduxjs/toolkit"
 import {findIndexById, IdOwner} from "../../common/IdOwner"
 import _ from "lodash"
 
 export interface TagsOwner {
-    readonly tagIds: string[]
+    readonly tagIds: EntityId[]
 }
 
 export interface TagActionProps {
-    itemOwnerId: string
-    tagId: string
+    itemOwnerId: EntityId
+    tagId: EntityId
 }
 
 export const addTagReducer = (

@@ -1,4 +1,4 @@
-import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
+import {createSelector, createSlice, EntityId, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import style from "./style.module.css"
 import {RootState} from "../../app/store"
@@ -9,7 +9,7 @@ export interface TagModel extends NamedBaseItem {
     readonly color: string;
 }
 
-function createTagModel(name: string, color: string, id?: string): TagModel {
+function createTagModel(name: string, color: string, id?: EntityId): TagModel {
     return {
         name: name,
         color: color,

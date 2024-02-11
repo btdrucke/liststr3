@@ -1,4 +1,4 @@
-import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
+import {createSelector, createSlice, EntityId, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
@@ -10,7 +10,7 @@ import {TagsOwner} from "../tags/TagsOwner"
 
 export interface MealModel extends NamedBaseItem, IsChecked {
     readonly datestamp: string, //YYYY-MM-DD
-    readonly recipeId?: string,
+    readonly recipeId?: EntityId,
 }
 
 export interface AboutToAddRecipeIngredientModel extends IdOwner, IsChecked {
@@ -22,7 +22,7 @@ export interface AboutToAddMealModel extends NameOwner {
     recipeIngredients: AboutToAddRecipeIngredientModel[]
 }
 
-function createModel(name: string, datestamp: string, recipeId?: string): MealModel {
+function createModel(name: string, datestamp: string, recipeId?: EntityId): MealModel {
     return {
         name: name,
         datestamp: datestamp,
@@ -43,7 +43,7 @@ const slice = createSlice({
         aboutToAddMeal: undefined as (AboutToAddMealModel | undefined),
     },
     reducers: {
-        createMeal: (state, action: PayloadAction<NameOwner & { datestamp: string, recipeId?: string }>) => {
+        createMeal: (state, action: PayloadAction<NameOwner & { datestamp: string, recipeId?: EntityId }>) => {
             const {name, datestamp, recipeId} = action.payload
             const item = createModel(name, datestamp, recipeId)
             state.items.push(item)
@@ -51,7 +51,7 @@ const slice = createSlice({
         reviewAddShoppingItems: (state, action: PayloadAction<AboutToAddMealModel>) => {
             state.aboutToAddMeal = action.payload
         },
-        toggleAddShoppingItem: (state, action: PayloadAction<string>) => {
+        toggleAddShoppingItem: (state, action: PayloadAction<EntityId>) => {
             const recipeIngredientId = action.payload
             if (state.aboutToAddMeal) {
                 const recipeIngredient = findById(state.aboutToAddMeal.recipeIngredients, recipeIngredientId)

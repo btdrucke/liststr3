@@ -1,4 +1,4 @@
-import {createSelector, createSlice, nanoid, PayloadAction} from "@reduxjs/toolkit"
+import {createSelector, createSlice, EntityId, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
@@ -10,14 +10,14 @@ import {IngredientModel} from "../ingredients/slice"
 
 export interface RecipeIngredientModel extends IdOwner {
     ingredientName?: string,
-    ingredientId?: string,
+    ingredientId?: EntityId,
 }
 
 export interface RecipeModel extends NamedBaseItem, IsFavorite {
     recipeIngredients: RecipeIngredientModel[]
 }
 
-function createRecipeModel(name: string, id?: string): RecipeModel {
+function createRecipeModel(name: string, id?: EntityId): RecipeModel {
     return {
         name: name,
         id: id || nanoid(),
@@ -35,7 +35,7 @@ const slice = createSlice({
             createRecipeModel("Stir Fry"),
             createRecipeModel("Middle Eastern"),
         ],
-        editingItemId: undefined as (string | undefined),
+        editingItemId: undefined as (EntityId | undefined),
     },
     reducers: {
         createRecipe: (state, action: PayloadAction<string>) => {
@@ -43,7 +43,7 @@ const slice = createSlice({
             const item = createRecipeModel(name)
             state.items.push(item)
         },
-        editRecipe: (state, action: PayloadAction<string | undefined>) => {
+        editRecipe: (state, action: PayloadAction<EntityId | undefined>) => {
             state.editingItemId = action.payload
         },
         addIngredientToRecipe: (state, action: PayloadAction<RecipeIngredientModel>) => {
@@ -55,7 +55,7 @@ const slice = createSlice({
                 }
             }
         },
-        removeFromRecipe: (state, action: PayloadAction<IdOwner & { recipeIngredientId: string }>) => {
+        removeFromRecipe: (state, action: PayloadAction<IdOwner & { recipeIngredientId: EntityId }>) => {
             const {id, recipeIngredientId} = action.payload
             const item = findById(state.items, id)
             if (item) {
