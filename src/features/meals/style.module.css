@@ -69,3 +69,7 @@
     display: flex;
     align-items: center;
 }
+
+.reference {
+    font-style: italic;
+}

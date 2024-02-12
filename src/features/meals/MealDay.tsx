@@ -1,4 +1,4 @@
-import {createMeal, MealModel, rescheduleMeal} from "./slice"
+import {createMeal, createMealFromRecipe, MealModel, rescheduleMeal} from "./slice"
 import {dayOfWeek, isToday, isWeekend} from "../../common/dateUtils"
 import style from "./style.module.css"
 import {classes} from "../../common/classUtils"
@@ -42,11 +42,11 @@ const MealDay = ({datestamp, meals}: Props) => {
     }
 
     const onCreateFromSuggestion = (suggestion: RecipeModel) => {
-        dispatch(createMeal({name: suggestion.name, datestamp: datestamp, recipeId: suggestion.id}))
+        dispatch(createMealFromRecipe({datestamp: datestamp, recipeId: suggestion.id}))
     }
 
     const onCreateFromNewSuggestion = (name: string) => {
-        dispatch(createMeal({name: name, datestamp: datestamp, recipeId: nanoid()}))
+        dispatch(createMealFromRecipe({datestamp: datestamp, recipeName: name}))
     }
 
     const rowClass = (isToday(datestamp) && style.today) || (isWeekend(datestamp) && style.weekend)

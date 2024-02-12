@@ -1,5 +1,5 @@
 import {createSelector, createSlice, EntityId, nanoid, PayloadAction} from "@reduxjs/toolkit"
-import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
+import {BaseItem, NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
 import {RootState} from "../../app/store"
 import _ from "lodash"
 import {equalsId, findById, IdOwner} from "../../common/IdOwner"
@@ -8,7 +8,7 @@ import {NameOwner} from "../../common/NameOwner"
 import {deleteItemReducer} from "../../common/IdOwnerRedux"
 import {TagsOwner} from "../tags/TagsOwner"
 
-export interface MealModel extends NamedBaseItem, IsChecked {
+export interface MealModel extends BaseItem, IsChecked {
     readonly datestamp: string, //YYYY-MM-DD
     readonly recipeId?: EntityId,
 }
@@ -22,11 +22,21 @@ export interface AboutToAddMealModel extends NameOwner {
     recipeIngredients: AboutToAddRecipeIngredientModel[]
 }
 
-function createModel(name: string, datestamp: string, recipeId?: EntityId): MealModel {
+function createModelFromName(datestamp: string, name: string): MealModel {
     return {
         name: name,
         datestamp: datestamp,
-        recipeId: recipeId,  // For future linking from meal to recipe in the UI.
+        recipeId: undefined,
+        id: nanoid(),
+        isChecked: false,
+    }
+}
+
+function createModelFromRecipeId(datestamp: string, recipeId: EntityId): MealModel {
+    return {
+        name: undefined,
+        datestamp: datestamp,
+        recipeId: recipeId,
         id: nanoid(),
         isChecked: false,
     }
@@ -36,17 +46,27 @@ const slice = createSlice({
     name: 'meals',
     initialState: {
         items: [
-            createModel("Tacos", '2024-01-28'),
-            createModel("Lentil Soup", '2024-01-29'),
-            createModel("Channa + cauliflower", '2024-01-30'),
+            createModelFromName('2024-02-11', "Tacos"),
+            createModelFromName('2024-02-12', "Lentil Soup"),
+            createModelFromName('2024-02-15', "Channa + cauliflower"),
         ],
         aboutToAddMeal: undefined as (AboutToAddMealModel | undefined),
     },
     reducers: {
-        createMeal: (state, action: PayloadAction<NameOwner & { datestamp: string, recipeId?: EntityId }>) => {
-            const {name, datestamp, recipeId} = action.payload
-            const item = createModel(name, datestamp, recipeId)
+        createMeal: (state, action: PayloadAction<NameOwner & { datestamp: string }>) => {
+            const {name, datestamp} = action.payload
+            const item = createModelFromName(datestamp, name)
             state.items.push(item)
+        },
+        createMealFromRecipe: (state, action: PayloadAction<{ datestamp: string, recipeName?: string, recipeId?: EntityId }>) => {
+            // `recipeName` is for Recipe middleware to create a new recipe and fill in the recipe ID of this action.
+            const {datestamp, recipeId} = action.payload
+            if (recipeId) {
+                const item = createModelFromRecipeId(datestamp, recipeId)
+                state.items.push(item)
+            } else {
+                console.error("Called createMealFromRecipe with no recipeId!")
+            }
         },
         reviewAddShoppingItems: (state, action: PayloadAction<AboutToAddMealModel>) => {
             state.aboutToAddMeal = action.payload
@@ -99,6 +119,7 @@ export const selectAboutToAddMeal = createSelector(
 
 export const {
     createMeal,
+    createMealFromRecipe,
     reviewAddShoppingItems,
     toggleAddShoppingItem,
     toggleAllAddShoppingItems,

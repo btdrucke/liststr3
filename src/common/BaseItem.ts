@@ -9,8 +9,8 @@ export interface BaseItem extends IdOwner, OptionalNameOwner {
 }
 
 export const renameItemReducer = (
-    state: Draft<{ items: NamedBaseItem[] }>,
-    action: PayloadAction<NamedBaseItem>
+    state: Draft<{ items: BaseItem[] }>,
+    action: PayloadAction<BaseItem>
 ) => {
     const item = action.payload
     const pos = findIndexById(state.items, item.id)

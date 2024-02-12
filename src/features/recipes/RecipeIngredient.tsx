@@ -15,12 +15,12 @@ interface Props {
 export const RecipeIngredient = ({recipeId, recipeIngredient}: Props) => {
     const ingredient = useAppSelector(state => selectIngredientById(state, recipeIngredient.ingredientId))
 
-    const hasCustomName = recipeIngredient.ingredientName !== undefined
+    const isReference = recipeIngredient.ingredientName === undefined
     const nameToDisplay = recipeIngredient.ingredientName || ingredient?.name
 
     return (
         <div className={style.listItem}>
-            <div className={classes(hasCustomName && style.reference)}>
+            <div className={classes(isReference && style.reference)}>
                 {nameToDisplay}
             </div>
             <TrashControl

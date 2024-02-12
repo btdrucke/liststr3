@@ -11,7 +11,7 @@ export const Recipes = () => {
     const dispatch = useAppDispatch()
     const itemList = useAppSelector(selectRecipes)
 
-    const onCreateFromName = (name: string) => dispatch(createRecipe(name))
+    const onCreateFromName = (name: string) => dispatch(createRecipe({name: name}))
 
     return (
         <>

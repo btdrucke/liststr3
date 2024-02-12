@@ -7,12 +7,17 @@ import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
 import IsCheckedControl from "../../common/IsCheckedControl"
 import {TrashControl} from "../../common/IconControls"
+import {useAppSelector} from "../../app/hooks"
+import {selectIngredientById} from "../ingredients/slice"
+import {selectRecipeById} from "../recipes/slice"
 
 interface Props {
     meal: MealModel
 }
 
 const Meal = ({meal}: Props) => {
+    const recipe = useAppSelector(state => selectRecipeById(state, meal.recipeId))
+
     const [{isDragging}, drag] = useDrag(() => ({
         type: DragTypes.MEAL,
         item: meal,
@@ -32,7 +37,8 @@ const Meal = ({meal}: Props) => {
             <EditableItem
                 origItem={meal}
                 renameItem={renameMeal}
-                extraClass={classes(style.editableItem)}/>
+                referenceName={recipe?.name}
+                extraClass={classes(style.editableItem, meal.name || style.reference)}/>
             <TrashControl action={deleteMeal(meal.id)}/>
         </div>
     )
