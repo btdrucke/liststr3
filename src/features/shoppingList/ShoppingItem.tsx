@@ -17,6 +17,7 @@ import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
 import style from "./style.module.css"
 import TagList from "../tags/TagList"
+import {selectIngredientById} from "../ingredients/slice"
 
 interface Props {
     item: ShoppingItemModel
@@ -24,7 +25,9 @@ interface Props {
 
 export const ShoppingItem = ({item}: Props) => {
     const dispatch = useAppDispatch()
-    const itemTags = useAppSelector(state => selectTagsByIds(state, item.tagIds))
+    const ingredient = useAppSelector(state => selectIngredientById(state, item.ingredientId))
+    const ingredientTagIds = ingredient?.tagIds
+    const tagIds = ingredientTagIds === undefined ? item.tagIds : ingredientTagIds
 
     const onDrop = (draggingItem: TagModel) => {
         dispatch(addTagToShoppingItem({itemOwnerId: item.id, tagId: draggingItem.id}))
@@ -43,6 +46,8 @@ export const ShoppingItem = ({item}: Props) => {
         [item]
     )
 
+    const isReference = item.name === undefined
+
     return (
         <div
             ref={drop}
@@ -50,14 +55,19 @@ export const ShoppingItem = ({item}: Props) => {
         >
             <IsCheckedControl
                 isChecked={item.isChecked}
-                action={toggleShoppingItemIsChecked(item.id)}/>
+                action={toggleShoppingItemIsChecked(item.id)}
+            />
             <EditableItem
                 origItem={item}
-                renameItem={renameShoppingItem}/>
+                referenceName={ingredient?.name}
+                renameItem={renameShoppingItem}
+                extraClass={classes(isReference && style.reference)}
+            />
             <TrashControl action={deleteShoppingItem(item.id)}/>
-            {itemTags && (
+            {tagIds && (
                 <TagList
-                    item={item}
+                    ownerId={item.id}
+                    tagIds={tagIds}
                     onRemoveTag={removeTagFromShoppingItem}
                 />
             )}

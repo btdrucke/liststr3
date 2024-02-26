@@ -1,11 +1,11 @@
 import {Middleware} from "@reduxjs/toolkit"
 import {selectRecipeById} from "../recipes/slice"
-import {AboutToAddRecipeIngredientModel, createMeal, reviewAddShoppingItems} from "./slice"
+import {AboutToAddRecipeIngredientModel, createMealFromRecipeId, reviewAddShoppingItems} from "./slice"
 import {selectIngredientById} from "../ingredients/slice"
 
 const mealMiddleware: Middleware = storeApi => next => action => {
     let result = next(action)
-    if (action.type === createMeal.type) {
+    if (createMealFromRecipeId.match(action)) {
         const state = storeApi.getState()
         const recipe = selectRecipeById(state, action.payload.recipeId)
         if (recipe && recipe.recipeIngredients.length > 0) {
@@ -19,7 +19,7 @@ const mealMiddleware: Middleware = storeApi => next => action => {
             })
             storeApi.dispatch(
                 reviewAddShoppingItems({
-                    name: action.payload.name,
+                    name: recipe.name,
                     recipeIngredients: recipeIngredients,
                 })
             )

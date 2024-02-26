@@ -54,16 +54,22 @@ const slice = createSlice({
         editRecipe: (state, action: PayloadAction<EntityId | undefined>) => {
             state.editingItemId = action.payload
         },
-        addIngredientToRecipe: (state, action: PayloadAction<RecipeIngredientModel>) => {
-            const {id, ingredientName, ingredientId} = action.payload
-            if (ingredientName || ingredientId) {
-                const item = findById(state.items, id)
-                if (item) {
-                    // When creating a recipe ingredient from a new ingredient, only save the ingredient ID.
-                    const nameToUse = ingredientId ? undefined : ingredientName
-                    item.recipeIngredients.push(createRecipeIngredientModel(nameToUse, ingredientId))
-                }
+        addIngredientToRecipeFromName: (state, action: PayloadAction<IdOwner & { ingredientName: string }>) => {
+            const {id, ingredientName} = action.payload
+            const item = findById(state.items, id)
+            if (item) {
+                item.recipeIngredients.push(createRecipeIngredientModel(ingredientName, undefined))
             }
+        },
+        addIngredientToRecipeFromId: (state, action: PayloadAction<IdOwner & { ingredientId: EntityId }>) => {
+            const {id, ingredientId} = action.payload
+            const item = findById(state.items, id)
+            if (item) {
+                item.recipeIngredients.push(createRecipeIngredientModel(undefined, ingredientId))
+            }
+        },
+        addNewIngredientToRecipe: (state, action: PayloadAction<IdOwner & { ingredientName: string }>) => {
+            // Depends on middleware to create ingredient and dispatch addIngredientToRecipeFromId.
         },
         removeFromRecipe: (state, action: PayloadAction<IdOwner & { recipeIngredientId: EntityId }>) => {
             const {id, recipeIngredientId} = action.payload
@@ -113,7 +119,9 @@ export const selectEditingRecipe = createSelector(
 export const {
     createRecipe,
     editRecipe,
-    addIngredientToRecipe,
+    addIngredientToRecipeFromName,
+    addIngredientToRecipeFromId,
+    addNewIngredientToRecipe,
     removeFromRecipe,
     deleteIngredientFromAllRecipes,
     renameRecipe,

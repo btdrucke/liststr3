@@ -12,7 +12,7 @@ export const Ingredients = () => {
     const itemList = useAppSelector(selectIngredients)
 
     const onCreateFromName = (name: string) => {
-        dispatch(createIngredient(name))
+        dispatch(createIngredient({name: name}))
     }
 
     return (

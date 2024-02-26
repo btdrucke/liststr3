@@ -1,13 +1,14 @@
 import {createSelector, createSlice, EntityId, nanoid, PayloadAction} from "@reduxjs/toolkit"
 import {RootState} from "../../app/store"
-import {NamedBaseItem, renameItemReducer} from "../../common/BaseItem"
+import {BaseItem, renameItemReducer} from "../../common/BaseItem"
 import {IsChecked, toggleIsCheckedReducer} from "../../common/IsChecked"
 import {addTagReducer, removeTagReducer, TagsOwner} from "../tags/TagsOwner"
 import {NameOwner} from "../../common/NameOwner"
 import {deleteItemReducer} from "../../common/IdOwnerRedux"
 import {AboutToAddMealModel} from "../meals/slice"
+import {IngredientModel} from "../ingredients/slice"
 
-export interface ShoppingItemModel extends NamedBaseItem, IsChecked, TagsOwner {
+export interface ShoppingItemModel extends BaseItem, IsChecked, TagsOwner {
     ingredientId?: EntityId,
 }
 
@@ -20,12 +21,12 @@ function createModelFromName(name: string): ShoppingItemModel {
     }
 }
 
-function createModelFromIngredient(ingredient: NameOwner & TagsOwner): ShoppingItemModel {
+function createModelFromIngredientId(ingredientId: EntityId): ShoppingItemModel {
     return {
-        name: ingredient.name,
-        tagIds: ingredient.tagIds,
+        ingredientId: ingredientId,
         id: nanoid(),
         isChecked: false,
+        tagIds: [],
     }
 }
 
@@ -38,30 +39,39 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createShoppingItem: (state, action: PayloadAction<string>) => {
-            const name = action.payload
-            const item = createModelFromName(name)
-            state.items.push(item)
-        },
-        createShoppingItemFromNewIngredient: (state, action: PayloadAction<string>) => {
-            const name = action.payload
+        createShoppingItem: (state, action: PayloadAction<NameOwner>) => {
+            const {name} = action.payload
             const item = createModelFromName(name)
             state.items.push(item)
         },
         // Shopping item is a copy of the current state of an ingredient, but then can be independently modified.
-        createShoppingItemFromIngredient: (state, action: PayloadAction<NameOwner & TagsOwner>) => {
-            const item = createModelFromIngredient(action.payload)
+        createShoppingItemFromIngredientId: (state, action: PayloadAction<{ ingredientId: EntityId }>) => {
+            const {ingredientId} = action.payload
+            const item = createModelFromIngredientId(ingredientId)
             state.items.push(item)
+        },
+        createShoppingItemFromNewIngredient: (state, action: PayloadAction<{ ingredientName: string }>) => {
+            // Depends on middleware to create ingredient and dispatch createShoppingItemFromIngredient.
         },
         createShoppingItemsFromMeal: (state, action: PayloadAction<AboutToAddMealModel>) => {
             console.log("createShoppingItemsFromMeal()")
             action.payload.recipeIngredients.forEach(recipeIngredient => {
                 if (recipeIngredient.isChecked) {
                     if (recipeIngredient.ingredient) {
-                        state.items.push(createModelFromIngredient(recipeIngredient.ingredient))
+                        state.items.push(createModelFromIngredientId(recipeIngredient.ingredient.id))
                     } else if (recipeIngredient.ingredientName) {
                         state.items.push(createModelFromName(recipeIngredient.ingredientName))
                     }
+                }
+            })
+        },
+        deleteIngredientFromAllShoppingItems: (state, action: PayloadAction<IngredientModel>) => {
+            const ingredient = action.payload
+            state.items.forEach(shoppingItem => {
+                if (shoppingItem.ingredientId === ingredient.id) {
+                    shoppingItem.name = ingredient.name
+                    shoppingItem.tagIds = ingredient.tagIds
+                    shoppingItem.ingredientId = undefined
                 }
             })
         },
@@ -82,9 +92,10 @@ export const selectShoppingItems = createSelector(
 
 export const {
     createShoppingItem,
+    createShoppingItemFromIngredientId,
     createShoppingItemFromNewIngredient,
-    createShoppingItemFromIngredient,
     createShoppingItemsFromMeal,
+    deleteIngredientFromAllShoppingItems,
     addTagToShoppingItem,
     removeTagFromShoppingItem,
     renameShoppingItem,

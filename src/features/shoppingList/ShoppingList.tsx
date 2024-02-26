@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import style from "./style.module.css"
 import {
     createShoppingItem,
-    createShoppingItemFromIngredient,
+    createShoppingItemFromIngredientId,
     createShoppingItemFromNewIngredient,
     selectShoppingItems
 } from "./slice"
@@ -21,15 +21,15 @@ export const ShoppingList = () => {
     const [activeTagId, setActiveTagId] = useState(undefined as EntityId | undefined)
 
     const onCreateFromName = (name: string) => {
-        dispatch(createShoppingItem(name))
+        dispatch(createShoppingItem({name: name}))
     }
 
     const onCreateFromNewSuggestion = (name: string) => {
-        dispatch(createShoppingItemFromNewIngredient(name))
+        dispatch(createShoppingItemFromNewIngredient({ingredientName: name}))
     }
 
     const onCreateFromSuggestion = (suggestion: IngredientModel) => {
-        dispatch(createShoppingItemFromIngredient(suggestion))
+        dispatch(createShoppingItemFromIngredientId({ingredientId: suggestion.id}))
     }
 
     const onTagSelected = (tagId?: EntityId) => {

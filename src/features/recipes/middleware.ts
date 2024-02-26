@@ -1,35 +1,41 @@
-import {Middleware, nanoid} from "@reduxjs/toolkit"
-import {deleteIngredient, selectIngredientById} from "../ingredients/slice"
-import {createRecipe, deleteIngredientFromAllRecipes} from "./slice"
-import {createMealFromRecipe} from "../meals/slice"
+import {EntityId, Middleware, nanoid} from "@reduxjs/toolkit"
+import {createIngredient, deleteIngredient, selectIngredientById} from "../ingredients/slice"
+import {
+    addIngredientToRecipeFromId,
+    addNewIngredientToRecipe,
+    createRecipe,
+    deleteIngredientFromAllRecipes
+} from "./slice"
+import {createMealFromNewRecipe, createMealFromRecipeId} from "../meals/slice"
 
 const recipeMiddleware: Middleware = storeApi => next => action => {
-    let updatedAction = undefined
+    if (createMealFromNewRecipe.match(action)) {
+        const {datestamp, recipeName} = action.payload
+        const newRecipeId = nanoid()
+        // Create new recipe first.
+        storeApi.dispatch(createRecipe({name: recipeName, newId: newRecipeId}))
+        // Next action will be createMealFromRecipeId instead of createMealFromNewRecipe.
+        return next(createMealFromRecipeId({datestamp: datestamp, recipeId: newRecipeId}))
+    }
 
-    if (action.type === deleteIngredient.type && deleteIngredient.match(action)) {
+    if (addNewIngredientToRecipe.match(action)) {
+        const {id, ingredientName} = action.payload
+        const ingredientId: EntityId = nanoid()
+        // Create new ingredient first.
+        storeApi.dispatch(createIngredient({name: ingredientName, newId: ingredientId}))
+        // Next action will be addIngredientToRecipeFromId instead of addNewIngredientToRecipe.
+        return next(addIngredientToRecipeFromId({id: id, ingredientId: ingredientId}))
+    }
+
+    if (deleteIngredient.match(action)) {
         const ingredientId = action.payload
-        console.log(`Deleting ingredient ${ingredientId}`)
         const ingredient = selectIngredientById(storeApi.getState(), ingredientId)
         if (ingredient) {
-            console.log(`Found ingredient ${ingredientId} !`)
             storeApi.dispatch(deleteIngredientFromAllRecipes(ingredient))
-        }
-    } else if (action.type === createMealFromRecipe.type && createMealFromRecipe.match(action)) {
-        const {recipeName, recipeId} = action.payload
-        // If there's no recipe ID, then we need to create a new recipe.
-        if (!recipeId) {
-            if (!recipeName) {
-                console.error("Can't create new recipe without a name")
-            } else {
-                const newRecipeId = nanoid()
-                storeApi.dispatch(createRecipe({name: recipeName, newId: newRecipeId}))
-                // Update createMealFromRecipe action payload with the newly created recipe ID.
-                updatedAction = {...action, payload: {...action.payload, recipeId: newRecipeId}}
-            }
         }
     }
 
-    return next(updatedAction || action)
+    return next(action)
 }
 
 export default recipeMiddleware

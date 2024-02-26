@@ -1,4 +1,4 @@
-import {createMeal, createMealFromRecipe, MealModel, rescheduleMeal} from "./slice"
+import {createMeal, createMealFromNewRecipe, createMealFromRecipeId, MealModel, rescheduleMeal} from "./slice"
 import {dayOfWeek, isToday, isWeekend} from "../../common/dateUtils"
 import style from "./style.module.css"
 import {classes} from "../../common/classUtils"
@@ -9,7 +9,6 @@ import {DragTypes} from "../../common/DragTypes"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
 import {RecipeModel, selectRecipes} from '../recipes/slice'
 import AddItem from "../../common/AddItem"
-import {nanoid} from "@reduxjs/toolkit"
 
 interface Props {
     datestamp: string
@@ -42,11 +41,11 @@ const MealDay = ({datestamp, meals}: Props) => {
     }
 
     const onCreateFromSuggestion = (suggestion: RecipeModel) => {
-        dispatch(createMealFromRecipe({datestamp: datestamp, recipeId: suggestion.id}))
+        dispatch(createMealFromRecipeId({datestamp: datestamp, recipeId: suggestion.id}))
     }
 
     const onCreateFromNewSuggestion = (name: string) => {
-        dispatch(createMealFromRecipe({datestamp: datestamp, recipeName: name}))
+        dispatch(createMealFromNewRecipe({datestamp: datestamp, recipeName: name}))
     }
 
     const rowClass = (isToday(datestamp) && style.today) || (isWeekend(datestamp) && style.weekend)

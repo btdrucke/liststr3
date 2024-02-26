@@ -1,4 +1,10 @@
-import {addIngredientToRecipe, editRecipe, RecipeModel} from "./slice"
+import {
+    addIngredientToRecipeFromId,
+    addIngredientToRecipeFromName,
+    addNewIngredientToRecipe,
+    editRecipe,
+    RecipeModel
+} from "./slice"
 import {IngredientModel, selectIngredients} from "../ingredients/slice"
 import React from "react"
 import AddItem from "../../common/AddItem"
@@ -18,15 +24,15 @@ export const Recipe = ({recipe}: Props) => {
     const ingredients = useAppSelector(selectIngredients)
 
     const onCreateFromName = (name: string) => {
-        dispatch(addIngredientToRecipe({id: recipe.id, ingredientName: name}))
-    }
-
-    const onCreateFromNewSuggestion = (name: string) => {
-        dispatch(addIngredientToRecipe({id: recipe.id, ingredientName: name, ingredientId: nanoid()}))
+        dispatch(addIngredientToRecipeFromName({id: recipe.id, ingredientName: name}))
     }
 
     const onCreateFromSuggestion = (suggestion: IngredientModel) => {
-        dispatch(addIngredientToRecipe({id: recipe.id, ingredientId: suggestion.id}))
+        dispatch(addIngredientToRecipeFromId({id: recipe.id, ingredientId: suggestion.id}))
+    }
+
+    const onCreateFromNewSuggestion = (name: string) => {
+        dispatch(addNewIngredientToRecipe({id: recipe.id, ingredientName: name}))
     }
 
     let index = 0

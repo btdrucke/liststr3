@@ -13,12 +13,14 @@ export interface EditableItemProps {
     extraClass?: string
 }
 
-// NB: Trailing comma in type list.
 const EditableItem = ({origItem, referenceName, renameItem, extraClass}: EditableItemProps) => {
     const dispatch = useAppDispatch()
     let isEditPending = false
 
-    const defaultName = origItem.name || referenceName || "<none>"
+    const defaultName = origItem.name || referenceName || ""
+    if (defaultName === "") {
+        console.error("EditableItem: no origItem or referenceName provided")
+    }
 
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const element = event.target as HTMLInputElement

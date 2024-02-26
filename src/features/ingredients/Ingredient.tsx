@@ -24,7 +24,6 @@ interface Props {
 
 const Ingredient = ({item}: Props) => {
     const dispatch = useAppDispatch()
-    const itemTags = useAppSelector(state => selectTagsByIds(state, item.tagIds))
 
     const onDrop = (draggingItem: TagModel) => {
         dispatch(addTagToIngredient({itemOwnerId: item.id, tagId: draggingItem.id}))
@@ -55,9 +54,10 @@ const Ingredient = ({item}: Props) => {
                 origItem={item}
                 renameItem={renameIngredient}/>
             <TrashControl action={deleteIngredient(item.id)}/>
-            {itemTags && (
+            {item.tagIds && (
                 <TagList
-                    item={item}
+                    ownerId={item.id}
+                    tagIds={item.tagIds}
                     onRemoveTag={removeTagFromIngredient}
                 />
             )}

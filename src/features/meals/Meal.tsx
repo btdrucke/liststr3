@@ -8,7 +8,6 @@ import {classes} from "../../common/classUtils"
 import IsCheckedControl from "../../common/IsCheckedControl"
 import {TrashControl} from "../../common/IconControls"
 import {useAppSelector} from "../../app/hooks"
-import {selectIngredientById} from "../ingredients/slice"
 import {selectRecipeById} from "../recipes/slice"
 
 interface Props {
@@ -33,12 +32,14 @@ const Meal = ({meal}: Props) => {
         >
             <IsCheckedControl
                 isChecked={meal.isChecked}
-                action={toggleMealIsChecked(meal.id)}/>
+                action={toggleMealIsChecked(meal.id)}
+            />
             <EditableItem
                 origItem={meal}
-                renameItem={renameMeal}
                 referenceName={recipe?.name}
-                extraClass={classes(style.editableItem, meal.name || style.reference)}/>
+                renameItem={renameMeal}
+                extraClass={classes(style.editableItem, meal.name || style.reference)}
+            />
             <TrashControl action={deleteMeal(meal.id)}/>
         </div>
     )

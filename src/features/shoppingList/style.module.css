@@ -22,3 +22,7 @@
     text-decoration: line-through;
     opacity: 50%;
 }
+
+.reference {
+    font-style: italic;
+}

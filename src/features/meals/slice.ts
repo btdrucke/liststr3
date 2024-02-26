@@ -58,15 +58,13 @@ const slice = createSlice({
             const item = createModelFromName(datestamp, name)
             state.items.push(item)
         },
-        createMealFromRecipe: (state, action: PayloadAction<{ datestamp: string, recipeName?: string, recipeId?: EntityId }>) => {
-            // `recipeName` is for Recipe middleware to create a new recipe and fill in the recipe ID of this action.
+        createMealFromRecipeId: (state, action: PayloadAction<{ datestamp: string, recipeId: EntityId }>) => {
             const {datestamp, recipeId} = action.payload
-            if (recipeId) {
-                const item = createModelFromRecipeId(datestamp, recipeId)
-                state.items.push(item)
-            } else {
-                console.error("Called createMealFromRecipe with no recipeId!")
-            }
+            const item = createModelFromRecipeId(datestamp, recipeId)
+            state.items.push(item)
+        },
+        createMealFromNewRecipe: (state, action: PayloadAction<{ datestamp: string, recipeName: string }>) => {
+            // Depends on middleware to create ingredient and dispatch createMealFromRecipeId.
         },
         reviewAddShoppingItems: (state, action: PayloadAction<AboutToAddMealModel>) => {
             state.aboutToAddMeal = action.payload
@@ -119,7 +117,8 @@ export const selectAboutToAddMeal = createSelector(
 
 export const {
     createMeal,
-    createMealFromRecipe,
+    createMealFromRecipeId,
+    createMealFromNewRecipe,
     reviewAddShoppingItems,
     toggleAddShoppingItem,
     toggleAllAddShoppingItems,
