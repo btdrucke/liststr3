@@ -14,8 +14,8 @@ import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
 import style from "./style.module.css"
-import {selectTagsByIds, TagModel} from "../tags/slice"
-import {useAppDispatch, useAppSelector} from "../../app/hooks"
+import {TagModel} from "../tags/slice"
+import {useAppDispatch} from "../../app/hooks"
 import TagList from "../tags/TagList"
 
 interface Props {
@@ -26,7 +26,7 @@ const Ingredient = ({item}: Props) => {
     const dispatch = useAppDispatch()
 
     const onDrop = (draggingItem: TagModel) => {
-        dispatch(addTagToIngredient({itemOwnerId: item.id, tagId: draggingItem.id}))
+        dispatch(addTagToIngredient({ownerId: item.id, tagId: draggingItem.id}))
     }
 
     const [{isOver, canDrop}, drop] = useDrop(
@@ -57,7 +57,7 @@ const Ingredient = ({item}: Props) => {
             {item.tagIds && (
                 <TagList
                     ownerId={item.id}
-                    tagIds={item.tagIds}
+                    ownerTagIds={item.tagIds}
                     onRemoveTag={removeTagFromIngredient}
                 />
             )}

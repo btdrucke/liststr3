@@ -15,7 +15,6 @@ function createModel(name: string, id?: EntityId): IngredientModel {
         name: name,
         id: id || nanoid(),
         isFavorite: false,
-        tagIds: [],
     }
 }
 
@@ -30,7 +29,7 @@ const slice = createSlice({
         ]
     },
     reducers: {
-        createIngredient: (state, action: PayloadAction<NameOwner & {newId?: EntityId}>) => {
+        createIngredient: (state, action: PayloadAction<NameOwner & { newId?: EntityId }>) => {
             const {name, newId} = action.payload
             const item = createModel(name, newId)
             state.items.push(item)

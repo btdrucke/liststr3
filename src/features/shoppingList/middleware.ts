@@ -25,9 +25,7 @@ const shoppingListMiddleware: Middleware = storeApi => next => action => {
             storeApi.dispatch(deleteIngredientFromAllShoppingItems(ingredient))
         }
     } else if (confirmAddShoppingItems.match(action)) {
-        console.log("Confirmed add shopping items")
         const meal = selectAboutToAddMeal(storeApi.getState())
-        console.log(`Found meal: ${JSON.stringify(meal)}`)
         if (meal) {
             storeApi.dispatch(createShoppingItemsFromMeal(meal))
         }

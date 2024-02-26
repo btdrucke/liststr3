@@ -36,7 +36,9 @@ export const ShoppingList = () => {
         setActiveTagId(tagId)
     }
 
-    const activeShoppingItems = shoppingItems.filter(item => !activeTagId || item.tagIds.some(id => id === activeTagId))
+    const activeShoppingItems = shoppingItems.filter(item => {
+        return !activeTagId || (item.tagIds === undefined) || item.tagIds.some(id => id === activeTagId)
+    })
 
     return (
         <Page>

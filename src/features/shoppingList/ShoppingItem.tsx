@@ -11,7 +11,7 @@ import {
 import IsCheckedControl from "../../common/IsCheckedControl"
 import {TrashControl} from "../../common/IconControls"
 import {useAppDispatch, useAppSelector} from "../../app/hooks"
-import {selectTagsByIds, TagModel} from "../tags/slice"
+import {TagModel} from "../tags/slice"
 import {useDrop} from "react-dnd"
 import {DragTypes} from "../../common/DragTypes"
 import {classes} from "../../common/classUtils"
@@ -30,7 +30,9 @@ export const ShoppingItem = ({item}: Props) => {
     const tagIds = ingredientTagIds === undefined ? item.tagIds : ingredientTagIds
 
     const onDrop = (draggingItem: TagModel) => {
-        dispatch(addTagToShoppingItem({itemOwnerId: item.id, tagId: draggingItem.id}))
+        dispatch(addTagToShoppingItem(
+            {ownerId: item.id, tagId: draggingItem.id, referenceTagIds: ingredient?.tagIds}
+        ))
     }
 
     const [{isOver, canDrop}, drop] = useDrop(
@@ -67,7 +69,8 @@ export const ShoppingItem = ({item}: Props) => {
             {tagIds && (
                 <TagList
                     ownerId={item.id}
-                    tagIds={tagIds}
+                    ownerTagIds={item.tagIds}
+                    referenceTagIds={ingredient?.tagIds}
                     onRemoveTag={removeTagFromShoppingItem}
                 />
             )}

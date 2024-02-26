@@ -17,10 +17,10 @@ const EditableItem = ({origItem, referenceName, renameItem, extraClass}: Editabl
     const dispatch = useAppDispatch()
     let isEditPending = false
 
-    const defaultName = origItem.name || referenceName || ""
-    if (defaultName === "") {
+    if (!origItem.name && !referenceName) {
         console.error("EditableItem: no origItem or referenceName provided")
     }
+    const defaultName = origItem.name || referenceName || ""
 
     const handleOnKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const element = event.target as HTMLInputElement
