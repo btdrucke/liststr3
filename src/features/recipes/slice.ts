@@ -83,7 +83,9 @@ const slice = createSlice({
             state.items.forEach(recipe => {
                 recipe.recipeIngredients.forEach(recipeIngredient => {
                     if (recipeIngredient.ingredientId === ingredient.id) {
-                        recipeIngredient.ingredientName = ingredient.name
+                        if (recipeIngredient.ingredientName === undefined) {
+                            recipeIngredient.ingredientName = ingredient.name
+                        }
                         recipeIngredient.ingredientId = undefined
                     }
                 })

@@ -68,8 +68,12 @@ const slice = createSlice({
             const ingredient = action.payload
             state.items.forEach(shoppingItem => {
                 if (shoppingItem.ingredientId === ingredient.id) {
-                    shoppingItem.name = ingredient.name
-                    shoppingItem.tagIds = ingredient.tagIds
+                    if (shoppingItem.name === undefined) {
+                        shoppingItem.name = ingredient.name
+                    }
+                    if (shoppingItem.tagIds === undefined) {
+                        shoppingItem.tagIds = ingredient.tagIds
+                    }
                     shoppingItem.ingredientId = undefined
                 }
             })
